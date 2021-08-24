@@ -3,10 +3,15 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { createGlobalLogic } from "./logic/global";
+import { createI18nService } from "./i18n/i18n";
+
+const defaultI18nService = createI18nService("Japanese");
+const globalLogic = createGlobalLogic(defaultI18nService);
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <App logic={globalLogic} />
   </React.StrictMode>,
   document.getElementById('root')
 );
