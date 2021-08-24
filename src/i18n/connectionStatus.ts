@@ -1,6 +1,10 @@
 import { ConnectionStatusI18n } from "./interfaces";
 
 export class ConnectionStatusJapanese implements ConnectionStatusI18n {
+  public mainServer(): string {
+    return "メインサーバー";
+  }
+
   public notConnected(): string {
     return "未接続";
   }

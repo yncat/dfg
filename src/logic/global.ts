@@ -3,6 +3,7 @@ import { I18nService } from "../i18n/i18n";
 export interface GlobalLogic {
 	i18n:I18nService;
 	subscribeConnectionEvent:(onConnect:(isConnected:boolean)=>void)=>void;
+	connect:()=>void;
 }
 
 export class GlobalLogicImple implements GlobalLogic {
@@ -18,7 +19,7 @@ export class GlobalLogicImple implements GlobalLogic {
 		this.onConnect=onConnect;
 	}
 
-	public performConnect(){
+	public connect(){
 		setTimeout(()=>{
 			if(this.onConnect){
 				this.onConnect(true);

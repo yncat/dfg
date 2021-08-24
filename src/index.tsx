@@ -11,7 +11,7 @@ const globalLogic = createGlobalLogic(defaultI18nService);
 
 ReactDOM.render(
   <React.StrictMode>
-    <App logic={globalLogic} />
+    <App globalLogic={globalLogic} />
   </React.StrictMode>,
   document.getElementById('root')
 );
