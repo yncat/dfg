@@ -13,8 +13,9 @@ function App(props: Props) {
   const [playerCount, setPlayerCount] = React.useState<number>(0);
   // connect to server on mount.
   React.useEffect(() => {
-    props.globalLogic.subscribeConnectionEvent((isConnected: boolean) => {
+    props.globalLogic.subscribeConnectionEvent((isConnected: boolean,playerCount:number) => {
       setIsConnected(isConnected);
+      setPlayerCount(playerCount);
     });
     props.globalLogic.connect();
   }, []);

@@ -15,10 +15,10 @@ test('renders version and connection info when not connected', () => {
 
 test('renders properly when connected', () => {
   const globalLogic = createGlobalLogicForTest();
-  jest.spyOn(globalLogic,"subscribeConnectionEvent").mockImplementation((onConnect)=>{onConnect(true)});
+  jest.spyOn(globalLogic,"subscribeConnectionEvent").mockImplementation((onConnectionStatusChanged)=>{onConnectionStatusChanged(true)});
   jest.spyOn(globalLogic,"connect").mockImplementation(() => {});
   render(<App globalLogic={globalLogic}/>);
-  const cs = screen.getByText("メインサーバー: 接続済み(現在オンライン: 0)");
+  const cs = screen.getByText("メインサーバー: 接続済み(現在オンライン: 2)");
   const crb = screen.getByText("ルームを作成");
   const ver = screen.getByText(/Version/);
   expect(cs).toBeInTheDocument();
