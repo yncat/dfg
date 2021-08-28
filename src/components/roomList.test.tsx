@@ -1,14 +1,14 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import LobbyContainer from "./lobbyContainer";
+import RoomList from "./roomList";
 import { createGlobalLogicForTest, createSubLogicListForTest } from "../testHelper";
 
-test("contains CreateRoomButton", () => {
+test("renders room list table", () => {
   const gl = createGlobalLogicForTest();
   const rll = createSubLogicListForTest().roomListLogic;
-  render(<LobbyContainer globalLogic={gl} roomListLogic={rll}/>);
-  const e = screen.getByText("ルームを作成");
+  render(
+    <RoomList globalLogic={gl} roomListLogic={rll}/>
+  );
+  const e = screen.getByText("cat");
   expect(e).toBeInTheDocument();
-  const e2 = screen.getByText("参加");
-  expect(e2).toBeInTheDocument();
 });

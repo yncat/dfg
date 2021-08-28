@@ -5,6 +5,7 @@ import LobbyContainer from "./components/lobbyContainer";
 import { GlobalLogic } from "./logic/global";
 import { RoomListLogic } from "./logic/roomList";
 import { SubLogicList } from "./logic/sub";
+import { createSubLogicListForTest } from "./testHelper";
 
 export type Props = {
   globalLogic: GlobalLogic;
@@ -29,7 +30,7 @@ function App(props: Props) {
         isConnected={isConnected}
         playerCount={playerCount}
       />
-      {isConnected ? <LobbyContainer globalLogic={props.globalLogic} /> : null}
+      {isConnected ? <LobbyContainer globalLogic={props.globalLogic} roomListLogic={props.subLogicList.roomListLogic}/> : null}
       <Version />
     </div>
   );
