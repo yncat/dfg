@@ -4,8 +4,13 @@ export interface ConnectionStatusI18n {
 	connecting:()=>string;
 	connected:(playerCount:number)=>string;
 }
+
 export interface CreateRoomButtonI18n {
 	createRoom:()=>string;
 }
 
-
+export interface RoomListI18n {
+	creator:()=>string;
+	currentPlayerCount:()=>string;
+	join:()=>string;
+}

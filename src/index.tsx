@@ -4,14 +4,17 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { createGlobalLogic } from "./logic/global";
+import { createRoomListLogic } from './logic/roomList';
 import { createI18nService } from "./i18n/i18n";
 
 const defaultI18nService = createI18nService("Japanese");
 const globalLogic = createGlobalLogic(defaultI18nService);
+const roomListLogic = createRoomListLogic();
+const subLogicList = {roomListLogic};
 
 ReactDOM.render(
   <React.StrictMode>
-    <App globalLogic={globalLogic} />
+    <App globalLogic={globalLogic} subLogicList={subLogicList} />
   </React.StrictMode>,
   document.getElementById('root')
 );

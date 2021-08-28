@@ -3,9 +3,12 @@ import Version from "./components/version";
 import ConnectionStatus from "./components/connectionStatus";
 import LobbyContainer from "./components/lobbyContainer";
 import { GlobalLogic } from "./logic/global";
+import { RoomListLogic } from "./logic/roomList";
+import { SubLogicList } from "./logic/sub";
 
 export type Props = {
   globalLogic: GlobalLogic;
+  subLogicList:SubLogicList;
 };
 
 function App(props: Props) {
