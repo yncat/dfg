@@ -1,6 +1,7 @@
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import { GlobalLogic } from "../logic/global";
+import ChatPanel from "./chatPanel";
 
 interface Props{
   globalLogic:GlobalLogic;
@@ -17,10 +18,10 @@ export default function Chat(props:Props) {
           <Tab>{i18n.room()}</Tab>
         </TabList>
         <TabPanel>
-          <h2>Any content 1</h2>
+          <ChatPanel globalLogic={props.globalLogic} lobbyOrRoom="lobby" />
         </TabPanel>
         <TabPanel>
-          <h2>Any content 2</h2>
+          <ChatPanel globalLogic={props.globalLogic} lobbyOrRoom="room" />
         </TabPanel>
       </Tabs>
     </div>

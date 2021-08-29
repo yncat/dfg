@@ -1,32 +1,26 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
-import Chat from "./chat";
+import { render, screen } from "@testing-library/react";
+import ChatPanel from "./chatPanel";
 import { createGlobalLogicForTest } from "../testHelper";
 
-test("renders chat tab bar and lobby chat screen by default", () => {
+test("renders chat panel for lobby", () => {
   const gl = createGlobalLogicForTest();
   render(
-    <Chat globalLogic={gl}/>
+    <ChatPanel globalLogic={gl} lobbyOrRoom="lobby"/>
   );
-  const lobbytab = screen.getByText("ロビー");
-  const roomtab = screen.getByText("ロビー");
   const lobbymsg = screen.getByText("ロビーへのメッセージ");
   const lobbysend = screen.getByText("送信");
-  expect(lobbytab).toBeInTheDocument();
-  expect(roomtab).toBeInTheDocument();
   expect(lobbymsg).toBeInTheDocument();
   expect(lobbysend).toBeInTheDocument();
 });
 
-test("shows room chat panel when room tab is clicked", () => {
+test("renders chat panel for room", () => {
 	const gl = createGlobalLogicForTest();
 	render(
-	  <Chat globalLogic={gl}/>
+	  <ChatPanel globalLogic={gl} lobbyOrRoom="room"/>
 	);
-	fireEvent.click(screen.getByText("ルーム"));
 	const roommsg = screen.getByText("ルームへのメッセージ");
 	const roomsend = screen.getByText("送信");
 	expect(roommsg).toBeInTheDocument();
 	expect(roomsend).toBeInTheDocument();
   });
-  
