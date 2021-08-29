@@ -32,7 +32,7 @@ function App(props: Props) {
         playerCount={playerCount}
       />
       {isConnected ? <LobbyContainer globalLogic={props.globalLogic} roomListLogic={props.subLogicList.roomListLogic}/> : null}
-      {isConnected ? <Chat globalLogic={props.globalLogic}/> : null}
+      {isConnected ? <Chat globalLogic={props.globalLogic} subLogicList= { {lobbyChatMessageListLogic:props.subLogicList.lobbyChatMessageListLogic, roomChatMessageListLogic:props.subLogicList.roomChatMessageListLogic} }/> : null}
 
       <Version />
     </div>

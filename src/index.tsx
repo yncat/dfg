@@ -5,12 +5,15 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { createGlobalLogic } from "./logic/global";
 import { createRoomListLogic } from './logic/roomList';
+import { createChatMessageListLogic } from "./logic/chatMessageList";
 import { createI18nService } from "./i18n/i18n";
 
 const defaultI18nService = createI18nService("Japanese");
 const globalLogic = createGlobalLogic(defaultI18nService);
 const roomListLogic = createRoomListLogic();
-const subLogicList = {roomListLogic};
+const lobbyChatMessageListLogic = createChatMessageListLogic();
+const roomChatMessageListLogic = createChatMessageListLogic();
+const subLogicList = {roomListLogic, lobbyChatMessageListLogic, roomChatMessageListLogic};
 
 ReactDOM.render(
   <React.StrictMode>

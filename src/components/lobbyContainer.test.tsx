@@ -11,6 +11,4 @@ test("contains CreateRoomButton", () => {
   render(<LobbyContainer globalLogic={gl} roomListLogic={rll}/>);
   const e = screen.getByText("ルームを作成");
   expect(e).toBeInTheDocument();
-  const e2 = screen.getByText("参加");
-  expect(e2).toBeInTheDocument();
 });
