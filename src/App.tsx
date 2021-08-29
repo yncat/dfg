@@ -2,6 +2,7 @@ import React from "react";
 import Version from "./components/version";
 import ConnectionStatus from "./components/connectionStatus";
 import LobbyContainer from "./components/lobbyContainer";
+import Chat from "./components/chat";
 import { GlobalLogic } from "./logic/global";
 import { RoomListLogic } from "./logic/roomList";
 import { SubLogicList } from "./logic/sub";
@@ -31,6 +32,8 @@ function App(props: Props) {
         playerCount={playerCount}
       />
       {isConnected ? <LobbyContainer globalLogic={props.globalLogic} roomListLogic={props.subLogicList.roomListLogic}/> : null}
+      {isConnected ? <Chat globalLogic={props.globalLogic}/> : null}
+
       <Version />
     </div>
   );

@@ -29,7 +29,10 @@ test("renders properly when connected", () => {
   render(<App globalLogic={globalLogic} subLogicList={subLogicList} />);
   const cs = screen.getByText("メインサーバー: 接続済み(現在オンライン: 2)");
   const crb = screen.getByText("ルームを作成");
+  const chat = screen.getByText("チャット");
   const ver = screen.getByText(/Version/);
   expect(cs).toBeInTheDocument();
+  expect(crb).toBeInTheDocument();
+  expect(chat).toBeInTheDocument();
   expect(ver).toBeInTheDocument();
 });

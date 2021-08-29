@@ -14,3 +14,11 @@ export interface RoomListI18n {
 	currentPlayerCount:()=>string;
 	join:()=>string;
 }
+
+export interface ChatI18n {
+	chatHeading:()=>string;
+	lobby:()=>string;
+	room:()=>string;
+	inputLabel:(lobbyOrRoom:'lobby'|'room')=>string;
+	send:()=>string;
+}	

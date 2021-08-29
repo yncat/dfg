@@ -33,7 +33,7 @@ export class GlobalLogicImple implements GlobalLogic {
       if (this.onConnectionStatusChanged) {
         this.onConnectionStatusChanged(true,2);
       }
-    }, 5000);
+    }, 1000);
   }
 }
 
