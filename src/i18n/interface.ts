@@ -1,3 +1,5 @@
+import { RankType} from "dfg-messages";
+
 export interface I18nService{
 	connectionStatus_mainServer:()=>string;
 	connectionStatus_notConnected:()=>string;
@@ -12,4 +14,14 @@ export interface I18nService{
 	roomList_creator:()=>string;
 	roomList_currentPlayerCount:()=>string;
 	roomList_join:()=>string;
+	leaveRoomButton_leaveRoom:()=>string;
+	currentRoom_roomName:(playerName:string)=>string;
+	currentRoom_playerCount:(playerCount:number)=>string;
+	currentRoom_memberListLabel:()=>string;
+	currentRoom_memberList:(playerList:string[])=>string;
+	currentRoom_currentStatusLabel:()=>string;
+	currentRoom_currentStatusWaiting:(playerName:string)=>string;
+	currentRoom_previousResultHeader:()=>string;
+	currentRoom_previousResult:(daifugoPlayerList:string[],fugoPlayerList:string[],heiminPlayerList:string[],hinminPlayerList:string[],daihinminPlayerList:string[])=>string;
+	game_rankType:(rankType:RankType)=>string;
 }
