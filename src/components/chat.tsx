@@ -15,16 +15,16 @@ interface Props{
 }
 
 export default function Chat(props:Props) {
-  const i18n = props.globalLogic.i18n.chat;
+  const i18n = props.globalLogic.i18n;
   const lobbySubs = {chatMessageListLogic: props.subLogicList.lobbyChatMessageListLogic};
   const roomSubs = {chatMessageListLogic: props.subLogicList.roomChatMessageListLogic};
   return (
     <div>
-      <h2>{i18n.chatHeading()}</h2>
+      <h2>{i18n.chat_chatHeading()}</h2>
       <Tabs>
         <TabList>
-          <Tab>{i18n.lobby()}</Tab>
-          <Tab>{i18n.room()}</Tab>
+          <Tab>{i18n.chat_lobby()}</Tab>
+          <Tab>{i18n.chat_room()}</Tab>
         </TabList>
         <TabPanel>
           <ChatPanel globalLogic={props.globalLogic} lobbyOrRoom="lobby" subLogicList={lobbySubs}/>

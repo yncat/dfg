@@ -9,15 +9,15 @@ interface Props {
 }
 
 export default function RoomList(props: Props) {
-  const i18n = props.globalLogic.i18n.roomList;
+  const i18n = props.globalLogic.i18n;
   const entryList = props.roomListLogic.fetchLatest();
   return (
     <table className="room-list-table">
       <thead>
         <tr>
-          <th>{i18n.creator()}</th>
-          <th>{i18n.currentPlayerCount()}</th>
-          <th>{i18n.join()}</th>
+          <th>{i18n.roomList_creator()}</th>
+          <th>{i18n.roomList_currentPlayerCount()}</th>
+          <th>{i18n.roomList_join()}</th>
         </tr>
       </thead>
       <tbody>
@@ -26,7 +26,7 @@ export default function RoomList(props: Props) {
             <tr key={i}>
               <td>{v.creator}</td>
               <td>{v.currentPlayerCount}</td>
-              <td><button type="button">{i18n.join()}</button></td>
+              <td><button type="button">{i18n.roomList_join()}</button></td>
             </tr>
           );
         })}

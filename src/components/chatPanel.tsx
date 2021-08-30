@@ -13,11 +13,11 @@ interface Props{
 }
 
 export default function ChatPanel(props:Props) {
-  const i18n = props.globalLogic.i18n.chat;
+  const i18n = props.globalLogic.i18n;
   return (
     <div>
-		<label>{i18n.inputLabel(props.lobbyOrRoom)} <input type="text" maxLength={200} /></label>
-		<button type="button">{i18n.send()}</button>
+		<label>{i18n.chat_inputLabel(props.lobbyOrRoom)} <input type="text" maxLength={200} /></label>
+		<button type="button">{i18n.chat_send()}</button>
     <ChatMessageList globalLogic={props.globalLogic} chatMessageListLogic={props.subLogicList.chatMessageListLogic}/>
     </div>
   );

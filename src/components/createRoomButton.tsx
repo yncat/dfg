@@ -8,7 +8,7 @@ interface Props {
 export default function CreateRoomButton(props: Props) {
   return (
     <button type="button">
-      {props.globalLogic.i18n.createRoomButton.createRoom()}
+      {props.globalLogic.i18n.createRoomButton_createRoom()}
     </button>
   );
 }
