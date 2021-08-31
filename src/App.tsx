@@ -3,6 +3,7 @@ import Version from "./components/version";
 import ConnectionStatus from "./components/connectionStatus";
 import LobbyContainer from "./components/lobbyContainer";
 import Chat from "./components/chat";
+import AutoRead from "./components/autoRead";
 import { GlobalLogic } from "./logic/global";
 import { RoomListLogic } from "./logic/roomList";
 import { SubLogicList } from "./logic/sub";
@@ -35,6 +36,7 @@ function App(props: Props) {
       {isConnected ? <Chat globalLogic={props.globalLogic} subLogicList= { {lobbyChatMessageListLogic:props.subLogicList.lobbyChatMessageListLogic, roomChatMessageListLogic:props.subLogicList.roomChatMessageListLogic} }/> : null}
 
       <Version />
+      <AutoRead globalLogic={props.globalLogic} autoReadLogic={props.subLogicList.autoReadLogic} />
     </div>
   );
 }

@@ -7,13 +7,15 @@ import { createGlobalLogic } from "./logic/global";
 import { createRoomListLogic } from './logic/roomList';
 import { createChatMessageListLogic } from "./logic/chatMessageList";
 import { createI18nService } from "./i18n/i18n";
+import { createAutoReadLogic } from "./logic/autoRead";
 
 const defaultI18nService = createI18nService("Japanese");
 const globalLogic = createGlobalLogic(defaultI18nService);
 const roomListLogic = createRoomListLogic();
 const lobbyChatMessageListLogic = createChatMessageListLogic();
 const roomChatMessageListLogic = createChatMessageListLogic();
-const subLogicList = {roomListLogic, lobbyChatMessageListLogic, roomChatMessageListLogic};
+const autoReadLogic = createAutoReadLogic();
+const subLogicList = {roomListLogic, lobbyChatMessageListLogic, roomChatMessageListLogic, autoReadLogic};
 
 ReactDOM.render(
   <React.StrictMode>
