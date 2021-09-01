@@ -84,11 +84,11 @@ export class JapaneseI18nService implements I18nService {
     return playerName + "さんがゲームを開始するまで待機しています。";
   }
 
-  public currentRoom_previousResultHeader(): string {
+  public currentRoom_lastResultHeader(): string {
     return "前回の結果: ";
   }
 
-  public currentRoom_previousResult(
+  public currentRoom_lastResult(
     daifugoPlayerList: string[],
     fugoPlayerList: string[],
     heiminPlayerList: string[],

@@ -21,7 +21,7 @@ export interface I18nService{
 	currentRoom_memberList:(playerList:string[])=>string;
 	currentRoom_currentStatusLabel:()=>string;
 	currentRoom_currentStatusWaiting:(playerName:string)=>string;
-	currentRoom_previousResultHeader:()=>string;
-	currentRoom_previousResult:(daifugoPlayerList:string[],fugoPlayerList:string[],heiminPlayerList:string[],hinminPlayerList:string[],daihinminPlayerList:string[])=>string;
+	currentRoom_lastResultHeader:()=>string;
+	currentRoom_lastResult:(daifugoPlayerList:string[],fugoPlayerList:string[],heiminPlayerList:string[],hinminPlayerList:string[],daihinminPlayerList:string[])=>string;
 	game_rankType:(rankType:RankType)=>string;
 }
