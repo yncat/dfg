@@ -8,7 +8,7 @@ export interface Result{
 	daihinminPlayerList:string[];
 }
 
-export interface CurrentRoomInfo{
+export interface CurrentRoomInfoEntry{
 	creator:string;
 	playerCount:number;
 	memberList:string[];
@@ -17,14 +17,14 @@ export interface CurrentRoomInfo{
 	lastResult:Result;
 }
 
-export type UpdateFunc=(updatedInfo:CurrentRoomInfo)=>void;
+export type UpdateFunc=(updatedInfo:CurrentRoomInfoEntry)=>void;
 
 export interface CurrentRoomInfoLogic{
-	fetchLatest:()=>CurrentRoomInfo;
+	fetchLatest:()=>CurrentRoomInfoEntry;
 }
 
 class CurrentRoomInfoLogicImple implements CurrentRoomInfoLogic{
-	fetchLatest():CurrentRoomInfo{
+	fetchLatest():CurrentRoomInfoEntry{
 		const lr = {
 			daifugoPlayerList: ["cat"],
 			fugoPlayerList: ["rabbit"],

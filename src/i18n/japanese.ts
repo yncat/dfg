@@ -85,7 +85,7 @@ export class JapaneseI18nService implements I18nService {
   }
 
   public currentRoom_previousResultHeader(): string {
-    return "前回の結果";
+    return "前回の結果: ";
   }
 
   public currentRoom_previousResult(
