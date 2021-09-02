@@ -13,11 +13,10 @@ test("renders not connected status", () => {
 });
 
 test("renders connected status and player count", () => {
-	const gl = createGlobalLogicForTest();
-	render(
-	  <ConnectionStatus globalLogic={gl} isConnected={true} playerCount={3} />
-	);
-	const e = screen.getByText("メインサーバー: 接続済み(現在オンライン: 3)");
-	expect(e).toBeInTheDocument();
-  });
-  
+  const gl = createGlobalLogicForTest();
+  render(
+    <ConnectionStatus globalLogic={gl} isConnected={true} playerCount={3} />
+  );
+  const e = screen.getByText("メインサーバー: 接続済み(現在オンライン: 3)");
+  expect(e).toBeInTheDocument();
+});

@@ -26,7 +26,9 @@ export default function RoomList(props: Props) {
             <tr key={i}>
               <td>{v.creator}</td>
               <td>{v.currentPlayerCount}</td>
-              <td><button type="button">{i18n.roomList_join()}</button></td>
+              <td>
+                <button type="button">{i18n.roomList_join()}</button>
+              </td>
             </tr>
           );
         })}

@@ -16,6 +16,6 @@ export class ChatMessageListImple implements ChatMessageListLogic {
   }
 }
 
-export function createChatMessageListLogic():ChatMessageListLogic{
+export function createChatMessageListLogic(): ChatMessageListLogic {
   return new ChatMessageListImple();
 }

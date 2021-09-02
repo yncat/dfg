@@ -6,16 +6,16 @@ import { createCurrentRoomInfoLogic } from "./logic/currentRoomInfo";
 import { createI18nService } from "./i18n/i18n";
 import { SubLogicList } from "./logic/sub";
 
-export function createGlobalLogicForTest(){
-	return createGlobalLogic(createI18nService("Japanese"));
+export function createGlobalLogicForTest() {
+  return createGlobalLogic(createI18nService("Japanese"));
 }
 
-export function createSubLogicListForTest():SubLogicList{
-	return {
-		roomListLogic: createRoomListLogic(),
-		lobbyChatMessageListLogic:createChatMessageListLogic(),
-		roomChatMessageListLogic:createChatMessageListLogic(),
-		autoReadLogic: createAutoReadLogic(),
-		currentRoomInfoLogic:createCurrentRoomInfoLogic(),
-	};
+export function createSubLogicListForTest(): SubLogicList {
+  return {
+    roomListLogic: createRoomListLogic(),
+    lobbyChatMessageListLogic: createChatMessageListLogic(),
+    roomChatMessageListLogic: createChatMessageListLogic(),
+    autoReadLogic: createAutoReadLogic(),
+    currentRoomInfoLogic: createCurrentRoomInfoLogic(),
+  };
 }

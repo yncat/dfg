@@ -12,5 +12,5 @@ export default function ConnectionStatus(props: Props) {
   const stat = props.isConnected
     ? i18n.connectionStatus_connected(props.playerCount)
     : i18n.connectionStatus_connecting();
-  return <h1>{ i18n.connectionStatus_mainServer() + ": " + stat}</h1>;
+  return <h1>{i18n.connectionStatus_mainServer() + ": " + stat}</h1>;
 }

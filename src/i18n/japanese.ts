@@ -141,7 +141,7 @@ export class JapaneseI18nService implements I18nService {
     return ret.join("");
   }
 
-  public cardSelector_heading():string{
+  public cardSelector_heading(): string {
     return "自分の手札";
   }
 
@@ -161,8 +161,8 @@ export class JapaneseI18nService implements I18nService {
     return ""; // never executed
   }
 
-  public game_cardMark(cardMark:CardMark):string{
-    switch(cardMark){
+  public game_cardMark(cardMark: CardMark): string {
+    switch (cardMark) {
       case CardMark.CLUBS:
         return "クラブ";
       case CardMark.DIAMONDS:
@@ -177,7 +177,7 @@ export class JapaneseI18nService implements I18nService {
     return "";
   }
 
-  public game_card(cardMark:CardMark,cardNumber:number):string{
-    return this.game_cardMark(cardMark)+"の"+cardNumber;
+  public game_card(cardMark: CardMark, cardNumber: number): string {
+    return this.game_cardMark(cardMark) + "の" + cardNumber;
   }
 }

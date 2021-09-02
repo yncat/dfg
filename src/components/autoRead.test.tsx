@@ -8,7 +8,9 @@ test("render updated autoRead using AutoReadLogic", () => {
   const gl = createGlobalLogicForTest();
   const arl = createAutoReadLogic();
   render(<AutoRead globalLogic={gl} autoReadLogic={arl} />);
-  act(()=>{arl.enqueue("updated")});
+  act(() => {
+    arl.enqueue("updated");
+  });
   const e = screen.getByText("updated");
   expect(e).toBeInTheDocument();
 });

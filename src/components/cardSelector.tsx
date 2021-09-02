@@ -15,7 +15,9 @@ interface Props {
 
 export default function CardSelector(props: Props) {
   const i18n = props.globalLogic.i18n;
-  const [cardList, setCardList] = React.useState<CardListMessage>(encodeCardListMessage([]));
+  const [cardList, setCardList] = React.useState<CardListMessage>(
+    encodeCardListMessage([])
+  );
   React.useEffect(() => {
     props.cardSelectorLogic.subscribe(setCardList);
   });

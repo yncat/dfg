@@ -3,18 +3,24 @@ import { act, render, screen, fireEvent } from "@testing-library/react";
 import CardSelector from "./cardSelector";
 import { createGlobalLogicForTest } from "../testHelper";
 import { createCardSelectorLogic } from "../logic/cardSelector";
-import { CardMark, encodeCardListMessage, encodeSelectableCardMessage } from "dfg-messages";
+import {
+  CardMark,
+  encodeCardListMessage,
+  encodeSelectableCardMessage,
+} from "dfg-messages";
 
 test("render updated cardSelector using CardSelectorLogic", () => {
   const gl = createGlobalLogicForTest();
   const csl = createCardSelectorLogic();
   const msg = encodeCardListMessage([
-	  encodeSelectableCardMessage(CardMark.DIAMONDS,5,false,false),
-	  encodeSelectableCardMessage(CardMark.DIAMONDS,6,true,true),
-	  encodeSelectableCardMessage(CardMark.DIAMONDS,7,false,true),
+    encodeSelectableCardMessage(CardMark.DIAMONDS, 5, false, false),
+    encodeSelectableCardMessage(CardMark.DIAMONDS, 6, true, true),
+    encodeSelectableCardMessage(CardMark.DIAMONDS, 7, false, true),
   ]);
   render(<CardSelector globalLogic={gl} cardSelectorLogic={csl} />);
-  act(()=>{csl.update(msg)});
+  act(() => {
+    csl.update(msg);
+  });
   const d5 = screen.getByText("ダイヤの5");
   const d5chk = screen.getByLabelText("ダイヤの5");
   const d6 = screen.getByText("ダイヤの6");

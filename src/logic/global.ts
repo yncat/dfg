@@ -3,7 +3,10 @@ import { I18nService } from "../i18n/i18n";
 export interface GlobalLogic {
   i18n: I18nService;
   subscribeConnectionEvent: (
-    onConnectionStatusChanged: (isConnected: boolean,playerCount:number) => void
+    onConnectionStatusChanged: (
+      isConnected: boolean,
+      playerCount: number
+    ) => void
   ) => void;
   connect: () => void;
 }
@@ -31,7 +34,7 @@ export class GlobalLogicImple implements GlobalLogic {
   public connect() {
     setTimeout(() => {
       if (this.onConnectionStatusChanged) {
-        this.onConnectionStatusChanged(true,2);
+        this.onConnectionStatusChanged(true, 2);
       }
     }, 1000);
   }

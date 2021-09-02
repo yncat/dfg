@@ -11,7 +11,7 @@ import { createSubLogicListForTest } from "./testHelper";
 
 export type Props = {
   globalLogic: GlobalLogic;
-  subLogicList:SubLogicList;
+  subLogicList: SubLogicList;
 };
 
 function App(props: Props) {
@@ -19,10 +19,12 @@ function App(props: Props) {
   const [playerCount, setPlayerCount] = React.useState<number>(0);
   // connect to server on mount.
   React.useEffect(() => {
-    props.globalLogic.subscribeConnectionEvent((isConnected: boolean,playerCount:number) => {
-      setIsConnected(isConnected);
-      setPlayerCount(playerCount);
-    });
+    props.globalLogic.subscribeConnectionEvent(
+      (isConnected: boolean, playerCount: number) => {
+        setIsConnected(isConnected);
+        setPlayerCount(playerCount);
+      }
+    );
     props.globalLogic.connect();
   }, []);
   return (
@@ -32,11 +34,29 @@ function App(props: Props) {
         isConnected={isConnected}
         playerCount={playerCount}
       />
-      {isConnected ? <LobbyContainer globalLogic={props.globalLogic} roomListLogic={props.subLogicList.roomListLogic}/> : null}
-      {isConnected ? <Chat globalLogic={props.globalLogic} subLogicList= { {lobbyChatMessageListLogic:props.subLogicList.lobbyChatMessageListLogic, roomChatMessageListLogic:props.subLogicList.roomChatMessageListLogic} }/> : null}
+      {isConnected ? (
+        <LobbyContainer
+          globalLogic={props.globalLogic}
+          roomListLogic={props.subLogicList.roomListLogic}
+        />
+      ) : null}
+      {isConnected ? (
+        <Chat
+          globalLogic={props.globalLogic}
+          subLogicList={{
+            lobbyChatMessageListLogic:
+              props.subLogicList.lobbyChatMessageListLogic,
+            roomChatMessageListLogic:
+              props.subLogicList.roomChatMessageListLogic,
+          }}
+        />
+      ) : null}
 
       <Version />
-      <AutoRead globalLogic={props.globalLogic} autoReadLogic={props.subLogicList.autoReadLogic} />
+      <AutoRead
+        globalLogic={props.globalLogic}
+        autoReadLogic={props.subLogicList.autoReadLogic}
+      />
     </div>
   );
 }

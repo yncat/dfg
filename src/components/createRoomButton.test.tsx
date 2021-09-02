@@ -5,9 +5,7 @@ import { createGlobalLogicForTest } from "../testHelper";
 
 test("renders create room button", () => {
   const gl = createGlobalLogicForTest();
-  render(
-    <CreateRoomButton globalLogic={gl} />
-  );
+  render(<CreateRoomButton globalLogic={gl} />);
   const e = screen.getByText("ルームを作成");
   expect(e).toBeInTheDocument();
 });

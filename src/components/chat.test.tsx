@@ -4,19 +4,17 @@ import Chat from "./chat";
 import { createGlobalLogicForTest } from "../testHelper";
 import { createChatMessageListLogic } from "../logic/chatMessageList";
 
-function createSubLogicList(){
+function createSubLogicList() {
   return {
-    lobbyChatMessageListLogic:createChatMessageListLogic(),
-    roomChatMessageListLogic:createChatMessageListLogic(),
-  }
+    lobbyChatMessageListLogic: createChatMessageListLogic(),
+    roomChatMessageListLogic: createChatMessageListLogic(),
+  };
 }
 
 test("renders chat tab bar and lobby chat screen by default", () => {
   const gl = createGlobalLogicForTest();
   const sbl = createSubLogicList();
-  render(
-    <Chat globalLogic={gl} subLogicList={sbl}/>
-  );
+  render(<Chat globalLogic={gl} subLogicList={sbl} />);
   const lobbytab = screen.getByText("ロビー");
   const roomtab = screen.getByText("ロビー");
   const lobbymsg = screen.getByText("ロビーへのメッセージ");
@@ -28,15 +26,12 @@ test("renders chat tab bar and lobby chat screen by default", () => {
 });
 
 test("shows room chat panel when room tab is clicked", () => {
-	const gl = createGlobalLogicForTest();
+  const gl = createGlobalLogicForTest();
   const sbl = createSubLogicList();
-	render(
-	  <Chat globalLogic={gl} subLogicList={sbl}/>
-	);
-	fireEvent.click(screen.getByText("ルーム"));
-	const roommsg = screen.getByText("ルームへのメッセージ");
-	const roomsend = screen.getByText("送信");
-	expect(roommsg).toBeInTheDocument();
-	expect(roomsend).toBeInTheDocument();
-  });
-  
+  render(<Chat globalLogic={gl} subLogicList={sbl} />);
+  fireEvent.click(screen.getByText("ルーム"));
+  const roommsg = screen.getByText("ルームへのメッセージ");
+  const roomsend = screen.getByText("送信");
+  expect(roommsg).toBeInTheDocument();
+  expect(roomsend).toBeInTheDocument();
+});
