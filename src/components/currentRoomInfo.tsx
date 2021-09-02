@@ -30,7 +30,7 @@ export default function CurrentRoomInfo(props: Props) {
       <p>{i18n.currentRoom_currentStatusLabel() + stat}</p>
       <p>
         {i18n.currentRoom_lastResultHeader() +
-          i18n.currentRoom_lastResult(
+          i18n.currentRoom_result(
             info.lastResult.daifugoPlayerList,
             info.lastResult.fugoPlayerList,
             info.lastResult.heiminPlayerList,

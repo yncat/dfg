@@ -1,5 +1,6 @@
 import { I18nService } from "./interface";
 import { RankType } from "dfg-messages";
+import { CardMark } from "dfg-messages";
 
 export class JapaneseI18nService implements I18nService {
   public connectionStatus_mainServer(): string {
@@ -88,7 +89,7 @@ export class JapaneseI18nService implements I18nService {
     return "前回の結果: ";
   }
 
-  public currentRoom_lastResult(
+  public currentRoom_result(
     daifugoPlayerList: string[],
     fugoPlayerList: string[],
     heiminPlayerList: string[],
@@ -140,6 +141,10 @@ export class JapaneseI18nService implements I18nService {
     return ret.join("");
   }
 
+  public cardSelector_heading():string{
+    return "自分の手札";
+  }
+
   public game_rankType(rankType: RankType): string {
     switch (rankType) {
       case RankType.DAIFUGO as number:
@@ -154,5 +159,25 @@ export class JapaneseI18nService implements I18nService {
         return "大貧民";
     }
     return ""; // never executed
+  }
+
+  public game_cardMark(cardMark:CardMark):string{
+    switch(cardMark){
+      case CardMark.CLUBS:
+        return "クラブ";
+      case CardMark.DIAMONDS:
+        return "ダイヤ";
+      case CardMark.HEARTS:
+        return "ハート";
+      case CardMark.SPADES:
+        return "スペード";
+      case CardMark.JOKER:
+        return "ジョーカー";
+    }
+    return "";
+  }
+
+  public game_card(cardMark:CardMark,cardNumber:number):string{
+    return this.game_cardMark(cardMark)+"の"+cardNumber;
   }
 }
