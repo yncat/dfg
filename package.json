@@ -28,7 +28,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "fmt": "prettier --write ./src/**/*.{ts,tsx}",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "sounds:build": "node dev/tools/sounds_build.js"
   },
   "eslintConfig": {
     "extends": [
