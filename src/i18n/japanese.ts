@@ -1,6 +1,5 @@
 import { I18nService } from "./interface";
-import { RankType } from "dfg-messages";
-import { CardMark } from "dfg-messages";
+import { RankType, CardMark, CardMessage } from "dfg-messages";
 
 export class JapaneseI18nService implements I18nService {
   public connectionStatus_mainServer(): string {
@@ -179,5 +178,12 @@ export class JapaneseI18nService implements I18nService {
 
   public game_card(cardMark: CardMark, cardNumber: number): string {
     return this.game_cardMark(cardMark) + "の" + cardNumber;
+  }
+
+  public game_cardList(cardList: CardMessage[]): string {
+    const cds = cardList.map((v) => {
+      return this.game_card(v.mark, v.cardNumber);
+    });
+    return cds.length == 1 ? cds[0] : cds.join("、") + "の" + cds.length + "枚";
   }
 }

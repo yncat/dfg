@@ -1,4 +1,4 @@
-import { RankType, CardMark } from "dfg-messages";
+import { RankType, CardMark, CardMessage } from "dfg-messages";
 
 export interface I18nService {
   connectionStatus_mainServer: () => string;
@@ -33,4 +33,5 @@ export interface I18nService {
   game_rankType: (rankType: RankType) => string;
   game_cardMark: (cardMark: CardMark) => string;
   game_card: (cardMark: CardMark, cardNumber: number) => string;
+  game_cardList:(cardList:CardMessage[])=>string;
 }

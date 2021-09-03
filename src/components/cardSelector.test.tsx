@@ -7,9 +7,12 @@ import {
   CardMark,
   encodeCardListMessage,
   encodeSelectableCardMessage,
+  encodeCardMessage,
+  encodeDiscardPairListMessage,
+  encodeDiscardPairMessage,
 } from "dfg-messages";
 
-test("render updated cardSelector using CardSelectorLogic", () => {
+test("render updated cardSelector checkboxes using CardSelectorLogic", () => {
   const gl = createGlobalLogicForTest();
   const csl = createCardSelectorLogic();
   const msg = encodeCardListMessage([
@@ -19,7 +22,7 @@ test("render updated cardSelector using CardSelectorLogic", () => {
   ]);
   render(<CardSelector globalLogic={gl} cardSelectorLogic={csl} />);
   act(() => {
-    csl.update(msg);
+    csl.updateCardList(msg);
   });
   const d5 = screen.getByText("ダイヤの5");
   const d5chk = screen.getByLabelText("ダイヤの5");
@@ -36,4 +39,24 @@ test("render updated cardSelector using CardSelectorLogic", () => {
   expect(d7).toBeInTheDocument();
   expect(d7chk).not.toBeChecked();
   expect(d7chk).toBeEnabled();
+});
+
+test("render updated cardSelector buttons using CardSelectorLogic", () => {
+  const gl = createGlobalLogicForTest();
+  const csl = createCardSelectorLogic();
+  const msg = encodeDiscardPairListMessage([
+    encodeDiscardPairMessage([encodeCardMessage(CardMark.SPADES, 5)]),
+    encodeDiscardPairMessage([
+      encodeCardMessage(CardMark.HEARTS, 7),
+      encodeCardMessage(CardMark.CLUBS, 7),
+    ]),
+  ]);
+  render(<CardSelector globalLogic={gl} cardSelectorLogic={csl} />);
+  act(() => {
+    csl.updateDiscardPairList(msg);
+  });
+  const btn1 = screen.getByText("スペードの5");
+  const btn2 = screen.getByText("ハートの7、クラブの7の2枚");
+  expect(btn1).toBeInTheDocument();
+  expect(btn2).toBeInTheDocument();
 });

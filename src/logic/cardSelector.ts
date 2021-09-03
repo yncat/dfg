@@ -1,36 +1,56 @@
-import { CardListMessage } from "dfg-messages";
+import { CardListMessage, DiscardPairListMessage } from "dfg-messages";
 import {
   CardMark,
   encodeCardListMessage,
   encodeSelectableCardMessage,
 } from "dfg-messages";
 
-export type UpdateFunc = (message: CardListMessage) => void;
+export type CardListUpdateFunc = (message: CardListMessage) => void;
+export type DiscardPairListUpdateFunc = (discardPairList: DiscardPairListMessage) => void;
 
 export interface CardSelectorLogic {
-  subscribe: (onUpdate: UpdateFunc) => void;
-  unsubscribe: () => void;
-  update: (message: CardListMessage) => void;
+  subscribeCardListUpdate: (onUpdate: CardListUpdateFunc) => void;
+  unsubscribeCardListUpdate: () => void;
+  subscribeDiscardPairListUpdate: (onUpdate: DiscardPairListUpdateFunc) => void;
+  unsubscribeDiscardPairListUpdate: ()=>void;
+  updateCardList: (message: CardListMessage) => void;
+  updateDiscardPairList: (discardPairList: DiscardPairListMessage) => void;
   handleToggleCheck: (index: number) => void;
 }
 
 export class CardSelectorLogicImple implements CardSelectorLogic {
-  onUpdate: UpdateFunc | null;
+  onCardListUpdate: CardListUpdateFunc | null;
+  onDiscardPairListUpdate: DiscardPairListUpdateFunc | null;
   constructor() {
-    this.onUpdate = null;
+    this.onCardListUpdate = null;
+    this.onDiscardPairListUpdate = null;
   }
 
-  public subscribe(onUpdate: UpdateFunc): void {
-    this.onUpdate = onUpdate;
+  public subscribeCardListUpdate(onUpdate: CardListUpdateFunc): void {
+    this.onCardListUpdate = onUpdate;
   }
 
-  public unsubscribe(): void {
-    this.onUpdate = null;
+  public subscribeDiscardPairListUpdate(onUpdate: DiscardPairListUpdateFunc): void {
+    this.onDiscardPairListUpdate = onUpdate;
   }
 
-  public update(message: CardListMessage): void {
-    if (this.onUpdate) {
-      this.onUpdate(message);
+  public unsubscribeCardListUpdate(): void {
+    this.onCardListUpdate = null;
+  }
+
+  public unsubscribeDiscardPairListUpdate(): void {
+    this.onDiscardPairListUpdate = null;
+  }
+
+  public updateCardList(message: CardListMessage): void {
+    if (this.onCardListUpdate) {
+      this.onCardListUpdate(message);
+    }
+  }
+
+  public updateDiscardPairList(message: DiscardPairListMessage): void {
+    if (this.onDiscardPairListUpdate) {
+      this.onDiscardPairListUpdate(message);
     }
   }
 
@@ -38,7 +58,7 @@ export class CardSelectorLogicImple implements CardSelectorLogic {
     const msg = encodeCardListMessage([
       encodeSelectableCardMessage(CardMark.DIAMONDS, 4, true, true),
     ]);
-    this.update(msg);
+    this.updateCardList(msg);
   }
 }
 
