@@ -1,10 +1,5 @@
 import React from "react";
-import { GlobalLogic } from "../logic/global";
-
-export type ConnectionStatusString =
-  | "not_connected"
-  | "connecting"
-  | "connected";
+import { ConnectionStatusString, GlobalLogic } from "../logic/global";
 
 interface Props {
   globalLogic: GlobalLogic;

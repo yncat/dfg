@@ -14,6 +14,14 @@ export class JapaneseI18nService implements I18nService {
     return "接続しました! 現在、サーバーには"+playerCount+"人います。";
   }
 
+  public login_cannotConnect():string{
+    return "サーバーに接続できませんでした。\n";
+  }
+
+  public login_serverOffline():string{
+    return "現在サーバーが稼働していないようです。しばらくしてからもう一度アクセスしてみてください。";;;;
+  }
+
   public connectionStatus_mainServer(): string {
     return "メインサーバー";
   }

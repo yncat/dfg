@@ -1,12 +1,11 @@
 import React from "react";
 import Version from "./components/version";
 import ConnectionStatus from "./components/connectionStatus";
-import { ConnectionStatusString } from "./components/connectionStatus";
 import LobbyContainer from "./components/lobbyContainer";
 import Chat from "./components/chat";
 import Settings from "./components/settings";
 import AutoRead from "./components/autoRead";
-import { GlobalLogic } from "./logic/global";
+import { ConnectionStatusString, GlobalLogic } from "./logic/global";
 import { RoomListLogic } from "./logic/roomList";
 import { SubLogicList } from "./logic/sub";
 import { createSubLogicListForTest } from "./testHelper";
@@ -25,13 +24,21 @@ function App(props: Props) {
   // connect to server on mount.
   React.useEffect(() => {
     props.globalLogic.subscribeConnectionEvent(
-      (isConnected: boolean, playerCount: number) => {
-        setConnectionStatusString(isConnected ? "connected" : "not_connected");
+      (connectionStatusString: ConnectionStatusString, playerCount: number) => {
+        setConnectionStatusString(connectionStatusString);
         setPlayerCount(playerCount);
-        if(isConnected){
+        if (connectionStatusString === "connected") {
           props.globalLogic.sound.enqueueEvent(SoundEvent.CONNECTED);
           props.globalLogic.updateAutoRead(i18n.login_connected(playerCount));
         }
+      },
+      (e: unknown) => {
+        const error = e as Error;
+        if(error.code===undefined){
+          alert(i18n.login_serverOffline());
+          return;
+        }
+        alert(i18n.login_cannotConnect()+JSON.stringify(error));
       }
     );
   }, []);

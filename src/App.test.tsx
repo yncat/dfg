@@ -22,7 +22,7 @@ test("renders properly when connected", () => {
   jest
     .spyOn(globalLogic, "subscribeConnectionEvent")
     .mockImplementation((onConnectionStatusChanged) => {
-      onConnectionStatusChanged(true, 2);
+      onConnectionStatusChanged("connected", 2);
     });
   jest.spyOn(globalLogic, "connect").mockImplementation(() => {});
   render(<App globalLogic={globalLogic} subLogicList={subLogicList} />);
