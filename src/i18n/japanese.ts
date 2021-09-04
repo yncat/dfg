@@ -2,8 +2,8 @@ import { I18nService } from "./interface";
 import { RankType, CardMark, CardMessage } from "dfg-messages";
 
 export class JapaneseI18nService implements I18nService {
-  public login_as(playerName:string):string{
-    return playerName+"としてログイン";
+  public login_as(playerName: string): string {
+    return playerName + "としてログイン";
   }
   public connectionStatus_mainServer(): string {
     return "メインサーバー";
@@ -190,7 +190,7 @@ export class JapaneseI18nService implements I18nService {
     return cds.length == 1 ? cds[0] : cds.join("、") + "の" + cds.length + "枚";
   }
 
-  public settings_heading():string{
+  public settings_heading(): string {
     return "環境設定";
   }
 

@@ -1,7 +1,7 @@
 import { RankType, CardMark, CardMessage } from "dfg-messages";
 
 export interface I18nService {
-  login_as:(playerName:string)=>string;
+  login_as: (playerName: string) => string;
   connectionStatus_mainServer: () => string;
   connectionStatus_notConnected: () => string;
   connectionStatus_connecting: () => string;
@@ -34,8 +34,8 @@ export interface I18nService {
   game_rankType: (rankType: RankType) => string;
   game_cardMark: (cardMark: CardMark) => string;
   game_card: (cardMark: CardMark, cardNumber: number) => string;
-  game_cardList:(cardList:CardMessage[])=>string;
-  settings_heading:()=>string;
-  settings_soundToggle:()=>string;
-  settings_musicToggle:()=>string;
+  game_cardList: (cardList: CardMessage[]) => string;
+  settings_heading: () => string;
+  settings_soundToggle: () => string;
+  settings_musicToggle: () => string;
 }

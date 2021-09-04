@@ -6,13 +6,15 @@ import {
 } from "dfg-messages";
 
 export type CardListUpdateFunc = (message: CardListMessage) => void;
-export type DiscardPairListUpdateFunc = (discardPairList: DiscardPairListMessage) => void;
+export type DiscardPairListUpdateFunc = (
+  discardPairList: DiscardPairListMessage
+) => void;
 
 export interface CardSelectorLogic {
   subscribeCardListUpdate: (onUpdate: CardListUpdateFunc) => void;
   unsubscribeCardListUpdate: () => void;
   subscribeDiscardPairListUpdate: (onUpdate: DiscardPairListUpdateFunc) => void;
-  unsubscribeDiscardPairListUpdate: ()=>void;
+  unsubscribeDiscardPairListUpdate: () => void;
   updateCardList: (message: CardListMessage) => void;
   updateDiscardPairList: (discardPairList: DiscardPairListMessage) => void;
   handleToggleCheck: (index: number) => void;
@@ -30,7 +32,9 @@ export class CardSelectorLogicImple implements CardSelectorLogic {
     this.onCardListUpdate = onUpdate;
   }
 
-  public subscribeDiscardPairListUpdate(onUpdate: DiscardPairListUpdateFunc): void {
+  public subscribeDiscardPairListUpdate(
+    onUpdate: DiscardPairListUpdateFunc
+  ): void {
     this.onDiscardPairListUpdate = onUpdate;
   }
 

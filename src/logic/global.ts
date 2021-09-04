@@ -3,7 +3,7 @@ import { SoundLogic } from "./sound";
 
 export interface GlobalLogic {
   i18n: I18nService;
-  sound:SoundLogic;
+  sound: SoundLogic;
   subscribeConnectionEvent: (
     onConnectionStatusChanged: (
       isConnected: boolean,
@@ -18,12 +18,12 @@ export class GlobalLogicImple implements GlobalLogic {
     | null
     | ((isConnected: boolean, playerCount: number) => void);
   i18n: I18nService;
-  sound:SoundLogic;
+  sound: SoundLogic;
 
-  constructor(i18n: I18nService,sound:SoundLogic) {
+  constructor(i18n: I18nService, sound: SoundLogic) {
     this.onConnectionStatusChanged = null;
     this.i18n = i18n;
-    this.sound=sound;
+    this.sound = sound;
   }
 
   public subscribeConnectionEvent(
@@ -44,6 +44,9 @@ export class GlobalLogicImple implements GlobalLogic {
   }
 }
 
-export function createGlobalLogic(i18n: I18nService, sound:SoundLogic): GlobalLogic {
-  return new GlobalLogicImple(i18n,sound);
+export function createGlobalLogic(
+  i18n: I18nService,
+  sound: SoundLogic
+): GlobalLogic {
+  return new GlobalLogicImple(i18n, sound);
 }

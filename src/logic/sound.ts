@@ -52,7 +52,7 @@ export class SoundLogicImple implements SoundLogic {
 
   public toggleSoundOutput(output: boolean): void {
     this.soundOutput = output;
-    if(output){
+    if (output) {
       this.enqueueEvent(SoundEvent.CLICK);
     }
   }
@@ -122,6 +122,6 @@ export class SoundLogicImple implements SoundLogic {
   }
 }
 
-export function createSoundLogic(){
-	return new SoundLogicImple();
+export function createSoundLogic() {
+  return new SoundLogicImple();
 }
