@@ -1,8 +1,10 @@
 import React from "react";
 import Version from "./components/version";
 import ConnectionStatus from "./components/connectionStatus";
+import { ConnectionStatusString } from "./components/connectionStatus";
 import LobbyContainer from "./components/lobbyContainer";
 import Chat from "./components/chat";
+import Settings from "./components/settings";
 import AutoRead from "./components/autoRead";
 import { GlobalLogic } from "./logic/global";
 import { RoomListLogic } from "./logic/roomList";
@@ -15,32 +17,42 @@ export type Props = {
 };
 
 function App(props: Props) {
-  const [isConnected, setIsConnected] = React.useState<boolean>(false);
+  const [connectionStatusString, setConnectionStatusString] =
+    React.useState<ConnectionStatusString>("not_connected");
   const [playerCount, setPlayerCount] = React.useState<number>(0);
   // connect to server on mount.
   React.useEffect(() => {
     props.globalLogic.subscribeConnectionEvent(
       (isConnected: boolean, playerCount: number) => {
-        setIsConnected(isConnected);
+        setConnectionStatusString(isConnected ? "connected" : "not_connected");
         setPlayerCount(playerCount);
       }
     );
-    props.globalLogic.connect();
   }, []);
   return (
     <div className="App">
       <ConnectionStatus
         globalLogic={props.globalLogic}
-        isConnected={isConnected}
+        connectionStatusString={connectionStatusString}
         playerCount={playerCount}
       />
-      {isConnected ? (
+      {connectionStatusString === "not_connected" ? (
+        <button
+          type="button"
+          onClick={() => {
+            props.globalLogic.connect();
+          }}
+        >
+          {props.globalLogic.i18n.login_as("player")}
+        </button>
+      ) : null}
+      {connectionStatusString === "connected" ? (
         <LobbyContainer
           globalLogic={props.globalLogic}
           roomListLogic={props.subLogicList.roomListLogic}
         />
       ) : null}
-      {isConnected ? (
+      {connectionStatusString === "connected" ? (
         <Chat
           globalLogic={props.globalLogic}
           subLogicList={{
@@ -52,6 +64,7 @@ function App(props: Props) {
         />
       ) : null}
 
+      <Settings globalLogic={props.globalLogic} />
       <Version />
       <AutoRead
         globalLogic={props.globalLogic}

@@ -1,7 +1,9 @@
-import { I18nService } from "../i18n/i18n";
+import { I18nService } from "../i18n/interface";
+import { SoundLogic } from "./sound";
 
 export interface GlobalLogic {
   i18n: I18nService;
+  sound:SoundLogic;
   subscribeConnectionEvent: (
     onConnectionStatusChanged: (
       isConnected: boolean,
@@ -16,10 +18,12 @@ export class GlobalLogicImple implements GlobalLogic {
     | null
     | ((isConnected: boolean, playerCount: number) => void);
   i18n: I18nService;
+  sound:SoundLogic;
 
-  constructor(i18n: I18nService) {
+  constructor(i18n: I18nService,sound:SoundLogic) {
     this.onConnectionStatusChanged = null;
     this.i18n = i18n;
+    this.sound=sound;
   }
 
   public subscribeConnectionEvent(
@@ -40,6 +44,6 @@ export class GlobalLogicImple implements GlobalLogic {
   }
 }
 
-export function createGlobalLogic(i18n: I18nService): GlobalLogic {
-  return new GlobalLogicImple(i18n);
+export function createGlobalLogic(i18n: I18nService, sound:SoundLogic): GlobalLogic {
+  return new GlobalLogicImple(i18n,sound);
 }

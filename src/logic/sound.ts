@@ -32,7 +32,8 @@ export class SoundLogicImple implements SoundLogic {
   howlMap: Map<string, Howl>;
   eventQueue: SoundEvent[];
   constructor() {
-    this.output = true;
+    this.soundOutput = true;
+    this.musicOutput = true;
     this.howlMap = new Map<string, Howl>();
     this.eventQueue = [];
   }
@@ -50,7 +51,10 @@ export class SoundLogicImple implements SoundLogic {
   }
 
   public toggleSoundOutput(output: boolean): void {
-    this.output = output;
+    this.soundOutput = output;
+    if(output){
+      this.enqueueEvent(SoundEvent.CLICK);
+    }
   }
 
   public toggleMusicOutput(output: boolean): void {
@@ -80,6 +84,7 @@ export class SoundLogicImple implements SoundLogic {
 
   private loadMusic() {
     this.howlMap.set(
+      "music",
       new Howl({
         src: process.env.PUBLIC_URL + "/music.mp3",
         html5: true,
@@ -115,4 +120,8 @@ export class SoundLogicImple implements SoundLogic {
 
     setTimeout(this.handleEventQueue.bind(this), def.waitTime);
   }
+}
+
+export function createSoundLogic(){
+	return new SoundLogicImple();
 }

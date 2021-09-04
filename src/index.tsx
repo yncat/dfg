@@ -4,6 +4,7 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { createGlobalLogic } from "./logic/global";
+import { createSoundLogic } from "./logic/sound";
 import { createRoomListLogic } from "./logic/roomList";
 import { createChatMessageListLogic } from "./logic/chatMessageList";
 import { createI18nService } from "./i18n/i18n";
@@ -11,7 +12,8 @@ import { createAutoReadLogic } from "./logic/autoRead";
 import { createCurrentRoomInfoLogic } from "./logic/currentRoomInfo";
 
 const defaultI18nService = createI18nService("Japanese");
-const globalLogic = createGlobalLogic(defaultI18nService);
+const soundLogic = createSoundLogic();
+const globalLogic = createGlobalLogic(defaultI18nService, soundLogic);
 const roomListLogic = createRoomListLogic();
 const lobbyChatMessageListLogic = createChatMessageListLogic();
 const roomChatMessageListLogic = createChatMessageListLogic();
