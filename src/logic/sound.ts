@@ -88,7 +88,7 @@ export class SoundLogicImple implements SoundLogic {
     this.howlMap.set(
       "music",
       new Howl({
-        src: process.env.PUBLIC_URL + "/music.mp3",
+        src: process.env.PUBLIC_URL + "/sounds/music.mp3",
         html5: true,
         loop: true,
         autoplay: true,
