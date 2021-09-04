@@ -79,7 +79,7 @@ export class SoundLogicImple implements SoundLogic {
       return;
     }
     if(!this.musicOutput){
-      howl.mute();
+      howl.volume(0);
     }
     howl.play();
   }
