@@ -9,9 +9,8 @@ import {
 test("renders version and connection info when not connected", () => {
   const globalLogic = createGlobalLogicForTest();
   const subLogicList = createSubLogicListForTest();
-  jest.spyOn(globalLogic, "connect").mockImplementation(() => {});
   render(<App globalLogic={globalLogic} subLogicList={subLogicList} />);
-  const cs = screen.getByText("メインサーバー: 接続中...");
+  const cs = screen.getByText("メインサーバー: 未接続");
   const ver = screen.getByText(/Version/);
   expect(cs).toBeInTheDocument();
   expect(ver).toBeInTheDocument();
