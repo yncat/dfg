@@ -29,6 +29,7 @@ function App(props: Props) {
         setPlayerCount(playerCount);
         if (connectionStatusString === "connected") {
           props.globalLogic.sound.enqueueEvent(SoundEvent.CONNECTED);
+          <props className="globalLogic sound start">();</props>
           props.globalLogic.updateAutoRead(i18n.login_connected(playerCount));
         }
       },

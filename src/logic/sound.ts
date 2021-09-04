@@ -12,6 +12,7 @@ export interface SoundLogic {
   enqueueEvent: (soundEvent: SoundEvent) => void;
   toggleSoundOutput: (output: boolean) => void;
   toggleMusicOutput: (output: boolean) => void;
+  startMusic:()=>void;
 }
 
 interface SoundEventDefinition {
@@ -72,6 +73,17 @@ export class SoundLogicImple implements SoundLogic {
     }
   }
 
+  public startMusic():void{
+    const howl=this.howlMap.get("music");
+    if(howl===undefined){
+      return;
+    }
+    if(this.musicOutput){
+      howl.volume=0;
+    }
+    howl.play();
+  }
+
   private load(soundWithoutExtList: string[]) {
     const basePath = process.env.PUBLIC_URL + "/sounds/";
     soundWithoutExtList.forEach((soundWithoutExt) => {
@@ -91,7 +103,6 @@ export class SoundLogicImple implements SoundLogic {
         src: process.env.PUBLIC_URL + "/sounds/music.mp3",
         html5: true,
         loop: true,
-        autoplay: true,
       })
     );
   }
