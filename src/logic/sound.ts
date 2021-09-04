@@ -98,11 +98,11 @@ export class SoundLogicImple implements SoundLogic {
 
   private handleEventQueue() {
     const evt = this.eventQueue.shift();
-    if (!evt) {
+    if (evt===undefined) {
       return;
     }
     const def = soundEventDefinitionMap.get(evt);
-    if (!def) {
+    if (def===undefined) {
       return;
     }
 
@@ -110,7 +110,9 @@ export class SoundLogicImple implements SoundLogic {
     if (!howl) {
       return;
     }
-    howl.play();
+    if(this.soundOutput){
+      howl.play();
+    }
 
     if (this.eventQueue.length === 0) {
       return;

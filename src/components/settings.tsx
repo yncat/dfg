@@ -14,7 +14,14 @@ export default function Settings(props: Props) {
       <h2>{i18n.settings_heading()}</h2>
       <label>
         {i18n.settings_soundToggle()}
-        <input type="checkbox" checked={soundToggle} />
+        <input
+          type="checkbox"
+          checked={soundToggle}
+          onChange={() => {
+            props.globalLogic.sound.toggleSoundOutput(!soundToggle);
+            setSoundToggle(!soundToggle);
+          }}
+        />
       </label>
       <label>
         {i18n.settings_musicToggle()}
