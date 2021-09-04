@@ -18,6 +18,7 @@ export type Props = {
 };
 
 function App(props: Props) {
+  const i18n = props.globalLogic.i18n;
   const [connectionStatusString, setConnectionStatusString] =
     React.useState<ConnectionStatusString>("not_connected");
   const [playerCount, setPlayerCount] = React.useState<number>(0);
@@ -28,7 +29,8 @@ function App(props: Props) {
         setConnectionStatusString(isConnected ? "connected" : "not_connected");
         setPlayerCount(playerCount);
         if(isConnected){
-          props.globalLogic.sound.enqueueEvent(SoundEvent.CONNECTED)
+          props.globalLogic.sound.enqueueEvent(SoundEvent.CONNECTED);
+          props.globalLogic.updateAutoRead(i18n.login_connected(playerCount));
         }
       }
     );
@@ -44,6 +46,7 @@ function App(props: Props) {
         <button
           type="button"
           onClick={() => {
+            props.globalLogic.updateAutoRead(i18n.login_connecting());
             props.globalLogic.sound.initIfNeeded();
             props.globalLogic.connect();
           }}

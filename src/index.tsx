@@ -18,6 +18,7 @@ const roomListLogic = createRoomListLogic();
 const lobbyChatMessageListLogic = createChatMessageListLogic();
 const roomChatMessageListLogic = createChatMessageListLogic();
 const autoReadLogic = createAutoReadLogic();
+globalLogic.setAutoReadUpdateFunc(autoReadLogic.enqueue.bind(autoReadLogic));
 const currentRoomInfoLogic = createCurrentRoomInfoLogic();
 
 const subLogicList = {

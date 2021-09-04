@@ -2,6 +2,8 @@ import { RankType, CardMark, CardMessage } from "dfg-messages";
 
 export interface I18nService {
   login_as: (playerName: string) => string;
+  login_connecting:()=>string;
+  login_connected:(playerCount:number)=>string;
   connectionStatus_mainServer: () => string;
   connectionStatus_notConnected: () => string;
   connectionStatus_connecting: () => string;

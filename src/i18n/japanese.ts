@@ -5,6 +5,15 @@ export class JapaneseI18nService implements I18nService {
   public login_as(playerName: string): string {
     return playerName + "としてログイン";
   }
+
+  public login_connecting():string{
+    return "接続中...";
+  }
+
+  public login_connected(playerCount:number):string{
+    return "接続しました! 現在、サーバーには"+playerCount+"人います。";
+  }
+
   public connectionStatus_mainServer(): string {
     return "メインサーバー";
   }
