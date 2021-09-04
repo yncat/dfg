@@ -11,7 +11,7 @@ type ConnectionStatusUpdateFunc = (
   connectionStatusString: ConnectionStatusString,
   playerCount: number
 ) => void;
-type ConnectionErrorFunc=(error:unknown)=>void;
+type ConnectionErrorFunc = (error: unknown) => void;
 type PlayerCountUpdateFunc = (playerCount: number) => void;
 type AutoReadUpdateFunc = (updateString: string) => void;
 export interface GlobalLogic {
@@ -19,9 +19,10 @@ export interface GlobalLogic {
   sound: SoundLogic;
   subscribeConnectionEvent: (
     onConnectionStatusChanged: ConnectionStatusUpdateFunc,
-    onConnectionError:ConnectionErrorFunc
+    onPlayerCountUpdated: PlayerCountUpdateFunc,
+    onConnectionError: ConnectionErrorFunc
   ) => void;
-  connect: () => void;
+  connect: (authInfo: string) => void;
   setAutoReadUpdateFunc: (updateFunc: AutoReadUpdateFunc) => void;
   updateAutoRead: (updateString: string) => void;
 }
@@ -31,7 +32,7 @@ export class GlobalLogicImple implements GlobalLogic {
   lobbyRoom: Colyseus.Room | null;
   onPlayerCountUpdated: PlayerCountUpdateFunc | null;
   onConnectionStatusChanged: ConnectionStatusUpdateFunc | null;
-  onConnectionError:ConnectionErrorFunc|null;
+  onConnectionError: ConnectionErrorFunc | null;
   i18n: I18nService;
   sound: SoundLogic;
   autoReadUpdateFunc: AutoReadUpdateFunc | null;
@@ -42,7 +43,7 @@ export class GlobalLogicImple implements GlobalLogic {
     this.lobbyRoom = null;
     this.onPlayerCountUpdated = null;
     this.onConnectionStatusChanged = null;
-    this.onConnectionError=null;
+    this.onConnectionError = null;
     this.autoReadUpdateFunc = null;
     this.i18n = i18n;
     this.sound = sound;
@@ -50,25 +51,34 @@ export class GlobalLogicImple implements GlobalLogic {
 
   public subscribeConnectionEvent(
     onConnectionStatusChanged: ConnectionStatusUpdateFunc,
-    onConnectionError:ConnectionErrorFunc
+    onPlayerCountUpdated: PlayerCountUpdateFunc,
+    onConnectionError: ConnectionErrorFunc
   ) {
     this.onConnectionStatusChanged = onConnectionStatusChanged;
-    this.onConnectionError=onConnectionError;
+    this.onPlayerCountUpdated = onPlayerCountUpdated;
+    this.onConnectionError = onConnectionError;
   }
 
-  public async connect() {
+  public async connect(authInfo: string) {
     this.updateConnectionStatus("connecting", 0);
     try {
-      this.lobbyRoom = await this.client.joinOrCreate("global_room");
+      this.lobbyRoom = await this.client.joinOrCreate("global_room", {
+        playerName: authInfo,
+      });
     } catch (e) {
       this.updateConnectionStatus("not_connected", 0);
-      if(this.onConnectionError){
+      if (this.onConnectionError) {
         this.onConnectionError(e);
       }
     }
 
     const rm = this.lobbyRoom as Colyseus.Room;
-    this.updateConnectionStatus("connected", rm.state.playerCount);
+    rm.onStateChange((state) => {
+      if (this.onPlayerCountUpdated) {
+        this.onPlayerCountUpdated(state.playerCount);
+      }
+    });
+    this.updateConnectionStatus("connected", 0);
   }
 
   public setAutoReadUpdateFunc(updateFunc: AutoReadUpdateFunc): void {

@@ -10,8 +10,8 @@ export class JapaneseI18nService implements I18nService {
     return "接続中...";
   }
 
-  public login_connected(playerCount:number):string{
-    return "接続しました! 現在、サーバーには"+playerCount+"人います。";
+  public login_connected():string{
+    return "接続しました!";
   }
 
   public login_cannotConnect():string{

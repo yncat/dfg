@@ -11,17 +11,22 @@ import { SubLogicList } from "./logic/sub";
 import { createSubLogicListForTest } from "./testHelper";
 import { SoundEvent } from "./logic/sound";
 
+interface ConnectionError{
+  code?: number;
+}
+
 export type Props = {
   globalLogic: GlobalLogic;
   subLogicList: SubLogicList;
 };
 
 function App(props: Props) {
+    // TODO: delete after implementing the actual logic
+    const [name, setName] = React.useState<string>("cat" + Math.floor(Math.random()*1000));
   const i18n = props.globalLogic.i18n;
   const [connectionStatusString, setConnectionStatusString] =
     React.useState<ConnectionStatusString>("not_connected");
   const [playerCount, setPlayerCount] = React.useState<number>(0);
-  // connect to server on mount.
   React.useEffect(() => {
     props.globalLogic.subscribeConnectionEvent(
       (connectionStatusString: ConnectionStatusString, playerCount: number) => {
@@ -29,12 +34,13 @@ function App(props: Props) {
         setPlayerCount(playerCount);
         if (connectionStatusString === "connected") {
           props.globalLogic.sound.enqueueEvent(SoundEvent.CONNECTED);
-          <props className="globalLogic sound start">();</props>
-          props.globalLogic.updateAutoRead(i18n.login_connected(playerCount));
+          props.globalLogic.sound.startMusic();
+          props.globalLogic.updateAutoRead(i18n.login_connected());
         }
       },
+      setPlayerCount,
       (e: unknown) => {
-        const error = e as Error;
+        const error = e as ConnectionError;
         if(error.code===undefined){
           alert(i18n.login_serverOffline());
           return;
@@ -56,10 +62,10 @@ function App(props: Props) {
           onClick={() => {
             props.globalLogic.updateAutoRead(i18n.login_connecting());
             props.globalLogic.sound.initIfNeeded();
-            props.globalLogic.connect();
+            props.globalLogic.connect(name);
           }}
         >
-          {props.globalLogic.i18n.login_as("player")}
+          {props.globalLogic.i18n.login_as(name)}
         </button>
       ) : null}
       {connectionStatusString === "connected" ? (
