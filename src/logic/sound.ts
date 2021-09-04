@@ -9,7 +9,8 @@ export type SoundEvent = typeof SoundEvent[keyof typeof SoundEvent];
 export interface SoundLogic {
   initIfNeeded: () => void;
   enqueueEvent: (soundEvent: SoundEvent) => void;
-  toggleOutput: (output: boolean) => void;
+  toggleSoundOutput: (output: boolean) => void;
+  toggleMusicOutput: (output: boolean) => void;
 }
 
 interface SoundEventDefinition {
@@ -26,7 +27,8 @@ const soundEventDefinitionMap: Map<SoundEvent, SoundEventDefinition> = new Map<
 ]);
 
 export class SoundLogicImple implements SoundLogic {
-  output: boolean;
+  soundOutput: boolean;
+  musicOutput: boolean;
   howlMap: Map<string, Howl>;
   eventQueue: SoundEvent[];
   constructor() {
@@ -37,6 +39,7 @@ export class SoundLogicImple implements SoundLogic {
 
   public initIfNeeded(): void {
     this.load(["click", "chat"]);
+    this.loadMusic();
   }
 
   public enqueueEvent(soundEvent: SoundEvent): void {
@@ -46,8 +49,21 @@ export class SoundLogicImple implements SoundLogic {
     }
   }
 
-  public toggleOutput(output: boolean): void {
+  public toggleSoundOutput(output: boolean): void {
     this.output = output;
+  }
+
+  public toggleMusicOutput(output: boolean): void {
+    this.musicOutput = output;
+    const music = this.howlMap.get("music");
+    if (!music) {
+      return;
+    }
+    if (output) {
+      music.fade(0, 1, 500);
+    } else {
+      music.fade(1, 0, 500);
+    }
   }
 
   private load(soundWithoutExtList: string[]) {
@@ -60,6 +76,17 @@ export class SoundLogicImple implements SoundLogic {
         new Howl({ src: [webmPath, mp3Path], preload: true })
       );
     });
+  }
+
+  private loadMusic() {
+    this.howlMap.set(
+      new Howl({
+        src: process.env.PUBLIC_URL + "/music.mp3",
+        html5: true,
+        loop: true,
+        autoplay: true,
+      })
+    );
   }
 
   private handleEventQueue() {
