@@ -3,6 +3,7 @@ import { textSpanIntersectsWithTextSpan } from "typescript";
 export const SoundEvent = {
   CLICK: 0,
   CHAT: 1,
+  CONNECTED: 2,
 } as const;
 export type SoundEvent = typeof SoundEvent[keyof typeof SoundEvent];
 
@@ -24,6 +25,7 @@ const soundEventDefinitionMap: Map<SoundEvent, SoundEventDefinition> = new Map<
 >([
   [SoundEvent.CLICK, { soundWithoutExt: "click", waitTime: 0 }],
   [SoundEvent.CHAT, { soundWithoutExt: "chat", waitTime: 0 }],
+  [SoundEvent.CONNECTED, { soundWithoutExt: "connected", waitTime: 0 }],
 ]);
 
 export class SoundLogicImple implements SoundLogic {
@@ -39,7 +41,7 @@ export class SoundLogicImple implements SoundLogic {
   }
 
   public initIfNeeded(): void {
-    this.load(["click", "chat"]);
+    this.load(["click", "chat", "connected"]);
     this.loadMusic();
   }
 
@@ -71,7 +73,7 @@ export class SoundLogicImple implements SoundLogic {
   }
 
   private load(soundWithoutExtList: string[]) {
-    const basePath = process.env.PUBLIC_URL + "/";
+    const basePath = process.env.PUBLIC_URL + "/sounds/";
     soundWithoutExtList.forEach((soundWithoutExt) => {
       const webmPath = basePath + soundWithoutExt + ".webm";
       const mp3Path = basePath + soundWithoutExt + ".mp3";

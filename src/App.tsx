@@ -10,6 +10,7 @@ import { GlobalLogic } from "./logic/global";
 import { RoomListLogic } from "./logic/roomList";
 import { SubLogicList } from "./logic/sub";
 import { createSubLogicListForTest } from "./testHelper";
+import { SoundEvent } from "./logic/sound";
 
 export type Props = {
   globalLogic: GlobalLogic;
@@ -26,6 +27,9 @@ function App(props: Props) {
       (isConnected: boolean, playerCount: number) => {
         setConnectionStatusString(isConnected ? "connected" : "not_connected");
         setPlayerCount(playerCount);
+        if(isConnected){
+          props.globalLogic.sound.enqueueEvent(SoundEvent.CONNECTED)
+        }
       }
     );
   }, []);
@@ -40,6 +44,7 @@ function App(props: Props) {
         <button
           type="button"
           onClick={() => {
+            props.globalLogic.sound.initIfNeeded();
             props.globalLogic.connect();
           }}
         >
