@@ -12,7 +12,7 @@ export interface SoundLogic {
   enqueueEvent: (soundEvent: SoundEvent) => void;
   toggleSoundOutput: (output: boolean) => void;
   toggleMusicOutput: (output: boolean) => void;
-  startMusic:()=>void;
+  startMusic: () => void;
 }
 
 interface SoundEventDefinition {
@@ -73,12 +73,12 @@ export class SoundLogicImple implements SoundLogic {
     }
   }
 
-  public startMusic():void{
-    const howl=this.howlMap.get("music");
-    if(howl===undefined){
+  public startMusic(): void {
+    const howl = this.howlMap.get("music");
+    if (howl === undefined) {
       return;
     }
-    if(!this.musicOutput){
+    if (!this.musicOutput) {
       howl.volume(0);
     }
     howl.play();
@@ -109,11 +109,11 @@ export class SoundLogicImple implements SoundLogic {
 
   private handleEventQueue() {
     const evt = this.eventQueue.shift();
-    if (evt===undefined) {
+    if (evt === undefined) {
       return;
     }
     const def = soundEventDefinitionMap.get(evt);
-    if (def===undefined) {
+    if (def === undefined) {
       return;
     }
 
@@ -121,7 +121,7 @@ export class SoundLogicImple implements SoundLogic {
     if (!howl) {
       return;
     }
-    if(this.soundOutput){
+    if (this.soundOutput) {
       howl.play();
     }
 

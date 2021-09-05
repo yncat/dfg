@@ -21,7 +21,7 @@ export class Pubsub<T extends (...args: any) => any> {
   }
 
   public publish(...args: Parameters<T>) {
-    this.subscribersMap.forEach((f)=>{
+    this.subscribersMap.forEach((f) => {
       f(...args);
     });
   }

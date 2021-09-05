@@ -26,7 +26,7 @@ export default function ChatPanel(props: Props) {
 
   return (
     <div>
-            <ChatMessageList
+      <ChatMessageList
         globalLogic={props.globalLogic}
         chatMessageListLogic={props.subLogicList.chatMessageListLogic}
       />

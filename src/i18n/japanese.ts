@@ -6,20 +6,20 @@ export class JapaneseI18nService implements I18nService {
     return playerName + "としてログイン";
   }
 
-  public login_connecting():string{
+  public login_connecting(): string {
     return "接続中...";
   }
 
-  public login_connected():string{
+  public login_connected(): string {
     return "接続しました!";
   }
 
-  public login_cannotConnect():string{
+  public login_cannotConnect(): string {
     return "サーバーに接続できませんでした。\n";
   }
 
-  public login_serverOffline():string{
-    return "現在サーバーが稼働していないようです。しばらくしてからもう一度アクセスしてみてください。";;;;
+  public login_serverOffline(): string {
+    return "現在サーバーが稼働していないようです。しばらくしてからもう一度アクセスしてみてください。";
   }
 
   public connectionStatus_mainServer(): string {

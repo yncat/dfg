@@ -7,7 +7,7 @@ import { createChatMessageListLogic } from "../logic/chatMessageList";
 test("renders chat message list", () => {
   const gl = createGlobalLogicForTest();
   const cmll = createChatMessageListLogic();
-  jest.spyOn(cmll,"fetchLatest").mockImplementation(()=>{
+  jest.spyOn(cmll, "fetchLatest").mockImplementation(() => {
     return [
       { playerName: "cat", message: "test1" },
       { playerName: "dog", message: "test2" },

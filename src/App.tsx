@@ -11,7 +11,7 @@ import { SubLogicList } from "./logic/sub";
 import { createSubLogicListForTest } from "./testHelper";
 import { SoundEvent } from "./logic/sound";
 
-interface ConnectionError{
+interface ConnectionError {
   code?: number;
 }
 
@@ -21,8 +21,10 @@ export type Props = {
 };
 
 function App(props: Props) {
-    // TODO: delete after implementing the actual logic
-    const [name, setName] = React.useState<string>("cat" + Math.floor(Math.random()*1000));
+  // TODO: delete after implementing the actual logic
+  const [name, setName] = React.useState<string>(
+    "cat" + Math.floor(Math.random() * 1000)
+  );
   const i18n = props.globalLogic.i18n;
   const [connectionStatusString, setConnectionStatusString] =
     React.useState<ConnectionStatusString>("not_connected");
@@ -41,11 +43,11 @@ function App(props: Props) {
       setPlayerCount,
       (e: unknown) => {
         const error = e as ConnectionError;
-        if(error.code===undefined){
+        if (error.code === undefined) {
           alert(i18n.login_serverOffline());
           return;
         }
-        alert(i18n.login_cannotConnect()+JSON.stringify(error));
+        alert(i18n.login_cannotConnect() + JSON.stringify(error));
       }
     );
   }, []);
