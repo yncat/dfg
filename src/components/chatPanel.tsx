@@ -26,6 +26,10 @@ export default function ChatPanel(props: Props) {
 
   return (
     <div>
+            <ChatMessageList
+        globalLogic={props.globalLogic}
+        chatMessageListLogic={props.subLogicList.chatMessageListLogic}
+      />
       <label>
         {i18n.chat_inputLabel(props.lobbyOrRoom)}{" "}
         <input
@@ -45,10 +49,6 @@ export default function ChatPanel(props: Props) {
       <button type="button" disabled={chatContent === ""} onClick={handleSend}>
         {i18n.chat_send()}
       </button>
-      <ChatMessageList
-        globalLogic={props.globalLogic}
-        chatMessageListLogic={props.subLogicList.chatMessageListLogic}
-      />
     </div>
   );
 }
