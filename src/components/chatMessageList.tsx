@@ -1,5 +1,8 @@
+import React from "react";
+import { ChatMessage } from "dfg-messages";
 import { GlobalLogic } from "../logic/global";
 import { ChatMessageListLogic } from "../logic/chatMessageList";
+import { SoundEvent } from "../logic/sound";
 
 interface Props {
   globalLogic: GlobalLogic;
@@ -7,6 +10,18 @@ interface Props {
 }
 
 export default function ChatMessageList(props: Props) {
+  const [messageList, setMessageList] = React.useState<ChatMessage[]>([]);
+  React.useEffect(() => {
+    props.chatMessageListLogic.subscribe((chatMessageList: ChatMessage[]) => {
+      setMessageList(chatMessageList);
+      props.globalLogic.sound.enqueueEvent(SoundEvent.CHAT);
+      const last = chatMessageList[chatMessageList.length - 1];
+      props.globalLogic.updateAutoRead(last.playerName + ": " + last.message);
+    });
+    return () => {
+      props.chatMessageListLogic.unsubscribe();
+    };
+  }, []);
   return (
     <ul>
       {props.chatMessageListLogic.fetchLatest().map((v, i) => {

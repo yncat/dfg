@@ -17,6 +17,10 @@ const globalLogic = createGlobalLogic(defaultI18nService, soundLogic);
 const roomListLogic = createRoomListLogic();
 const lobbyChatMessageListLogic = createChatMessageListLogic();
 const roomChatMessageListLogic = createChatMessageListLogic();
+globalLogic.setChatMessagePipelineFuncs(
+  lobbyChatMessageListLogic.push.bind(lobbyChatMessageListLogic),
+  roomChatMessageListLogic.push.bind(roomChatMessageListLogic)
+);
 const autoReadLogic = createAutoReadLogic();
 globalLogic.setAutoReadUpdateFunc(autoReadLogic.enqueue.bind(autoReadLogic));
 const currentRoomInfoLogic = createCurrentRoomInfoLogic();
