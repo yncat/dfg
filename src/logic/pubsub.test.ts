@@ -28,8 +28,7 @@ describe("pubsub", () => {
 
   it("does not call unsubscribed function", () => {
     const pubsub = new Pubsub<TestSubscriberFunc>();
-    const f1 = jest.fn((num: number) => {});
-    const f2 = jest.fn((num: number) => {});
+    const [f1, f2] = makeFuncs();
     pubsub.subscribe(f1);
     const f2id = pubsub.subscribe(f2);
     pubsub.unsubscribe(f2id);
