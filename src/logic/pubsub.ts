@@ -1,6 +1,7 @@
-export class Pubsub<T extends (...args: any) => any> {
-  subscribersMap: Map<number, T>;
-  internalCount: number;
+
+export class Pubsub<T extends (...args: any) => void> {
+  private readonly subscribersMap: Map<number, T>;
+  private internalCount: number;
   constructor() {
     this.subscribersMap = new Map<number, T>();
     this.internalCount = 0;

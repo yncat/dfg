@@ -34,6 +34,6 @@ describe("pubsub", () => {
     pubsub.unsubscribe(f2id);
     pubsub.publish(1);
     expect(f1).toHaveBeenCalledWith(1);
-    expect(f2).not.toHaveBeenCalledWith(1);
+    expect(f2).not.toHaveBeenCalled();
   });
 });
