@@ -30,26 +30,25 @@ function App(props: Props) {
     React.useState<ConnectionStatusString>("not_connected");
   const [playerCount, setPlayerCount] = React.useState<number>(0);
   React.useEffect(() => {
-    props.globalLogic.subscribeConnectionEvent(
-      (connectionStatusString: ConnectionStatusString, playerCount: number) => {
+    props.globalLogic.connectionStatusPubsub.subscribe(
+      (connectionStatusString: string) => {
         setConnectionStatusString(connectionStatusString);
-        setPlayerCount(playerCount);
         if (connectionStatusString === "connected") {
           props.globalLogic.sound.enqueueEvent(SoundEvent.CONNECTED);
           props.globalLogic.sound.startMusic();
           props.globalLogic.updateAutoRead(i18n.login_connected());
         }
-      },
-      setPlayerCount,
-      (e: unknown) => {
-        const error = e as ConnectionError;
-        if (error.code === undefined) {
-          alert(i18n.login_serverOffline());
-          return;
-        }
-        alert(i18n.login_cannotConnect() + JSON.stringify(error));
       }
     );
+    props.globalLogic.connectionErrorPubsub.subscribe((e: unknown) => {
+      const error = e as ConnectionError;
+      if (error.code === undefined) {
+        alert(i18n.login_serverOffline());
+        return;
+      }
+      alert(i18n.login_cannotConnect() + JSON.stringify(error));
+    });
+    props.globalLogic.playerCountPubsub.subscribe(setPlayerCount);
   }, []);
   return (
     <div className="App">

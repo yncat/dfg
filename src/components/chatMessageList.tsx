@@ -12,12 +12,14 @@ interface Props {
 export default function ChatMessageList(props: Props) {
   const [messageList, setMessageList] = React.useState<ChatMessage[]>([]);
   React.useEffect(() => {
-    const subscriberID = props.chatMessageListLogic.pubsub.subscribe((chatMessageList: ChatMessage[]) => {
-      setMessageList(chatMessageList);
-      props.globalLogic.sound.enqueueEvent(SoundEvent.CHAT);
-      const last = chatMessageList[chatMessageList.length - 1];
-      props.globalLogic.updateAutoRead(last.playerName + ": " + last.message);
-    });
+    const subscriberID = props.chatMessageListLogic.pubsub.subscribe(
+      (chatMessageList: ChatMessage[]) => {
+        setMessageList(chatMessageList);
+        props.globalLogic.sound.enqueueEvent(SoundEvent.CHAT);
+        const last = chatMessageList[chatMessageList.length - 1];
+        props.globalLogic.updateAutoRead(last.playerName + ": " + last.message);
+      }
+    );
     return () => {
       props.chatMessageListLogic.pubsub.unsubscribe(subscriberID);
     };

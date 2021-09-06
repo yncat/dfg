@@ -4,27 +4,25 @@ import { I18nService } from "../i18n/interface";
 import { SoundLogic } from "./sound";
 import { ChatMessagePipelineFunc } from "./chatMessageList";
 import { isDecodeSuccess } from "./decodeValidator";
+import { Pubsub } from "./pubsub";
 
 export type ConnectionStatusString =
   | "not_connected"
   | "connecting"
   | "connected";
 
-type ConnectionStatusUpdateFunc = (
-  connectionStatusString: ConnectionStatusString,
-  playerCount: number
+type ConnectionStatusSubscriber = (
+  connectionStatusString: ConnectionStatusString
 ) => void;
-type ConnectionErrorFunc = (error: unknown) => void;
-type PlayerCountUpdateFunc = (playerCount: number) => void;
+type ConnectionErrorSubscriber = (error: unknown) => void;
+type PlayerCountSubscriber = (playerCount: number) => void;
 type AutoReadUpdateFunc = (updateString: string) => void;
 export interface GlobalLogic {
   i18n: I18nService;
   sound: SoundLogic;
-  subscribeConnectionEvent: (
-    onConnectionStatusChanged: ConnectionStatusUpdateFunc,
-    onPlayerCountUpdated: PlayerCountUpdateFunc,
-    onConnectionError: ConnectionErrorFunc
-  ) => void;
+  connectionStatusPubsub: Pubsub<ConnectionStatusSubscriber>;
+  connectionErrorPubsub: Pubsub<ConnectionErrorSubscriber>;
+  playerCountPubsub: Pubsub<PlayerCountSubscriber>;
   connect: (authInfo: string) => void;
   getRoomInstance: (lobbyOrRoom: "lobby" | "room") => Colyseus.Room | null;
   setAutoReadUpdateFunc: (updateFunc: AutoReadUpdateFunc) => void;
@@ -36,12 +34,12 @@ export interface GlobalLogic {
 }
 
 export class GlobalLogicImple implements GlobalLogic {
+  connectionStatusPubsub: Pubsub<ConnectionStatusSubscriber>;
+  connectionErrorPubsub: Pubsub<ConnectionErrorSubscriber>;
+  playerCountPubsub: Pubsub<PlayerCountSubscriber>;
   client: Colyseus.Client;
   lobbyRoom: Colyseus.Room | null;
   gameRoom: Colyseus.Room | null;
-  onPlayerCountUpdated: PlayerCountUpdateFunc | null;
-  onConnectionStatusChanged: ConnectionStatusUpdateFunc | null;
-  onConnectionError: ConnectionErrorFunc | null;
   i18n: I18nService;
   sound: SoundLogic;
   autoReadUpdateFunc: AutoReadUpdateFunc | null;
@@ -49,13 +47,13 @@ export class GlobalLogicImple implements GlobalLogic {
   roomChatMessagePipelineFunc: ChatMessagePipelineFunc | null;
 
   constructor(i18n: I18nService, sound: SoundLogic) {
+    this.connectionStatusPubsub = new Pubsub<ConnectionStatusSubscriber>();
+    this.connectionErrorPubsub = new Pubsub<ConnectionErrorSubscriber>();
+    this.playerCountPubsub = new Pubsub<PlayerCountSubscriber>();
     const c = new Colyseus.Client("ws://localhost:2567");
     this.client = c;
     this.lobbyRoom = null;
     this.gameRoom = null;
-    this.onPlayerCountUpdated = null;
-    this.onConnectionStatusChanged = null;
-    this.onConnectionError = null;
     this.autoReadUpdateFunc = null;
     this.lobbyChatMessagePipelineFunc = null;
     this.roomChatMessagePipelineFunc = null;
@@ -63,27 +61,15 @@ export class GlobalLogicImple implements GlobalLogic {
     this.sound = sound;
   }
 
-  public subscribeConnectionEvent(
-    onConnectionStatusChanged: ConnectionStatusUpdateFunc,
-    onPlayerCountUpdated: PlayerCountUpdateFunc,
-    onConnectionError: ConnectionErrorFunc
-  ) {
-    this.onConnectionStatusChanged = onConnectionStatusChanged;
-    this.onPlayerCountUpdated = onPlayerCountUpdated;
-    this.onConnectionError = onConnectionError;
-  }
-
   public async connect(authInfo: string) {
-    this.updateConnectionStatus("connecting", 0);
+    this.connectionStatusPubsub.publish("connecting");
     try {
       this.lobbyRoom = await this.client.joinOrCreate("global_room", {
         playerName: authInfo,
       });
     } catch (e) {
-      this.updateConnectionStatus("not_connected", 0);
-      if (this.onConnectionError) {
-        this.onConnectionError(e);
-      }
+      this.connectionStatusPubsub.publish("not_connected");
+      this.connectionErrorPubsub.publish(e);
     }
 
     const rm = this.lobbyRoom as Colyseus.Room;
@@ -97,11 +83,9 @@ export class GlobalLogicImple implements GlobalLogic {
       }
     });
     rm.onStateChange((state) => {
-      if (this.onPlayerCountUpdated) {
-        this.onPlayerCountUpdated(state.playerCount);
-      }
+      this.playerCountPubsub.publish(state.playerCount);
     });
-    this.updateConnectionStatus("connected", 0);
+    this.connectionStatusPubsub.publish("connected");
   }
 
   public getRoomInstance(lobbyOrRoom: "lobby" | "room"): Colyseus.Room | null {
@@ -124,15 +108,6 @@ export class GlobalLogicImple implements GlobalLogic {
   ): void {
     this.lobbyChatMessagePipelineFunc = lobby;
     this.roomChatMessagePipelineFunc = room;
-  }
-
-  private updateConnectionStatus(
-    connectionStatusString: ConnectionStatusString,
-    playerCount: number
-  ) {
-    if (this.onConnectionStatusChanged) {
-      this.onConnectionStatusChanged(connectionStatusString, playerCount);
-    }
   }
 }
 

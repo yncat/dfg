@@ -1,4 +1,3 @@
-
 export class Pubsub<T extends (...args: any) => void> {
   private readonly subscribersMap: Map<number, T>;
   private internalCount: number;
