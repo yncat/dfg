@@ -1,24 +1,22 @@
 import * as Colyseus from "colyseus.js";
 import { ChatMessage, encodeChatRequest } from "dfg-messages";
+import { Pubsub } from "./pubsub";
 export type ChatMessagePipelineFunc = (chatMessage: ChatMessage) => void;
-export type ChatMessageListUpdateFunc = (
-  chatMessageList: ChatMessage[]
-) => void;
+export type ChatMessageSubscriber = (chatMessageList: ChatMessage[]) => void;
 
 export interface ChatMessageListLogic {
+  pubsub: Pubsub<ChatMessageSubscriber>;
   fetchLatest: () => ChatMessage[];
   push: (chatMessage: ChatMessage) => void;
-  subscribe: (onUpdate: ChatMessageListUpdateFunc) => void;
-  unsubscribe: () => void;
   send: (roomFromGlobalLogic: Colyseus.Room | null, message: string) => void;
 }
 
 export class ChatMessageListImple implements ChatMessageListLogic {
   latestEntries: ChatMessage[];
-  onUpdate: ChatMessageListUpdateFunc | null;
+  pubsub: Pubsub<ChatMessageSubscriber>;
   constructor() {
     this.latestEntries = [];
-    this.onUpdate = null;
+    this.pubsub = new Pubsub<ChatMessageSubscriber>();
   }
 
   public fetchLatest(): ChatMessage[] {
@@ -28,18 +26,8 @@ export class ChatMessageListImple implements ChatMessageListLogic {
 
   public push(chatMessage: ChatMessage): void {
     this.latestEntries.push(chatMessage);
-    if (this.onUpdate) {
-      // React state must be immutable
-      this.onUpdate(Array.from(this.latestEntries));
-    }
-  }
-
-  public subscribe(onUpdate: ChatMessageListUpdateFunc): void {
-    this.onUpdate = onUpdate;
-  }
-
-  public unsubscribe(): void {
-    this.onUpdate = null;
+    // React state must be immutable
+    this.pubsub.publish(Array.from(this.latestEntries));
   }
 
   public send(
