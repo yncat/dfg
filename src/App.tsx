@@ -31,7 +31,7 @@ function App(props: Props) {
   const [playerCount, setPlayerCount] = React.useState<number>(0);
   React.useEffect(() => {
     props.globalLogic.connectionStatusPubsub.subscribe(
-      (connectionStatusString: string) => {
+      (connectionStatusString: ConnectionStatusString) => {
         setConnectionStatusString(connectionStatusString);
         if (connectionStatusString === "connected") {
           props.globalLogic.sound.enqueueEvent(SoundEvent.CONNECTED);

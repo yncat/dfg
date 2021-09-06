@@ -22,7 +22,7 @@ globalLogic.setChatMessagePipelineFuncs(
   roomChatMessageListLogic.push.bind(roomChatMessageListLogic)
 );
 const autoReadLogic = createAutoReadLogic();
-globalLogic.setAutoReadUpdateFunc(autoReadLogic.enqueue.bind(autoReadLogic));
+globalLogic.autoReadPubsub.subscribe(autoReadLogic.enqueue.bind(autoReadLogic));
 const currentRoomInfoLogic = createCurrentRoomInfoLogic();
 
 const subLogicList = {

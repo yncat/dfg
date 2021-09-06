@@ -16,16 +16,16 @@ type ConnectionStatusSubscriber = (
 ) => void;
 type ConnectionErrorSubscriber = (error: unknown) => void;
 type PlayerCountSubscriber = (playerCount: number) => void;
-type AutoReadUpdateFunc = (updateString: string) => void;
+type AutoReadSubscriber = (updateString: string) => void;
 export interface GlobalLogic {
   i18n: I18nService;
   sound: SoundLogic;
   connectionStatusPubsub: Pubsub<ConnectionStatusSubscriber>;
   connectionErrorPubsub: Pubsub<ConnectionErrorSubscriber>;
   playerCountPubsub: Pubsub<PlayerCountSubscriber>;
+  autoReadPubsub:Pubsub<AutoReadSubscriber>;
   connect: (authInfo: string) => void;
   getRoomInstance: (lobbyOrRoom: "lobby" | "room") => Colyseus.Room | null;
-  setAutoReadUpdateFunc: (updateFunc: AutoReadUpdateFunc) => void;
   updateAutoRead: (updateString: string) => void;
   setChatMessagePipelineFuncs: (
     lobby: ChatMessagePipelineFunc,
@@ -37,12 +37,12 @@ export class GlobalLogicImple implements GlobalLogic {
   connectionStatusPubsub: Pubsub<ConnectionStatusSubscriber>;
   connectionErrorPubsub: Pubsub<ConnectionErrorSubscriber>;
   playerCountPubsub: Pubsub<PlayerCountSubscriber>;
+  autoReadPubsub:Pubsub<AutoReadSubscriber>;
   client: Colyseus.Client;
   lobbyRoom: Colyseus.Room | null;
   gameRoom: Colyseus.Room | null;
   i18n: I18nService;
   sound: SoundLogic;
-  autoReadUpdateFunc: AutoReadUpdateFunc | null;
   lobbyChatMessagePipelineFunc: ChatMessagePipelineFunc | null;
   roomChatMessagePipelineFunc: ChatMessagePipelineFunc | null;
 
@@ -50,11 +50,11 @@ export class GlobalLogicImple implements GlobalLogic {
     this.connectionStatusPubsub = new Pubsub<ConnectionStatusSubscriber>();
     this.connectionErrorPubsub = new Pubsub<ConnectionErrorSubscriber>();
     this.playerCountPubsub = new Pubsub<PlayerCountSubscriber>();
+    this.autoReadPubsub=new Pubsub<AutoReadSubscriber>();
     const c = new Colyseus.Client("ws://localhost:2567");
     this.client = c;
     this.lobbyRoom = null;
     this.gameRoom = null;
-    this.autoReadUpdateFunc = null;
     this.lobbyChatMessagePipelineFunc = null;
     this.roomChatMessagePipelineFunc = null;
     this.i18n = i18n;
@@ -92,14 +92,8 @@ export class GlobalLogicImple implements GlobalLogic {
     return lobbyOrRoom === "lobby" ? this.lobbyRoom : this.gameRoom;
   }
 
-  public setAutoReadUpdateFunc(updateFunc: AutoReadUpdateFunc): void {
-    this.autoReadUpdateFunc = updateFunc;
-  }
-
   public updateAutoRead(updateString: string): void {
-    if (this.autoReadUpdateFunc) {
-      this.autoReadUpdateFunc(updateString);
-    }
+    this.autoReadPubsub.publish(updateString);
   }
 
   public setChatMessagePipelineFuncs(
