@@ -3,6 +3,7 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import Chat from "./chat";
 import { createGlobalLogicForTest } from "../testHelper";
 import { createChatMessageListLogic } from "../logic/chatMessageList";
+import { createChatPanelLogic } from "../logic/chatPanel";
 
 function createSubLogicList() {
   return {
@@ -16,7 +17,7 @@ function createSubLogicList() {
 test("renders chat tab bar and lobby chat screen by default", () => {
   const gl = createGlobalLogicForTest();
   const sbl = createSubLogicList();
-  render(<Chat globalLogic={gl} subLogicList={sbl} />);
+  render(<Chat globalLogic={gl} subLogicList={sbl} isInRoom={true} />);
   const lobbytab = screen.getByText("ロビー");
   const roomtab = screen.getByText("ロビー");
   const lobbymsg = screen.getByText("ロビーへのメッセージ");
@@ -30,7 +31,7 @@ test("renders chat tab bar and lobby chat screen by default", () => {
 test("shows room chat panel when room tab is clicked", () => {
   const gl = createGlobalLogicForTest();
   const sbl = createSubLogicList();
-  render(<Chat globalLogic={gl} subLogicList={sbl} />);
+  render(<Chat globalLogic={gl} subLogicList={sbl} isInRoom={true} />);
   fireEvent.click(screen.getByText("ルーム"));
   const roommsg = screen.getByText("ルームへのメッセージ");
   const roomsend = screen.getByText("送信");

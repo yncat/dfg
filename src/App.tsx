@@ -28,6 +28,7 @@ function App(props: Props) {
   const [connectionStatusString, setConnectionStatusString] =
     React.useState<ConnectionStatusString>("not_connected");
   const [playerCount, setPlayerCount] = React.useState<number>(0);
+  const [isInRoom, setIsInRoom] = React.useState<boolean>(false);
   React.useEffect(() => {
     props.globalLogic.connectionStatusPubsub.subscribe(
       (connectionStatusString: ConnectionStatusString) => {
@@ -85,6 +86,7 @@ function App(props: Props) {
               props.subLogicList.roomChatMessageListLogic,
             roomChatPanelLogic: props.subLogicList.roomChatPanelLogic,
           }}
+          isInRoom={isInRoom}
         />
       ) : null}
 

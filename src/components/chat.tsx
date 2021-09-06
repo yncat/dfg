@@ -15,6 +15,7 @@ interface SubLogicList {
 interface Props {
   globalLogic: GlobalLogic;
   subLogicList: SubLogicList;
+  isInRoom: boolean;
 }
 
 export default function Chat(props: Props) {
@@ -31,7 +32,7 @@ export default function Chat(props: Props) {
       <Tabs>
         <TabList>
           <Tab>{i18n.chat_lobby()}</Tab>
-          <Tab>{i18n.chat_room()}</Tab>
+          <Tab disabled={!props.isInRoom}>{i18n.chat_room()}</Tab>
         </TabList>
         <TabPanel>
           <ChatPanel
