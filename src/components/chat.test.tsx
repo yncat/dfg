@@ -7,7 +7,9 @@ import { createChatMessageListLogic } from "../logic/chatMessageList";
 function createSubLogicList() {
   return {
     lobbyChatMessageListLogic: createChatMessageListLogic(),
+    lobbyChatPanelLogic: createChatPanelLogic(),
     roomChatMessageListLogic: createChatMessageListLogic(),
+    roomChatPanelLogic: createChatPanelLogic(),
   };
 }
 

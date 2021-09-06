@@ -7,6 +7,7 @@ import { createGlobalLogic } from "./logic/global";
 import { createSoundLogic } from "./logic/sound";
 import { createRoomListLogic } from "./logic/roomList";
 import { createChatMessageListLogic } from "./logic/chatMessageList";
+import { createChatPanelLogic } from "./logic/chatPanel";
 import { createI18nService } from "./i18n/i18n";
 import { createAutoReadLogic } from "./logic/autoRead";
 import { createCurrentRoomInfoLogic } from "./logic/currentRoomInfo";
@@ -16,7 +17,9 @@ const soundLogic = createSoundLogic();
 const globalLogic = createGlobalLogic(defaultI18nService, soundLogic);
 const roomListLogic = createRoomListLogic();
 const lobbyChatMessageListLogic = createChatMessageListLogic();
+const lobbyChatPanelLogic = createChatPanelLogic();
 const roomChatMessageListLogic = createChatMessageListLogic();
+const roomChatPanelLogic = createChatPanelLogic();
 globalLogic.setChatMessagePipelineFuncs(
   lobbyChatMessageListLogic.push.bind(lobbyChatMessageListLogic),
   roomChatMessageListLogic.push.bind(roomChatMessageListLogic)
@@ -28,7 +31,9 @@ const currentRoomInfoLogic = createCurrentRoomInfoLogic();
 const subLogicList = {
   roomListLogic,
   lobbyChatMessageListLogic,
+  lobbyChatPanelLogic,
   roomChatMessageListLogic,
+  roomChatPanelLogic,
   autoReadLogic,
   currentRoomInfoLogic,
 };

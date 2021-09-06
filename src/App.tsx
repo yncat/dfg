@@ -8,7 +8,6 @@ import AutoRead from "./components/autoRead";
 import { ConnectionStatusString, GlobalLogic } from "./logic/global";
 import { RoomListLogic } from "./logic/roomList";
 import { SubLogicList } from "./logic/sub";
-import { createSubLogicListForTest } from "./testHelper";
 import { SoundEvent } from "./logic/sound";
 
 interface ConnectionError {
@@ -81,8 +80,10 @@ function App(props: Props) {
           subLogicList={{
             lobbyChatMessageListLogic:
               props.subLogicList.lobbyChatMessageListLogic,
+            lobbyChatPanelLogic: props.subLogicList.lobbyChatPanelLogic,
             roomChatMessageListLogic:
               props.subLogicList.roomChatMessageListLogic,
+            roomChatPanelLogic: props.subLogicList.roomChatPanelLogic,
           }}
         />
       ) : null}

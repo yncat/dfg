@@ -2,11 +2,14 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import { GlobalLogic } from "../logic/global";
 import { ChatMessageListLogic } from "../logic/chatMessageList";
+import { ChatPanelLogic } from "../logic/chatPanel";
 import ChatPanel from "./chatPanel";
 
 interface SubLogicList {
   lobbyChatMessageListLogic: ChatMessageListLogic;
+  lobbyChatPanelLogic: ChatPanelLogic;
   roomChatMessageListLogic: ChatMessageListLogic;
+  roomChatPanelLogic: ChatPanelLogic;
 }
 
 interface Props {
@@ -33,6 +36,7 @@ export default function Chat(props: Props) {
         <TabPanel>
           <ChatPanel
             globalLogic={props.globalLogic}
+            chatPanelLogic={props.subLogicList.lobbyChatPanelLogic}
             lobbyOrRoom="lobby"
             subLogicList={lobbySubs}
           />
@@ -40,6 +44,7 @@ export default function Chat(props: Props) {
         <TabPanel>
           <ChatPanel
             globalLogic={props.globalLogic}
+            chatPanelLogic={props.subLogicList.roomChatPanelLogic}
             lobbyOrRoom="room"
             subLogicList={roomSubs}
           />

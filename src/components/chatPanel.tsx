@@ -2,6 +2,7 @@ import React from "react";
 import { GlobalLogic } from "../logic/global";
 import ChatMessageList from "./chatMessageList";
 import { ChatMessageListLogic } from "../logic/chatMessageList";
+import { ChatPanelLogic } from "../logic/chatPanel";
 
 interface SubLogicList {
   chatMessageListLogic: ChatMessageListLogic;
@@ -10,6 +11,7 @@ interface SubLogicList {
 interface Props {
   globalLogic: GlobalLogic;
   lobbyOrRoom: "lobby" | "room";
+  chatPanelLogic: ChatPanelLogic;
   subLogicList: SubLogicList;
 }
 
@@ -17,7 +19,7 @@ export default function ChatPanel(props: Props) {
   const i18n = props.globalLogic.i18n;
   const [chatContent, setChatContent] = React.useState<string>("");
   const handleSend = () => {
-    props.subLogicList.chatMessageListLogic.send(
+    props.chatPanelLogic.send(
       props.globalLogic.getRoomInstance(props.lobbyOrRoom),
       chatContent
     );

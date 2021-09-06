@@ -23,7 +23,7 @@ export interface GlobalLogic {
   connectionStatusPubsub: Pubsub<ConnectionStatusSubscriber>;
   connectionErrorPubsub: Pubsub<ConnectionErrorSubscriber>;
   playerCountPubsub: Pubsub<PlayerCountSubscriber>;
-  autoReadPubsub:Pubsub<AutoReadSubscriber>;
+  autoReadPubsub: Pubsub<AutoReadSubscriber>;
   connect: (authInfo: string) => void;
   getRoomInstance: (lobbyOrRoom: "lobby" | "room") => Colyseus.Room | null;
   updateAutoRead: (updateString: string) => void;
@@ -37,7 +37,7 @@ export class GlobalLogicImple implements GlobalLogic {
   connectionStatusPubsub: Pubsub<ConnectionStatusSubscriber>;
   connectionErrorPubsub: Pubsub<ConnectionErrorSubscriber>;
   playerCountPubsub: Pubsub<PlayerCountSubscriber>;
-  autoReadPubsub:Pubsub<AutoReadSubscriber>;
+  autoReadPubsub: Pubsub<AutoReadSubscriber>;
   client: Colyseus.Client;
   lobbyRoom: Colyseus.Room | null;
   gameRoom: Colyseus.Room | null;
@@ -50,7 +50,7 @@ export class GlobalLogicImple implements GlobalLogic {
     this.connectionStatusPubsub = new Pubsub<ConnectionStatusSubscriber>();
     this.connectionErrorPubsub = new Pubsub<ConnectionErrorSubscriber>();
     this.playerCountPubsub = new Pubsub<PlayerCountSubscriber>();
-    this.autoReadPubsub=new Pubsub<AutoReadSubscriber>();
+    this.autoReadPubsub = new Pubsub<AutoReadSubscriber>();
     const c = new Colyseus.Client("ws://localhost:2567");
     this.client = c;
     this.lobbyRoom = null;
