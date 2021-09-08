@@ -15,6 +15,7 @@ import { createCurrentRoomInfoLogic } from "./logic/currentRoomInfo";
 const defaultI18nService = createI18nService("Japanese");
 const soundLogic = createSoundLogic();
 const globalLogic = createGlobalLogic(defaultI18nService, soundLogic);
+globalLogic.registeredPlayerName="cat" + Math.floor(Math.random() * 1000;
 const roomListLogic = createRoomListLogic();
 const lobbyChatMessageListLogic = createChatMessageListLogic();
 const lobbyChatPanelLogic = createChatPanelLogic();

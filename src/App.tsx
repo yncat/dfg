@@ -20,10 +20,6 @@ export type Props = {
 };
 
 function App(props: Props) {
-  // TODO: delete after implementing the actual logic
-  const [name, setName] = React.useState<string>(
-    "cat" + Math.floor(Math.random() * 1000)
-  );
   const i18n = props.globalLogic.i18n;
   const [connectionStatusString, setConnectionStatusString] =
     React.useState<ConnectionStatusString>("not_connected");
@@ -63,10 +59,10 @@ function App(props: Props) {
           onClick={() => {
             props.globalLogic.updateAutoRead(i18n.login_connecting());
             props.globalLogic.sound.initIfNeeded();
-            props.globalLogic.connect(name);
+            props.globalLogic.connect();
           }}
         >
-          {props.globalLogic.i18n.login_as(name)}
+          {props.globalLogic.i18n.login_as(props.globalLogic.registeredPlayerName)}
         </button>
       ) : null}
       {connectionStatusString === "connected" ? (

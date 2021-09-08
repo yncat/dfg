@@ -24,13 +24,15 @@ export interface GlobalLogic {
   connectionErrorPubsub: Pubsub<ConnectionErrorSubscriber>;
   playerCountPubsub: Pubsub<PlayerCountSubscriber>;
   autoReadPubsub: Pubsub<AutoReadSubscriber>;
-  connect: (authInfo: string) => void;
+  connect: () => void;
   getRoomInstance: (lobbyOrRoom: "lobby" | "room") => Colyseus.Room | null;
   updateAutoRead: (updateString: string) => void;
   setChatMessagePipelineFuncs: (
     lobby: ChatMessagePipelineFunc,
     room: ChatMessagePipelineFunc
   ) => void;
+  // TODO: delete after switching to session-based.
+  registeredPlayerName: string;
 }
 
 export class GlobalLogicImple implements GlobalLogic {
@@ -44,6 +46,7 @@ export class GlobalLogicImple implements GlobalLogic {
   i18n: I18nService;
   sound: SoundLogic;
   lobbyChatMessagePipelineFunc: ChatMessagePipelineFunc | null;
+  registeredPlayerName: string;
   roomChatMessagePipelineFunc: ChatMessagePipelineFunc | null;
 
   constructor(i18n: I18nService, sound: SoundLogic) {
@@ -59,13 +62,14 @@ export class GlobalLogicImple implements GlobalLogic {
     this.roomChatMessagePipelineFunc = null;
     this.i18n = i18n;
     this.sound = sound;
+    this.registeredPlayerName = "";
   }
 
-  public async connect(authInfo: string) {
+  public async connect() {
     this.connectionStatusPubsub.publish("connecting");
     try {
       this.lobbyRoom = await this.client.joinOrCreate("global_room", {
-        playerName: authInfo,
+        playerName: this.registeredPlayerName,
       });
     } catch (e) {
       this.connectionStatusPubsub.publish("not_connected");
