@@ -1,6 +1,7 @@
 import React from "react";
 import { GlobalLogic } from "../logic/global";
 import { RoomListLogic } from "../logic/roomList";
+import { SoundEvent } from "../logic/sound";
 import "./roomList.css";
 
 interface Props {
@@ -11,6 +12,14 @@ interface Props {
 export default function RoomList(props: Props) {
   const i18n = props.globalLogic.i18n;
   const entryList = props.roomListLogic.fetchLatest();
+  React.useEffect(() => {
+    props.globalLogic.roomCreatedPubsub.subscribe((playerName: string) => {
+      props.globalLogic.sound.enqueueEvent(SoundEvent.ROOMCREATED);
+      props.globalLogic.updateAutoRead(
+        props.globalLogic.i18n.lobbyAnnouncement_roomCreated(playerName)
+      );
+    });
+  });
   return (
     <table className="room-list-table">
       <thead>

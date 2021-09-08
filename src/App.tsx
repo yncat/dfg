@@ -62,7 +62,9 @@ function App(props: Props) {
             props.globalLogic.connect();
           }}
         >
-          {props.globalLogic.i18n.login_as(props.globalLogic.registeredPlayerName)}
+          {props.globalLogic.i18n.login_as(
+            props.globalLogic.registeredPlayerName
+          )}
         </button>
       ) : null}
       {connectionStatusString === "connected" ? (

@@ -1,5 +1,11 @@
 import * as Colyseus from "colyseus.js";
-import { ChatMessage, ChatMessageDecoder, decodePayload } from "dfg-messages";
+import {
+  ChatMessage,
+  RoomCreatedMessage,
+  ChatMessageDecoder,
+  RoomCreatedMessageDecoder,
+  decodePayload,
+} from "dfg-messages";
 import { I18nService } from "../i18n/interface";
 import { SoundLogic } from "./sound";
 import { ChatMessagePipelineFunc } from "./chatMessageList";
@@ -17,6 +23,7 @@ type ConnectionStatusSubscriber = (
 type ConnectionErrorSubscriber = (error: unknown) => void;
 type PlayerCountSubscriber = (playerCount: number) => void;
 type AutoReadSubscriber = (updateString: string) => void;
+type RoomCreatedSubscriber = (playerName: string) => void;
 export interface GlobalLogic {
   i18n: I18nService;
   sound: SoundLogic;
@@ -24,7 +31,9 @@ export interface GlobalLogic {
   connectionErrorPubsub: Pubsub<ConnectionErrorSubscriber>;
   playerCountPubsub: Pubsub<PlayerCountSubscriber>;
   autoReadPubsub: Pubsub<AutoReadSubscriber>;
+  roomCreatedPubsub: Pubsub<RoomCreatedSubscriber>;
   connect: () => void;
+  createGameRoom: () => void;
   getRoomInstance: (lobbyOrRoom: "lobby" | "room") => Colyseus.Room | null;
   updateAutoRead: (updateString: string) => void;
   setChatMessagePipelineFuncs: (
@@ -40,6 +49,7 @@ export class GlobalLogicImple implements GlobalLogic {
   connectionErrorPubsub: Pubsub<ConnectionErrorSubscriber>;
   playerCountPubsub: Pubsub<PlayerCountSubscriber>;
   autoReadPubsub: Pubsub<AutoReadSubscriber>;
+  roomCreatedPubsub: Pubsub<RoomCreatedSubscriber>;
   client: Colyseus.Client;
   lobbyRoom: Colyseus.Room | null;
   gameRoom: Colyseus.Room | null;
@@ -54,6 +64,7 @@ export class GlobalLogicImple implements GlobalLogic {
     this.connectionErrorPubsub = new Pubsub<ConnectionErrorSubscriber>();
     this.playerCountPubsub = new Pubsub<PlayerCountSubscriber>();
     this.autoReadPubsub = new Pubsub<AutoReadSubscriber>();
+    this.roomCreatedPubsub = new Pubsub<RoomCreatedSubscriber>();
     const c = new Colyseus.Client("ws://localhost:2567");
     this.client = c;
     this.lobbyRoom = null;
@@ -77,6 +88,7 @@ export class GlobalLogicImple implements GlobalLogic {
     }
 
     const rm = this.lobbyRoom as Colyseus.Room;
+    // Receive chat
     rm.onMessage("ChatMessage", (payload) => {
       const message = decodePayload<ChatMessage>(payload, ChatMessageDecoder);
       if (!isDecodeSuccess<ChatMessage>(message)) {
@@ -86,10 +98,39 @@ export class GlobalLogicImple implements GlobalLogic {
         this.lobbyChatMessagePipelineFunc(message);
       }
     });
+
+    // Receive room created notification
+    rm.onMessage("RoomCreatedMessage", (payload) => {
+      const msg = decodePayload<RoomCreatedMessage>(
+        payload,
+        RoomCreatedMessageDecoder
+      );
+      if (!isDecodeSuccess<RoomCreatedMessage>(msg)) {
+        return;
+      }
+
+      this.roomCreatedPubsub.publish(msg.playerName);
+    });
+
+    // Update number of players connected
     rm.onStateChange((state) => {
       this.playerCountPubsub.publish(state.playerCount);
     });
+
     this.connectionStatusPubsub.publish("connected");
+  }
+
+  public async createGameRoom() {
+    try {
+      this.gameRoom = await this.client.create("game_room", {
+        playerName: this.registeredPlayerName,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+
+    const rm = this.lobbyRoom as Colyseus.Room;
+    rm.send("RoomCreatedRequest", "");
   }
 
   public getRoomInstance(lobbyOrRoom: "lobby" | "room"): Colyseus.Room | null {

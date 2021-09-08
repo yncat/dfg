@@ -4,6 +4,7 @@ export const SoundEvent = {
   CLICK: 0,
   CHAT: 1,
   CONNECTED: 2,
+  ROOMCREATED: 3,
 } as const;
 export type SoundEvent = typeof SoundEvent[keyof typeof SoundEvent];
 
@@ -27,6 +28,7 @@ const soundEventDefinitionMap: Map<SoundEvent, SoundEventDefinition> = new Map<
   [SoundEvent.CLICK, { soundWithoutExt: "click", waitTime: 0 }],
   [SoundEvent.CHAT, { soundWithoutExt: "chat", waitTime: 0 }],
   [SoundEvent.CONNECTED, { soundWithoutExt: "connected", waitTime: 0 }],
+  [SoundEvent.ROOMCREATED, { soundWithoutExt: "newroom", waitTime: 600 }],
 ]);
 
 export class SoundLogicImple implements SoundLogic {
@@ -42,7 +44,7 @@ export class SoundLogicImple implements SoundLogic {
   }
 
   public initIfNeeded(): void {
-    this.load(["click", "chat", "connected"]);
+    this.load(["click", "chat", "connected", "newroom"]);
     this.loadMusic();
   }
 

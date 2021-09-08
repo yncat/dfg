@@ -218,4 +218,8 @@ export class JapaneseI18nService implements I18nService {
   public settings_musicToggle(): string {
     return "音楽を鳴らす";
   }
+
+  public lobbyAnnouncement_roomCreated(playerName: string): string {
+    return playerName + "さんが、新しいルームを作成しました。";
+  }
 }

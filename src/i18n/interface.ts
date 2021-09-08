@@ -42,4 +42,5 @@ export interface I18nService {
   settings_heading: () => string;
   settings_soundToggle: () => string;
   settings_musicToggle: () => string;
+  lobbyAnnouncement_roomCreated: (playerCount: string) => string;
 }
