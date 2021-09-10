@@ -11,6 +11,7 @@ import { SoundLogic } from "./sound";
 import { ChatMessagePipelineFunc } from "./chatMessageList";
 import { isDecodeSuccess } from "./decodeValidator";
 import { Pubsub } from "./pubsub";
+import { Pipeline } from "./pipeline";
 
 export type ConnectionStatusString =
   | "not_connected"
@@ -36,10 +37,8 @@ export interface GlobalLogic {
   createGameRoom: () => void;
   getRoomInstance: (lobbyOrRoom: "lobby" | "room") => Colyseus.Room | null;
   updateAutoRead: (updateString: string) => void;
-  setChatMessagePipelineFuncs: (
-    lobby: ChatMessagePipelineFunc,
-    room: ChatMessagePipelineFunc
-  ) => void;
+  lobbyChatMessagePipeline: Pipeline<ChatMessagePipelineFunc>;
+  roomChatMessagePipeline: Pipeline<ChatMessagePipelineFunc>;
   // TODO: delete after switching to session-based.
   registeredPlayerName: string;
 }
@@ -55,9 +54,9 @@ export class GlobalLogicImple implements GlobalLogic {
   gameRoom: Colyseus.Room | null;
   i18n: I18nService;
   sound: SoundLogic;
-  lobbyChatMessagePipelineFunc: ChatMessagePipelineFunc | null;
   registeredPlayerName: string;
-  roomChatMessagePipelineFunc: ChatMessagePipelineFunc | null;
+  lobbyChatMessagePipeline: Pipeline<ChatMessagePipelineFunc>;
+  roomChatMessagePipeline: Pipeline<ChatMessagePipelineFunc>;
 
   constructor(i18n: I18nService, sound: SoundLogic) {
     this.connectionStatusPubsub = new Pubsub<ConnectionStatusSubscriber>();
@@ -69,8 +68,8 @@ export class GlobalLogicImple implements GlobalLogic {
     this.client = c;
     this.lobbyRoom = null;
     this.gameRoom = null;
-    this.lobbyChatMessagePipelineFunc = null;
-    this.roomChatMessagePipelineFunc = null;
+    this.lobbyChatMessagePipeline = new Pipeline<ChatMessagePipelineFunc>();
+    this.roomChatMessagePipeline = new Pipeline<ChatMessagePipelineFunc>();
     this.i18n = i18n;
     this.sound = sound;
     this.registeredPlayerName = "";
@@ -94,9 +93,7 @@ export class GlobalLogicImple implements GlobalLogic {
       if (!isDecodeSuccess<ChatMessage>(message)) {
         return;
       }
-      if (this.lobbyChatMessagePipelineFunc) {
-        this.lobbyChatMessagePipelineFunc(message);
-      }
+      this.lobbyChatMessagePipeline.call(message);
     });
 
     // Receive room created notification
@@ -139,14 +136,6 @@ export class GlobalLogicImple implements GlobalLogic {
 
   public updateAutoRead(updateString: string): void {
     this.autoReadPubsub.publish(updateString);
-  }
-
-  public setChatMessagePipelineFuncs(
-    lobby: ChatMessagePipelineFunc,
-    room: ChatMessagePipelineFunc
-  ): void {
-    this.lobbyChatMessagePipelineFunc = lobby;
-    this.roomChatMessagePipelineFunc = room;
   }
 }
 
