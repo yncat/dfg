@@ -16,6 +16,7 @@ export class ChatPanelLogicImple implements ChatPanelLogic {
     if (roomFromGlobalLogic === null) {
       return;
     }
+
     if (message === "") {
       return;
     }

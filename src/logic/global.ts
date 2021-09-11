@@ -183,9 +183,19 @@ export class GlobalLogicImple implements GlobalLogic {
       console.log(e);
     }
 
-    const rm = this.lobbyRoom as Colyseus.Room;
-    rm.send("RoomCreatedRequest", "");
+    const lrm = this.lobbyRoom as Colyseus.Room;
+    lrm.send("RoomCreatedRequest", "");
     this.isInRoomPubsub.publish(true);
+
+    // Receive chat
+    const grm = this.gameRoom as Colyseus.Room;
+    grm.onMessage("ChatMessage", (payload) => {
+      const message = decodePayload<ChatMessage>(payload, ChatMessageDecoder);
+      if (!isDecodeSuccess<ChatMessage>(message)) {
+        return;
+      }
+      this.roomChatMessagePipeline.call(message);
+    });
   }
 
   public getRoomInstance(lobbyOrRoom: "lobby" | "room"): Colyseus.Room | null {
