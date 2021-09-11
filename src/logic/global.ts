@@ -28,6 +28,8 @@ type ConnectionErrorSubscriber = (error: unknown) => void;
 type PlayerCountSubscriber = (playerCount: number) => void;
 type AutoReadSubscriber = (updateString: string) => void;
 type RoomCreatedSubscriber = (playerName: string) => void;
+type isInRoomSubscriber = (isInRoom: boolean) => void;
+
 export interface GlobalLogic {
   i18n: I18nService;
   sound: SoundLogic;
@@ -36,6 +38,7 @@ export interface GlobalLogic {
   playerCountPubsub: Pubsub<PlayerCountSubscriber>;
   autoReadPubsub: Pubsub<AutoReadSubscriber>;
   roomCreatedPubsub: Pubsub<RoomCreatedSubscriber>;
+  isInRoomPubsub: Pubsub<isInRoomSubscriber>;
   connect: () => void;
   startRoomListUpdatePolling: () => void;
   stopRoomListUpdatePolling: () => void;
@@ -56,6 +59,7 @@ export class GlobalLogicImple implements GlobalLogic {
   playerCountPubsub: Pubsub<PlayerCountSubscriber>;
   autoReadPubsub: Pubsub<AutoReadSubscriber>;
   roomCreatedPubsub: Pubsub<RoomCreatedSubscriber>;
+  isInRoomPubsub: Pubsub<isInRoomSubscriber>;
   client: Colyseus.Client;
   lobbyRoom: Colyseus.Room | null;
   gameRoom: Colyseus.Room | null;
@@ -73,6 +77,7 @@ export class GlobalLogicImple implements GlobalLogic {
     this.playerCountPubsub = new Pubsub<PlayerCountSubscriber>();
     this.autoReadPubsub = new Pubsub<AutoReadSubscriber>();
     this.roomCreatedPubsub = new Pubsub<RoomCreatedSubscriber>();
+    this.isInRoomPubsub = new Pubsub<isInRoomSubscriber>();
     const c = new Colyseus.Client("ws://localhost:2567");
     this.client = c;
     this.lobbyRoom = null;
@@ -180,6 +185,7 @@ export class GlobalLogicImple implements GlobalLogic {
 
     const rm = this.lobbyRoom as Colyseus.Room;
     rm.send("RoomCreatedRequest", "");
+    this.isInRoomPubsub.publish(true);
   }
 
   public getRoomInstance(lobbyOrRoom: "lobby" | "room"): Colyseus.Room | null {

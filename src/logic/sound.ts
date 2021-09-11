@@ -5,6 +5,8 @@ export const SoundEvent = {
   CHAT: 1,
   CONNECTED: 2,
   ROOMCREATED: 3,
+  JOINED: 4,
+  LEFT: 5,
 } as const;
 export type SoundEvent = typeof SoundEvent[keyof typeof SoundEvent];
 
@@ -29,6 +31,8 @@ const soundEventDefinitionMap: Map<SoundEvent, SoundEventDefinition> = new Map<
   [SoundEvent.CHAT, { soundWithoutExt: "chat", waitTime: 0 }],
   [SoundEvent.CONNECTED, { soundWithoutExt: "connected", waitTime: 0 }],
   [SoundEvent.ROOMCREATED, { soundWithoutExt: "newroom", waitTime: 600 }],
+  [SoundEvent.JOINED, { soundWithoutExt: "join", waitTime: 600 }],
+  [SoundEvent.LEFT, { soundWithoutExt: "leave", waitTime: 600 }],
 ]);
 
 export class SoundLogicImple implements SoundLogic {
@@ -44,7 +48,7 @@ export class SoundLogicImple implements SoundLogic {
   }
 
   public initIfNeeded(): void {
-    this.load(["click", "chat", "connected", "newroom"]);
+    this.load(["click", "chat", "connected", "newroom", "join", "leave"]);
     this.loadMusic();
   }
 
@@ -110,15 +114,32 @@ export class SoundLogicImple implements SoundLogic {
   }
 
   private handleEventQueue() {
-    const evt = this.eventQueue.shift();
-    if (evt === undefined) {
-      return;
-    }
+    const evt = this.eventQueue[0];
     const def = soundEventDefinitionMap.get(evt);
     if (def === undefined) {
       return;
     }
 
+    this.handleEventDefinition(def);
+
+    if (def.waitTime === 0) {
+      this.handleNextEventQueue();
+    }
+
+    setTimeout(this.handleNextEventQueue.bind(this), def.waitTime);
+  }
+
+  private handleNextEventQueue() {
+    // pop the previously played event first
+    this.eventQueue.shift();
+    if (this.eventQueue.length === 0) {
+      return;
+    }
+
+    this.handleEventQueue();
+  }
+
+  private handleEventDefinition(def: SoundEventDefinition) {
     const howl = this.howlMap.get(def.soundWithoutExt);
     if (!howl) {
       return;
@@ -126,16 +147,6 @@ export class SoundLogicImple implements SoundLogic {
     if (this.soundOutput) {
       howl.play();
     }
-
-    if (this.eventQueue.length === 0) {
-      return;
-    }
-
-    if (def.waitTime === 0) {
-      this.handleEventQueue();
-    }
-
-    setTimeout(this.handleEventQueue.bind(this), def.waitTime);
   }
 }
 

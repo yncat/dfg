@@ -45,6 +45,14 @@ function App(props: Props) {
       alert(i18n.login_cannotConnect() + JSON.stringify(error));
     });
     props.globalLogic.playerCountPubsub.subscribe(setPlayerCount);
+    props.globalLogic.isInRoomPubsub.subscribe((isInRoom: boolean) => {
+      setIsInRoom(isInRoom);
+      if (isInRoom === true) {
+        props.globalLogic.sound.enqueueEvent(SoundEvent.JOINED);
+      } else {
+        props.globalLogic.sound.enqueueEvent(SoundEvent.LEFT);
+      }
+    });
   }, []);
   return (
     <div className="App">
