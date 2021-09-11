@@ -17,13 +17,16 @@ export default function RoomList(props: Props) {
   );
   React.useEffect(() => {
     props.roomListLogic.pubsub.subscribe(setEntryList);
-    props.globalLogic.roomCreatedPubsub.subscribe((playerName: string) => {
+    const id = props.globalLogic.roomCreatedPubsub.subscribe((playerName: string) => {
       props.globalLogic.sound.enqueueEvent(SoundEvent.ROOMCREATED);
       props.globalLogic.updateAutoRead(
         props.globalLogic.i18n.lobbyAnnouncement_roomCreated(playerName)
       );
     });
-  });
+    return ()=>{
+      props.globalLogic.roomCreatedPubsub.unsubscribe(id);
+    }
+  }, []);
   return (
     <table className="room-list-table">
       <thead>
