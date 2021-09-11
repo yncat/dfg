@@ -1,30 +1,37 @@
 import { Pubsub } from "./pubsub";
+import { RoomState } from "dfg-messages";
 
 export type RoomListEntry = {
   creator: string;
   currentPlayerCount: number;
+  state: RoomState;
   roomID: string;
 };
 
-export function createRoomListEntry(creator:string, currentPlayerCount:number, roomID:string):RoomListEntry{
-  return {creator, currentPlayerCount, roomID};
+export function createRoomListEntry(
+  creator: string,
+  currentPlayerCount: number,
+  state: RoomState,
+  roomID: string
+): RoomListEntry {
+  return { creator, currentPlayerCount, state, roomID };
 }
 
-export type RoomListUpdatePipelineFunc=(roomList:RoomListEntry[])=>void;
-export type RoomListSubscriber=(roomList:RoomListEntry[])=>void;
+export type RoomListUpdatePipelineFunc = (roomList: RoomListEntry[]) => void;
+export type RoomListSubscriber = (roomList: RoomListEntry[]) => void;
 
 export interface RoomListLogic {
-  pubsub:Pubsub<RoomListSubscriber>;
+  pubsub: Pubsub<RoomListSubscriber>;
   update: (roomListEntryList: RoomListEntry[]) => void;
   fetchLatest: () => RoomListEntry[];
 }
 
 export class RoomListLogicImple implements RoomListLogic {
   latest: RoomListEntry[];
-  pubsub:Pubsub<RoomListSubscriber>;
+  pubsub: Pubsub<RoomListSubscriber>;
   constructor() {
     this.latest = [];
-    this.pubsub=new Pubsub<RoomListSubscriber>();
+    this.pubsub = new Pubsub<RoomListSubscriber>();
   }
 
   public fetchLatest(): RoomListEntry[] {

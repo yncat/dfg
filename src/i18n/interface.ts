@@ -1,4 +1,4 @@
-import { RankType, CardMark, CardMessage } from "dfg-messages";
+import { RankType, RoomState, CardMark, CardMessage } from "dfg-messages";
 
 export interface I18nService {
   login_as: (playerName: string) => string;
@@ -18,7 +18,11 @@ export interface I18nService {
   createRoomButton_createRoom: () => string;
   roomList_creator: () => string;
   roomList_currentPlayerCount: () => string;
+  roomList_state: () => string;
+  roomList_action: () => string;
   roomList_join: () => string;
+  roomList_watch: () => string;
+  roomList_stateValue: (state: RoomState) => string;
   leaveRoomButton_leaveRoom: () => string;
   currentRoom_roomName: (playerName: string) => string;
   currentRoom_playerCount: (playerCount: number) => string;

@@ -1,5 +1,5 @@
 import { I18nService } from "./interface";
-import { RankType, CardMark, CardMessage } from "dfg-messages";
+import { RankType, RoomState, CardMark, CardMessage } from "dfg-messages";
 
 export class JapaneseI18nService implements I18nService {
   public login_as(playerName: string): string {
@@ -72,8 +72,24 @@ export class JapaneseI18nService implements I18nService {
     return "現在の人数";
   }
 
+  public roomList_action(): string {
+    return "アクション";
+  }
+
+  public roomList_state(): string {
+    return "状態";
+  }
+
   public roomList_join(): string {
     return "参加";
+  }
+
+  public roomList_watch(): string {
+    return "観戦";
+  }
+
+  public roomList_stateValue(state: RoomState): string {
+    return state === RoomState.PLAYING ? "ゲーム中" : "待機中";
   }
 
   public leaveRoomButton_leaveRoom(): string {

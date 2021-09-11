@@ -151,7 +151,12 @@ export class GlobalLogicImple implements GlobalLogic {
           room.metadata,
           GameRoomMetadataDecoder
         ) as GameRoomMetadata;
-        return createRoomListEntry(md.owner, room.clients, room.roomId);
+        return createRoomListEntry(
+          md.owner,
+          room.clients,
+          md.roomState,
+          room.roomId
+        );
       });
       this.roomListUpdatePipeline.call(entries);
     });
