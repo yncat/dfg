@@ -2,13 +2,16 @@ import * as Colyseus from "colyseus.js";
 import {
   ChatMessage,
   RoomCreatedMessage,
+  GameRoomMetadata,
   ChatMessageDecoder,
   RoomCreatedMessageDecoder,
+  GameRoomMetadataDecoder,
   decodePayload,
 } from "dfg-messages";
 import { I18nService } from "../i18n/interface";
 import { SoundLogic } from "./sound";
 import { ChatMessagePipelineFunc } from "./chatMessageList";
+import { createRoomListEntry, RoomListUpdatePipelineFunc } from "./roomList";
 import { isDecodeSuccess } from "./decodeValidator";
 import { Pubsub } from "./pubsub";
 import { Pipeline } from "./pipeline";
@@ -34,11 +37,15 @@ export interface GlobalLogic {
   autoReadPubsub: Pubsub<AutoReadSubscriber>;
   roomCreatedPubsub: Pubsub<RoomCreatedSubscriber>;
   connect: () => void;
+  startRoomListUpdatePolling: () => void;
+  stopRoomListUpdatePolling: () => void;
+  requestRoomListUpdate: () => void;
   createGameRoom: () => void;
   getRoomInstance: (lobbyOrRoom: "lobby" | "room") => Colyseus.Room | null;
   updateAutoRead: (updateString: string) => void;
   lobbyChatMessagePipeline: Pipeline<ChatMessagePipelineFunc>;
   roomChatMessagePipeline: Pipeline<ChatMessagePipelineFunc>;
+  roomListUpdatePipeline: Pipeline<RoomListUpdatePipelineFunc>;
   // TODO: delete after switching to session-based.
   registeredPlayerName: string;
 }
@@ -57,6 +64,8 @@ export class GlobalLogicImple implements GlobalLogic {
   registeredPlayerName: string;
   lobbyChatMessagePipeline: Pipeline<ChatMessagePipelineFunc>;
   roomChatMessagePipeline: Pipeline<ChatMessagePipelineFunc>;
+  roomListUpdatePipeline: Pipeline<RoomListUpdatePipelineFunc>;
+  private roomListUpdatePollingID: NodeJS.Timer | null;
 
   constructor(i18n: I18nService, sound: SoundLogic) {
     this.connectionStatusPubsub = new Pubsub<ConnectionStatusSubscriber>();
@@ -70,9 +79,11 @@ export class GlobalLogicImple implements GlobalLogic {
     this.gameRoom = null;
     this.lobbyChatMessagePipeline = new Pipeline<ChatMessagePipelineFunc>();
     this.roomChatMessagePipeline = new Pipeline<ChatMessagePipelineFunc>();
+    this.roomListUpdatePipeline = new Pipeline<RoomListUpdatePipelineFunc>();
     this.i18n = i18n;
     this.sound = sound;
     this.registeredPlayerName = "";
+    this.roomListUpdatePollingID = null;
   }
 
   public async connect() {
@@ -115,6 +126,36 @@ export class GlobalLogicImple implements GlobalLogic {
     });
 
     this.connectionStatusPubsub.publish("connected");
+  }
+
+  public startRoomListUpdatePolling() {
+    if (this.roomListUpdatePollingID) {
+      return;
+    }
+
+    this.roomListUpdatePollingID = setInterval(() => {
+      this.requestRoomListUpdate();
+    }, 5000);
+  }
+
+  public requestRoomListUpdate() {
+    this.client.getAvailableRooms("game_room").then((rooms) => {
+      const entries = rooms.map((room) => {
+        const md = decodePayload<GameRoomMetadata>(
+          room.metadata,
+          GameRoomMetadataDecoder
+        ) as GameRoomMetadata;
+        return createRoomListEntry(md.owner, room.clients, room.roomId);
+      });
+      this.roomListUpdatePipeline.call(entries);
+    });
+  }
+
+  public stopRoomListUpdatePolling() {
+    if (this.roomListUpdatePollingID) {
+      clearInterval(this.roomListUpdatePollingID);
+      this.roomListUpdatePollingID = null;
+    }
   }
 
   public async createGameRoom() {

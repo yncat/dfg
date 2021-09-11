@@ -21,10 +21,9 @@ const lobbyChatMessageListLogic = createChatMessageListLogic();
 const lobbyChatPanelLogic = createChatPanelLogic();
 const roomChatMessageListLogic = createChatMessageListLogic();
 const roomChatPanelLogic = createChatPanelLogic();
-globalLogic.setChatMessagePipelineFuncs(
-  lobbyChatMessageListLogic.push.bind(lobbyChatMessageListLogic),
-  roomChatMessageListLogic.push.bind(roomChatMessageListLogic)
-);
+globalLogic.lobbyChatMessagePipeline.register(lobbyChatMessageListLogic.push.bind(lobbyChatMessageListLogic));
+globalLogic.roomChatMessagePipeline.register(roomChatMessageListLogic.push.bind(roomChatMessageListLogic));
+globalLogic.roomListUpdatePipeline.register(roomListLogic.update.bind(roomListLogic));
 const autoReadLogic = createAutoReadLogic();
 globalLogic.autoReadPubsub.subscribe(autoReadLogic.enqueue.bind(autoReadLogic));
 const currentRoomInfoLogic = createCurrentRoomInfoLogic();
