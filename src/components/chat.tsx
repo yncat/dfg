@@ -1,3 +1,4 @@
+import React from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import { GlobalLogic } from "../logic/global";
@@ -26,10 +27,25 @@ export default function Chat(props: Props) {
   const roomSubs = {
     chatMessageListLogic: props.subLogicList.roomChatMessageListLogic,
   };
+  const [selectedTab,setSelectedTab] = React.useState<number>(0);
+
+  // change tab focus based on room join / leave event
+  React.useEffect(()=>{
+    const id = props.globalLogic.isInRoomPubsub.subscribe((isInRoom:boolean)=>{
+      if(isInRoom){
+        setSelectedTab(1);
+      }else{
+        setSelectedTab(0);
+      }
+    });
+    return (()=>{
+      props.globalLogic.isInRoomPubsub.unsubscribe(id);
+    });
+  }, []);
   return (
     <div>
       <h2>{i18n.chat_chatHeading()}</h2>
-      <Tabs>
+      <Tabs selectedIndex={selectedTab} onSelect={index => setSelectedTab(index)}>
         <TabList>
           <Tab>{i18n.chat_lobby()}</Tab>
           <Tab disabled={!props.isInRoom}>{i18n.chat_room()}</Tab>
