@@ -97,6 +97,9 @@ export class GlobalLogicImple implements GlobalLogic {
       this.connectionErrorPubsub.publish(e);
     }
 
+    // start watching for room list updates
+    this.startRoomListUpdatePolling();
+
     const rm = this.lobbyRoom as Colyseus.Room;
     // Receive chat
     rm.onMessage("ChatMessage", (payload) => {
@@ -118,6 +121,8 @@ export class GlobalLogicImple implements GlobalLogic {
       }
 
       this.roomCreatedPubsub.publish(msg.playerName);
+      // Immediately request room list update
+      this.requestRoomListUpdate();
     });
 
     // Update number of players connected
@@ -133,6 +138,7 @@ export class GlobalLogicImple implements GlobalLogic {
       return;
     }
 
+    this.requestRoomListUpdate();
     this.roomListUpdatePollingID = setInterval(() => {
       this.requestRoomListUpdate();
     }, 5000);

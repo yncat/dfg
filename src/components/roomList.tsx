@@ -1,6 +1,6 @@
 import React from "react";
 import { GlobalLogic } from "../logic/global";
-import { RoomListLogic } from "../logic/roomList";
+import { RoomListLogic, RoomListEntry } from "../logic/roomList";
 import { SoundEvent } from "../logic/sound";
 import "./roomList.css";
 
@@ -11,8 +11,11 @@ interface Props {
 
 export default function RoomList(props: Props) {
   const i18n = props.globalLogic.i18n;
-  const entryList = props.roomListLogic.fetchLatest();
+  const [entryList, setEntryList] = React.useState<RoomListEntry[]>(
+    props.roomListLogic.fetchLatest()
+  );
   React.useEffect(() => {
+    props.roomListLogic.pubsub.subscribe(setEntryList);
     props.globalLogic.roomCreatedPubsub.subscribe((playerName: string) => {
       props.globalLogic.sound.enqueueEvent(SoundEvent.ROOMCREATED);
       props.globalLogic.updateAutoRead(
