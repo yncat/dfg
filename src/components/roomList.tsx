@@ -28,6 +28,7 @@ export default function RoomList(props: Props) {
     return () => {
       props.globalLogic.roomCreatedPubsub.unsubscribe(id);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <table className="room-list-table">

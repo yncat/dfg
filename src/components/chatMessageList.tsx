@@ -10,7 +10,7 @@ interface Props {
 }
 
 export default function ChatMessageList(props: Props) {
-  const [messageList, setMessageList] = React.useState<ChatMessage[]>([]);
+  const [messageList, setMessageList] = React.useState<ChatMessage[]>(props.chatMessageListLogic.fetchLatest());
   React.useEffect(() => {
     const subscriberID = props.chatMessageListLogic.pubsub.subscribe(
       (chatMessageList: ChatMessage[]) => {
@@ -23,10 +23,11 @@ export default function ChatMessageList(props: Props) {
     return () => {
       props.chatMessageListLogic.pubsub.unsubscribe(subscriberID);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <ul>
-      {props.chatMessageListLogic.fetchLatest().map((v, i) => {
+      {messageList.map((v, i) => {
         return <li key={i}>{v.playerName + ": " + v.message}</li>;
       })}
     </ul>

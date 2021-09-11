@@ -1,6 +1,5 @@
 import * as Colyseus from "colyseus.js";
 import { ChatMessage, encodeChatRequest } from "dfg-messages";
-import { Pubsub } from "./pubsub";
 export type ChatMessagePipelineFunc = (chatMessage: ChatMessage) => void;
 export type ChatMessageSubscriber = (chatMessageList: ChatMessage[]) => void;
 

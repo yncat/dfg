@@ -43,6 +43,7 @@ export default function Chat(props: Props) {
     return () => {
       props.globalLogic.isInRoomPubsub.unsubscribe(id);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <div>

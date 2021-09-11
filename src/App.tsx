@@ -6,7 +6,6 @@ import Chat from "./components/chat";
 import Settings from "./components/settings";
 import AutoRead from "./components/autoRead";
 import { ConnectionStatusString, GlobalLogic } from "./logic/global";
-import { RoomListLogic } from "./logic/roomList";
 import { SubLogicList } from "./logic/sub";
 import { SoundEvent } from "./logic/sound";
 
@@ -53,6 +52,7 @@ function App(props: Props) {
         props.globalLogic.sound.enqueueEvent(SoundEvent.LEFT);
       }
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <div className="App">

@@ -1,5 +1,5 @@
-import { Howl, Howler } from "howler";
-import { textSpanIntersectsWithTextSpan } from "typescript";
+import { Howl } from "howler";
+
 export const SoundEvent = {
   CLICK: 0,
   CHAT: 1,
@@ -8,6 +8,7 @@ export const SoundEvent = {
   JOINED: 4,
   LEFT: 5,
 } as const;
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export type SoundEvent = typeof SoundEvent[keyof typeof SoundEvent];
 
 export interface SoundLogic {
