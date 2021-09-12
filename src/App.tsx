@@ -1,8 +1,7 @@
 import React from "react";
 import Version from "./components/version";
 import ConnectionStatus from "./components/connectionStatus";
-import LobbyContainer from "./components/lobbyContainer";
-import Chat from "./components/chat";
+import MainContainer from "./components/mainContainer";
 import Settings from "./components/settings";
 import AutoRead from "./components/autoRead";
 import { ConnectionStatusString, GlobalLogic } from "./logic/global";
@@ -76,15 +75,10 @@ function App(props: Props) {
         </button>
       ) : null}
       {connectionStatusString === "connected" ? (
-        <LobbyContainer
-          globalLogic={props.globalLogic}
-          roomListLogic={props.subLogicList.roomListLogic}
-        />
-      ) : null}
-      {connectionStatusString === "connected" ? (
-        <Chat
+        <MainContainer
           globalLogic={props.globalLogic}
           subLogicList={{
+            roomListLogic: props.subLogicList.roomListLogic,
             lobbyChatMessageListLogic:
               props.subLogicList.lobbyChatMessageListLogic,
             lobbyChatPanelLogic: props.subLogicList.lobbyChatPanelLogic,

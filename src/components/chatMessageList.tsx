@@ -10,7 +10,9 @@ interface Props {
 }
 
 export default function ChatMessageList(props: Props) {
-  const [messageList, setMessageList] = React.useState<ChatMessage[]>(props.chatMessageListLogic.fetchLatest());
+  const [messageList, setMessageList] = React.useState<ChatMessage[]>(
+    props.chatMessageListLogic.fetchLatest()
+  );
   React.useEffect(() => {
     const subscriberID = props.chatMessageListLogic.pubsub.subscribe(
       (chatMessageList: ChatMessage[]) => {
