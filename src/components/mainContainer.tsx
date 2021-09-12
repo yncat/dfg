@@ -4,6 +4,7 @@ import { RoomListLogic } from "../logic/roomList";
 import { ChatMessageListLogic } from "../logic/chatMessageList";
 import { ChatPanelLogic } from "../logic/chatPanel";
 import LobbyContainer from "./lobbyContainer";
+import RoomContainer from "./roomContainer";
 import Chat from "./chat";
 
 interface SubLogicList {
@@ -23,10 +24,14 @@ interface Props {
 export default function MainContainer(props: Props) {
   return (
     <div>
-      <LobbyContainer
-        globalLogic={props.globalLogic}
-        roomListLogic={props.subLogicList.roomListLogic}
-      />
+      {props.isInRoom ? (
+        <RoomContainer globalLogic={props.globalLogic} />
+      ) : (
+        <LobbyContainer
+          globalLogic={props.globalLogic}
+          roomListLogic={props.subLogicList.roomListLogic}
+        />
+      )}
       <Chat
         globalLogic={props.globalLogic}
         subLogicList={{
