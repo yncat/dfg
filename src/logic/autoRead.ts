@@ -1,5 +1,3 @@
-import { isConstructorDeclaration } from "typescript";
-
 export type AutoReadUpdateFunc = (updateString: string) => void;
 
 export interface AutoReadLogic {
@@ -10,7 +8,9 @@ export interface AutoReadLogic {
 
 class AutoReadLogicImple implements AutoReadLogic {
   onUpdate: AutoReadUpdateFunc | null;
+  readQueue: string[];
   constructor() {
+    this.readQueue = [];
     this.onUpdate = null;
   }
 
@@ -23,13 +23,31 @@ class AutoReadLogicImple implements AutoReadLogic {
   }
 
   public enqueue(enqueueString: string) {
-    this.update(enqueueString);
+    this.readQueue.push(enqueueString);
+    if (this.readQueue.length === 1) {
+      this.handleQueue();
+    }
   }
 
   private update(updateString: string) {
     if (this.onUpdate) {
       this.onUpdate(updateString);
     }
+  }
+
+  private handleQueue() {
+    const s = this.readQueue[0];
+    this.update(s);
+    setTimeout(this.handleNextQueue.bind(this), 200);
+  }
+
+  private handleNextQueue() {
+    this.readQueue.shift();
+    if (this.readQueue.length === 0) {
+      return;
+    }
+
+    this.handleQueue();
   }
 }
 

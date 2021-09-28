@@ -15,6 +15,7 @@ import { createRoomListEntry, RoomListUpdatePipelineFunc } from "./roomList";
 import { isDecodeSuccess } from "./decodeValidator";
 import { Pubsub } from "./pubsub";
 import { Pipeline } from "./pipeline";
+import { GlobalState } from "./schema-def/GlobalState";
 
 export type ConnectionStatusString =
   | "not_connected"
@@ -131,7 +132,7 @@ export class GlobalLogicImple implements GlobalLogic {
     });
 
     // Update number of players connected
-    rm.onStateChange((state) => {
+    rm.onStateChange((state:GlobalState) => {
       this.playerCountPubsub.publish(state.playerCount);
     });
 

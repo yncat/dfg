@@ -1,5 +1,13 @@
 import { RankType, RoomState, CardMark, CardMessage } from "dfg-messages";
 
+export interface Result {
+  daifugoPlayerList:string[];
+  fugoPlayerList:string[];
+  heiminPlayerList:string[];
+  hinminPlayerList:string[];
+  daihinminPlayerList:string[];
+}
+
 export interface I18nService {
   login_as: (playerName: string) => string;
   login_connecting: () => string;
@@ -31,13 +39,7 @@ export interface I18nService {
   currentRoom_currentStatusLabel: () => string;
   currentRoom_currentStatusWaiting: (playerName: string) => string;
   currentRoom_lastResultHeader: () => string;
-  currentRoom_result: (
-    daifugoPlayerList: string[],
-    fugoPlayerList: string[],
-    heiminPlayerList: string[],
-    hinminPlayerList: string[],
-    daihinminPlayerList: string[]
-  ) => string;
+  currentRoom_result: (result:Result) => string;
   cardSelector_heading: () => string;
   game_rankType: (rankType: RankType) => string;
   game_cardMark: (cardMark: CardMark) => string;

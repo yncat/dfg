@@ -3,7 +3,6 @@ import { createRoomListLogic } from "./logic/roomList";
 import { createChatMessageListLogic } from "./logic/chatMessageList";
 import { createChatPanelLogic } from "./logic/chatPanel";
 import { createAutoReadLogic } from "./logic/autoRead";
-import { createCurrentRoomInfoLogic } from "./logic/currentRoomInfo";
 import { createI18nService } from "./i18n/i18n";
 import { SoundLogic } from "./logic/sound";
 import { SubLogicList } from "./logic/sub";
@@ -21,6 +20,5 @@ export function createSubLogicListForTest(): SubLogicList {
     roomChatMessageListLogic: createChatMessageListLogic(),
     roomChatPanelLogic: createChatPanelLogic(),
     autoReadLogic: createAutoReadLogic(),
-    currentRoomInfoLogic: createCurrentRoomInfoLogic(),
   };
 }

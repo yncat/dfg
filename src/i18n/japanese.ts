@@ -1,4 +1,4 @@
-import { I18nService } from "./interface";
+import { Result, I18nService } from "./interface";
 import { RankType, RoomState, CardMark, CardMessage } from "dfg-messages";
 
 export class JapaneseI18nService implements I18nService {
@@ -124,49 +124,43 @@ export class JapaneseI18nService implements I18nService {
     return "前回の結果: ";
   }
 
-  public currentRoom_result(
-    daifugoPlayerList: string[],
-    fugoPlayerList: string[],
-    heiminPlayerList: string[],
-    hinminPlayerList: string[],
-    daihinminPlayerList: string[]
-  ): string {
+  public currentRoom_result(result:Result): string {
     const ret: string[] = [];
-    if (daifugoPlayerList.length > 0) {
+    if (result.daifugoPlayerList.length > 0) {
       ret.push(
-        daifugoPlayerList.join("、") +
+        result.daifugoPlayerList.join("、") +
           "が" +
           this.game_rankType(RankType.DAIFUGO) +
           "。"
       );
     }
-    if (fugoPlayerList.length > 0) {
+    if (result.fugoPlayerList.length > 0) {
       ret.push(
-        fugoPlayerList.join("、") +
+        result.fugoPlayerList.join("、") +
           "が" +
           this.game_rankType(RankType.FUGO) +
           "。"
       );
     }
-    if (heiminPlayerList.length > 0) {
+    if (result.heiminPlayerList.length > 0) {
       ret.push(
-        heiminPlayerList.join("、") +
+        result.heiminPlayerList.join("、") +
           "が" +
           this.game_rankType(RankType.HEIMIN) +
           "。"
       );
     }
-    if (hinminPlayerList.length > 0) {
+    if (result.hinminPlayerList.length > 0) {
       ret.push(
-        hinminPlayerList.join("、") +
+        result.hinminPlayerList.join("、") +
           "が" +
           this.game_rankType(RankType.HINMIN) +
           "。"
       );
     }
-    if (daihinminPlayerList.length > 0) {
+    if (result.daihinminPlayerList.length > 0) {
       ret.push(
-        daihinminPlayerList.join("、") +
+        result.daihinminPlayerList.join("、") +
           "が" +
           this.game_rankType(RankType.DAIHINMIN) +
           "。"

@@ -4,7 +4,7 @@ import { RoomListLogic } from "../logic/roomList";
 import { ChatMessageListLogic } from "../logic/chatMessageList";
 import { ChatPanelLogic } from "../logic/chatPanel";
 import LobbyContainer from "./lobbyContainer";
-import RoomContainer from "./roomContainer";
+import GameContainer from "./gameContainer";
 import Chat from "./chat";
 
 interface SubLogicList {
@@ -25,7 +25,7 @@ export default function MainContainer(props: Props) {
   return (
     <div>
       {props.isInRoom ? (
-        <RoomContainer globalLogic={props.globalLogic} />
+        <GameContainer globalLogic={props.globalLogic} />
       ) : (
         <LobbyContainer
           globalLogic={props.globalLogic}

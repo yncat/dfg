@@ -4,7 +4,7 @@ interface Props {
   globalLogic: GlobalLogic;
 }
 
-export default function RoomContainer(props: Props) {
+export default function GameContainer(props: Props) {
   return (
     <div>
       <h2>Room container</h2>

@@ -10,7 +10,6 @@ import { createChatMessageListLogic } from "./logic/chatMessageList";
 import { createChatPanelLogic } from "./logic/chatPanel";
 import { createI18nService } from "./i18n/i18n";
 import { createAutoReadLogic } from "./logic/autoRead";
-import { createCurrentRoomInfoLogic } from "./logic/currentRoomInfo";
 
 const defaultI18nService = createI18nService("Japanese");
 const soundLogic = createSoundLogic();
@@ -32,7 +31,6 @@ globalLogic.roomListUpdatePipeline.register(
 );
 const autoReadLogic = createAutoReadLogic();
 globalLogic.autoReadPubsub.subscribe(autoReadLogic.enqueue.bind(autoReadLogic));
-const currentRoomInfoLogic = createCurrentRoomInfoLogic();
 
 const subLogicList = {
   roomListLogic,
@@ -41,7 +39,6 @@ const subLogicList = {
   roomChatMessageListLogic,
   roomChatPanelLogic,
   autoReadLogic,
-  currentRoomInfoLogic,
 };
 
 ReactDOM.render(
