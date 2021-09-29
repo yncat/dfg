@@ -22,26 +22,17 @@ export type ConnectionStatusString =
   | "connecting"
   | "connected";
 
-type ConnectionStatusSubscriber = (
-  connectionStatusString: ConnectionStatusString
-) => void;
-type ConnectionErrorSubscriber = (error: unknown) => void;
-type PlayerCountSubscriber = (playerCount: number) => void;
-type AutoReadSubscriber = (updateString: string) => void;
-type RoomCreatedSubscriber = (playerName: string) => void;
-type isInRoomSubscriber = (isInRoom: boolean) => void;
-
 type RoomRegistrationPipelineFunc = (room: Colyseus.Room) => void;
 
 export interface GlobalLogic {
   i18n: I18nService;
   sound: SoundLogic;
-  connectionStatusPubsub: Pubsub<ConnectionStatusSubscriber>;
-  connectionErrorPubsub: Pubsub<ConnectionErrorSubscriber>;
-  playerCountPubsub: Pubsub<PlayerCountSubscriber>;
-  autoReadPubsub: Pubsub<AutoReadSubscriber>;
-  roomCreatedPubsub: Pubsub<RoomCreatedSubscriber>;
-  isInRoomPubsub: Pubsub<isInRoomSubscriber>;
+  connectionStatusPubsub: Pubsub<ConnectionStatusString>;
+  connectionErrorPubsub: Pubsub<unknown>;
+  playerCountPubsub: Pubsub<number>;
+  autoReadPubsub: Pubsub<string>;
+  roomCreatedPubsub: Pubsub<string>;
+  isInRoomPubsub: Pubsub<boolean>;
   connect: () => void;
   startRoomListUpdatePolling: () => void;
   stopRoomListUpdatePolling: () => void;
@@ -58,12 +49,12 @@ export interface GlobalLogic {
 }
 
 export class GlobalLogicImple implements GlobalLogic {
-  connectionStatusPubsub: Pubsub<ConnectionStatusSubscriber>;
-  connectionErrorPubsub: Pubsub<ConnectionErrorSubscriber>;
-  playerCountPubsub: Pubsub<PlayerCountSubscriber>;
-  autoReadPubsub: Pubsub<AutoReadSubscriber>;
-  roomCreatedPubsub: Pubsub<RoomCreatedSubscriber>;
-  isInRoomPubsub: Pubsub<isInRoomSubscriber>;
+  connectionStatusPubsub: Pubsub<ConnectionStatusString>;
+  connectionErrorPubsub: Pubsub<unknown>;
+  playerCountPubsub: Pubsub<number>;
+  autoReadPubsub: Pubsub<string>;
+  roomCreatedPubsub: Pubsub<string>;
+  isInRoomPubsub: Pubsub<boolean>;
   client: Colyseus.Client;
   lobbyRoom: Colyseus.Room | null;
   gameRoom: Colyseus.Room | null;
@@ -77,12 +68,12 @@ export class GlobalLogicImple implements GlobalLogic {
   private roomListUpdatePollingID: NodeJS.Timer | null;
 
   constructor(i18n: I18nService, sound: SoundLogic) {
-    this.connectionStatusPubsub = new Pubsub<ConnectionStatusSubscriber>();
-    this.connectionErrorPubsub = new Pubsub<ConnectionErrorSubscriber>();
-    this.playerCountPubsub = new Pubsub<PlayerCountSubscriber>();
-    this.autoReadPubsub = new Pubsub<AutoReadSubscriber>();
-    this.roomCreatedPubsub = new Pubsub<RoomCreatedSubscriber>();
-    this.isInRoomPubsub = new Pubsub<isInRoomSubscriber>();
+    this.connectionStatusPubsub = new Pubsub<ConnectionStatus>();
+    this.connectionErrorPubsub = new Pubsub<unknown>();
+    this.playerCountPubsub = new Pubsub<number>();
+    this.autoReadPubsub = new Pubsub<string>();
+    this.roomCreatedPubsub = new Pubsub<string>();
+    this.isInRoomPubsub = new Pubsub<boolean>();
     const c = new Colyseus.Client("ws://localhost:2567");
     this.client = c;
     this.lobbyRoom = null;

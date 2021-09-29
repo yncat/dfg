@@ -18,28 +18,25 @@ export function createRoomListEntry(
 }
 
 export type RoomListUpdatePipelineFunc = (roomList: RoomListEntry[]) => void;
-export type RoomListSubscriber = (roomList: RoomListEntry[]) => void;
 
 export interface RoomListLogic {
-  pubsub: Pubsub<RoomListSubscriber>;
+  pubsub: Pubsub<RoomListEntry[]>;
   update: (roomListEntryList: RoomListEntry[]) => void;
   fetchLatest: () => RoomListEntry[];
 }
 
 export class RoomListLogicImple implements RoomListLogic {
-  latest: RoomListEntry[];
-  pubsub: Pubsub<RoomListSubscriber>;
+  pubsub: Pubsub<RoomListEntry[]>;
   constructor() {
-    this.latest = [];
-    this.pubsub = new Pubsub<RoomListSubscriber>();
+    this.pubsub = new Pubsub<RoomListEntry[]>();
   }
 
   public fetchLatest(): RoomListEntry[] {
-    return Array.from(this.latest);
+    const latest = this.pubsub.fetchLatest();
+    return Array.from(latest === null ? [] : latest);
   }
 
   public update(roomListEntryList: RoomListEntry[]): void {
-    this.latest = roomListEntryList;
     this.pubsub.publish(Array.from(roomListEntryList));
   }
 }

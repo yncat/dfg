@@ -1,31 +1,29 @@
 import { ChatMessage } from "dfg-messages";
 import { Pubsub } from "./pubsub";
 export type ChatMessagePipelineFunc = (chatMessage: ChatMessage) => void;
-export type ChatMessageSubscriber = (chatMessageList: ChatMessage[]) => void;
 
 export interface ChatMessageListLogic {
-  pubsub: Pubsub<ChatMessageSubscriber>;
-  fetchLatest: () => ChatMessage[];
+  pubsub: Pubsub<ChatMessage[]>;
   push: (chatMessage: ChatMessage) => void;
 }
 
 export class ChatMessageListImple implements ChatMessageListLogic {
-  latestEntries: ChatMessage[];
   pubsub: Pubsub<ChatMessageSubscriber>;
   constructor() {
-    this.latestEntries = [];
-    this.pubsub = new Pubsub<ChatMessageSubscriber>();
+    this.pubsub = new Pubsub<ChatMessage[]>();
   }
 
   public fetchLatest(): ChatMessage[] {
+    const latest = this.pubsub.fetchLatest();
     // React state must be immutable
-    return Array.from(this.latestEntries);
+    return Array.from(latest === null ? [] : latest);
   }
 
   public push(chatMessage: ChatMessage): void {
-    this.latestEntries.push(chatMessage);
+    const latest = this.fetchLatest();
+    latest.push(chatMessage);
     // React state must be immutable
-    this.pubsub.publish(Array.from(this.latestEntries));
+    this.pubsub.publish(Array.from(latest));
   }
 }
 
