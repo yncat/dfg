@@ -1,12 +1,14 @@
-export class Pubsub<T extends (...args: any) => void> {
-  private readonly subscribersMap: Map<number, T>;
+export class Pubsub<T> {
+  private latest:T|null;
+  private readonly subscribersMap: Map<number, (newValue:T)=>void>;
   private internalCount: number;
   constructor() {
-    this.subscribersMap = new Map<number, T>();
+    this.latest=null;
+    this.subscribersMap = new Map<number, (newValue:T)=>void>();
     this.internalCount = 0;
   }
 
-  public subscribe(func: T): number {
+  public subscribe(func: (newValue:T)=>void): number {
     this.internalCount++;
     this.subscribersMap.set(this.internalCount, func);
     return this.internalCount;
@@ -20,9 +22,14 @@ export class Pubsub<T extends (...args: any) => void> {
     return true;
   }
 
-  public publish(...args: Parameters<T>) {
+  public publish(newValue:T) {
+    this.latest=newValue;
     this.subscribersMap.forEach((f) => {
-      f(...args);
+      f(newValue);
     });
+  }
+
+  public fetchLatest():T|null{
+    return this.latest;
   }
 }
