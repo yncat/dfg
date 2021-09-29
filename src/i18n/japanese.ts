@@ -214,7 +214,7 @@ export class JapaneseI18nService implements I18nService {
     const cds = cardList.map((v) => {
       return this.game_card(v.mark, v.cardNumber);
     });
-    return cds.length == 1 ? cds[0] : cds.join("、") + "の" + cds.length + "枚";
+    return cds.length === 1 ? cds[0] : cds.join("、") + "の" + cds.length + "枚";
   }
 
   public settings_heading(): string {
