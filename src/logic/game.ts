@@ -18,13 +18,12 @@ class GameLogicImple implements GameLogic {
   constructor() {
     this.room = null;
     this.pubsubs = {
-      stateUpdate: new Pubsub<StateUpdateSubscriber>(),
+      stateUpdate: new Pubsub<GameState>(),
     };
   }
 
   public registerRoom(room: Colyseus.Room): void {
     room.onStateChange((state: GameState) => {
-      this.latestState = state;
       this.pubsubs.stateUpdate.publish(state);
     });
     this.room = room;

@@ -68,7 +68,7 @@ export class GlobalLogicImple implements GlobalLogic {
   private roomListUpdatePollingID: NodeJS.Timer | null;
 
   constructor(i18n: I18nService, sound: SoundLogic) {
-    this.connectionStatusPubsub = new Pubsub<ConnectionStatus>();
+    this.connectionStatusPubsub = new Pubsub<ConnectionStatusString>();
     this.connectionErrorPubsub = new Pubsub<unknown>();
     this.playerCountPubsub = new Pubsub<number>();
     this.autoReadPubsub = new Pubsub<string>();

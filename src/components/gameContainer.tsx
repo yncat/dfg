@@ -13,7 +13,10 @@ export default function GameContainer(props: Props) {
   const [gameState, setGameState] = React.useState(new GameState());
   React.useEffect(() => {
     const id = props.gameLogic.pubsubs.stateUpdate.subscribe(setGameState);
-    setGameState(props.gameLogic.fetchLatestState());
+    const latest = props.gameLogic.pubsubs.stateUpdate.fetchLatest();
+    if (latest) {
+      setGameState(latest);
+    }
     return () => {
       props.gameLogic.pubsubs.stateUpdate.unsubscribe(id);
     };

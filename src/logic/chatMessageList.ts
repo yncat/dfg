@@ -4,11 +4,12 @@ export type ChatMessagePipelineFunc = (chatMessage: ChatMessage) => void;
 
 export interface ChatMessageListLogic {
   pubsub: Pubsub<ChatMessage[]>;
+  fetchLatest:()=>ChatMessage[];
   push: (chatMessage: ChatMessage) => void;
 }
 
 export class ChatMessageListImple implements ChatMessageListLogic {
-  pubsub: Pubsub<ChatMessageSubscriber>;
+  pubsub: Pubsub<ChatMessage[]>;
   constructor() {
     this.pubsub = new Pubsub<ChatMessage[]>();
   }
