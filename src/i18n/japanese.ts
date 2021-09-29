@@ -124,7 +124,7 @@ export class JapaneseI18nService implements I18nService {
     return "前回の結果: ";
   }
 
-  public currentRoom_result(result:Result): string {
+  public currentRoom_result(result: Result): string {
     const ret: string[] = [];
     if (result.daifugoPlayerList.length > 0) {
       ret.push(

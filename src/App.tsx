@@ -79,6 +79,7 @@ function App(props: Props) {
           globalLogic={props.globalLogic}
           subLogicList={{
             roomListLogic: props.subLogicList.roomListLogic,
+            gameLogic: props.subLogicList.gameLogic,
             lobbyChatMessageListLogic:
               props.subLogicList.lobbyChatMessageListLogic,
             lobbyChatPanelLogic: props.subLogicList.lobbyChatPanelLogic,

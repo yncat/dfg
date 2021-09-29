@@ -31,6 +31,8 @@ type AutoReadSubscriber = (updateString: string) => void;
 type RoomCreatedSubscriber = (playerName: string) => void;
 type isInRoomSubscriber = (isInRoom: boolean) => void;
 
+type RoomRegistrationPipelineFunc = (room: Colyseus.Room) => void;
+
 export interface GlobalLogic {
   i18n: I18nService;
   sound: SoundLogic;
@@ -50,6 +52,7 @@ export interface GlobalLogic {
   lobbyChatMessagePipeline: Pipeline<ChatMessagePipelineFunc>;
   roomChatMessagePipeline: Pipeline<ChatMessagePipelineFunc>;
   roomListUpdatePipeline: Pipeline<RoomListUpdatePipelineFunc>;
+  roomRegistrationPipeline: Pipeline<RoomRegistrationPipelineFunc>;
   // TODO: delete after switching to session-based.
   registeredPlayerName: string;
 }
@@ -70,6 +73,7 @@ export class GlobalLogicImple implements GlobalLogic {
   lobbyChatMessagePipeline: Pipeline<ChatMessagePipelineFunc>;
   roomChatMessagePipeline: Pipeline<ChatMessagePipelineFunc>;
   roomListUpdatePipeline: Pipeline<RoomListUpdatePipelineFunc>;
+  roomRegistrationPipeline: Pipeline<RoomRegistrationPipelineFunc>;
   private roomListUpdatePollingID: NodeJS.Timer | null;
 
   constructor(i18n: I18nService, sound: SoundLogic) {
@@ -86,6 +90,8 @@ export class GlobalLogicImple implements GlobalLogic {
     this.lobbyChatMessagePipeline = new Pipeline<ChatMessagePipelineFunc>();
     this.roomChatMessagePipeline = new Pipeline<ChatMessagePipelineFunc>();
     this.roomListUpdatePipeline = new Pipeline<RoomListUpdatePipelineFunc>();
+    this.roomRegistrationPipeline =
+      new Pipeline<RoomRegistrationPipelineFunc>();
     this.i18n = i18n;
     this.sound = sound;
     this.registeredPlayerName = "";
@@ -132,7 +138,7 @@ export class GlobalLogicImple implements GlobalLogic {
     });
 
     // Update number of players connected
-    rm.onStateChange((state:GlobalState) => {
+    rm.onStateChange((state: GlobalState) => {
       this.playerCountPubsub.publish(state.playerCount);
     });
 
@@ -197,6 +203,10 @@ export class GlobalLogicImple implements GlobalLogic {
       }
       this.roomChatMessagePipeline.call(message);
     });
+
+    // game specific actions are handled by GameLogic.
+    // Register the room using the pipeline.
+    this.roomRegistrationPipeline.call(grm);
   }
 
   public getRoomInstance(lobbyOrRoom: "lobby" | "room"): Colyseus.Room | null {

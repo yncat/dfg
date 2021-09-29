@@ -4,12 +4,14 @@ import { GameState } from "../logic/schema-def/GameState";
 
 interface Props {
   globalLogic: GlobalLogic;
-  gameState:GameState;
+  gameState: GameState;
 }
 
 export default function GameInfo(props: Props) {
   const i18n = props.globalLogic.i18n;
-  const stat = i18n.currentRoom_currentStatusWaiting(props.gameState.ownerPlayerName);
+  const stat = i18n.currentRoom_currentStatusWaiting(
+    props.gameState.ownerPlayerName
+  );
 
   return (
     <div>
@@ -24,9 +26,7 @@ export default function GameInfo(props: Props) {
       <p>{i18n.currentRoom_currentStatusLabel() + stat}</p>
       <p>
         {i18n.currentRoom_lastResultHeader() +
-          i18n.currentRoom_result(
-            props.gameState.lastGameResult
-          )}
+          i18n.currentRoom_result(props.gameState.lastGameResult)}
       </p>
     </div>
   );

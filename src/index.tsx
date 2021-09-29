@@ -10,6 +10,7 @@ import { createChatMessageListLogic } from "./logic/chatMessageList";
 import { createChatPanelLogic } from "./logic/chatPanel";
 import { createI18nService } from "./i18n/i18n";
 import { createAutoReadLogic } from "./logic/autoRead";
+import { createGameLogic } from "./logic/game";
 
 const defaultI18nService = createI18nService("Japanese");
 const soundLogic = createSoundLogic();
@@ -20,6 +21,10 @@ const lobbyChatMessageListLogic = createChatMessageListLogic();
 const lobbyChatPanelLogic = createChatPanelLogic();
 const roomChatMessageListLogic = createChatMessageListLogic();
 const roomChatPanelLogic = createChatPanelLogic();
+const gameLogic = createGameLogic();
+globalLogic.roomRegistrationPipeline.register(
+  gameLogic.registerRoom.bind(gameLogic)
+);
 globalLogic.lobbyChatMessagePipeline.register(
   lobbyChatMessageListLogic.push.bind(lobbyChatMessageListLogic)
 );
@@ -39,6 +44,7 @@ const subLogicList = {
   roomChatMessageListLogic,
   roomChatPanelLogic,
   autoReadLogic,
+  gameLogic,
 };
 
 ReactDOM.render(
