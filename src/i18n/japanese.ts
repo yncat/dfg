@@ -167,6 +167,10 @@ export class JapaneseI18nService implements I18nService {
       );
     }
 
+    if(ret.length==0){
+      return "結果なし。";
+    }
+
     return ret.join("");
   }
 

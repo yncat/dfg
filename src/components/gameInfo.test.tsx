@@ -42,3 +42,20 @@ test("render currentRoomInfo for waiting status", () => {
   expect(stat).toBeInTheDocument();
   expect(lastRes).toBeInTheDocument();
 });
+
+test("empty result", () => {
+  const gl = createGlobalLogicForTest();
+  const state = new GameState();
+  state.ownerPlayerName = "cat";
+  state.playerCount = 6;
+  state.playerNameList = new ArraySchema<string>(
+    "cat",
+    "dog",
+    "rabbit",
+    "lion",
+    "tiger",
+    "monkey"
+  );
+  render(<CurrentRoomInfo globalLogic={gl} gameState={state} />);
+  const lastRes = screen.getByText("前回の結果: 結果なし。");
+});
