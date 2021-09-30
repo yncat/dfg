@@ -7,7 +7,7 @@ interface Props {
 
 export default function Settings(props: Props) {
   const [soundToggle, setSoundToggle] = React.useState<boolean>(true);
-  const [musicToggle, setMusicToggle] = React.useState<boolean>(true);
+  const [musicToggle, setMusicToggle] = React.useState<boolean>(false);
   const i18n = props.globalLogic.i18n;
   return (
     <div>

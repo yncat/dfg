@@ -43,7 +43,7 @@ export class SoundLogicImple implements SoundLogic {
   eventQueue: SoundEvent[];
   constructor() {
     this.soundOutput = true;
-    this.musicOutput = true;
+    this.musicOutput = false;
     this.howlMap = new Map<string, Howl>();
     this.eventQueue = [];
   }
