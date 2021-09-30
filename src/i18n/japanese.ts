@@ -174,6 +174,14 @@ export class JapaneseI18nService implements I18nService {
     return ret.join("");
   }
 
+  public currentRoom_startGame():string{
+    return "ゲーム開始";
+  }
+
+  public currentRoom_cannotStartGame():string{
+    return "一人ではゲームを開始できません"
+  }
+
   public cardSelector_heading(): string {
     return "自分の手札";
   }
