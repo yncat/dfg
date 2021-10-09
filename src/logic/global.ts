@@ -38,6 +38,7 @@ export interface GlobalLogic {
   stopRoomListUpdatePolling: () => void;
   requestRoomListUpdate: () => void;
   createGameRoom: () => void;
+  joinGameRoomByID: (roomID: string) => void;
   getRoomInstance: (lobbyOrRoom: "lobby" | "room") => Colyseus.Room | null;
   updateAutoRead: (updateString: string) => void;
   lobbyChatMessagePipeline: Pipeline<ChatMessagePipelineFunc>;
@@ -185,6 +186,31 @@ export class GlobalLogicImple implements GlobalLogic {
     lrm.send("RoomCreatedRequest", "");
     this.isInRoomPubsub.publish(true);
 
+    // Receive chat
+    const grm = this.gameRoom as Colyseus.Room;
+    grm.onMessage("ChatMessage", (payload) => {
+      const message = decodePayload<ChatMessage>(payload, ChatMessageDecoder);
+      if (!isDecodeSuccess<ChatMessage>(message)) {
+        return;
+      }
+      this.roomChatMessagePipeline.call(message);
+    });
+
+    // game specific actions are handled by GameLogic.
+    // Register the room using the pipeline.
+    this.roomRegistrationPipeline.call(grm);
+  }
+
+  public async joinGameRoomByID(roomID: string) {
+    try {
+      this.gameRoom = await this.client.joinById(roomID, {
+        playerName: this.registeredPlayerName,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+
+    this.isInRoomPubsub.publish(true);
     // Receive chat
     const grm = this.gameRoom as Colyseus.Room;
     grm.onMessage("ChatMessage", (payload) => {

@@ -48,7 +48,12 @@ export default function RoomList(props: Props) {
               <td>{v.currentPlayerCount}</td>
               <td>{i18n.roomList_stateValue(v.state)}</td>
               <td>
-                <button type="button">
+                <button
+                  type="button"
+                  onClick={() => {
+                    props.globalLogic.joinGameRoomByID(v.roomID);
+                  }}
+                >
                   {v.state === RoomState.WAITING
                     ? i18n.roomList_join()
                     : i18n.roomList_watch()}

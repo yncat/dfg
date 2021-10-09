@@ -4,7 +4,7 @@ import { Pubsub } from "./pubsub";
 
 export interface Pubsubs {
   stateUpdate: Pubsub<GameState>;
-  gameOwnerStatus:Pubsub<boolean>;
+  gameOwnerStatus: Pubsub<boolean>;
 }
 
 export interface GameLogic {
@@ -26,9 +26,10 @@ class GameLogicImple implements GameLogic {
 
   public registerRoom(room: Colyseus.Room): void {
     room.onStateChange((state: GameState) => {
+      alert("update");
       this.pubsubs.stateUpdate.publish(state);
     });
-    room.onMessage("GameMasterMessage", ()=>{
+    room.onMessage("GameMasterMessage", () => {
       this.pubsubs.gameOwnerStatus.publish(true);
     });
     this.room = room;
