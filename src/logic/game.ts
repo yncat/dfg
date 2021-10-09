@@ -26,7 +26,6 @@ class GameLogicImple implements GameLogic {
 
   public registerRoom(room: Colyseus.Room): void {
     room.onStateChange((state: GameState) => {
-      alert("update");
       this.pubsubs.stateUpdate.publish(state);
     });
     room.onMessage("GameMasterMessage", () => {
