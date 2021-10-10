@@ -1,10 +1,10 @@
 import React from "react";
 import { GlobalLogic } from "../logic/global";
-import { GameState } from "../logic/schema-def/GameState";
+import { GameStateDTO } from "../logic/gameState";
 
 interface Props {
   globalLogic: GlobalLogic;
-  gameState: GameState;
+  gameState: GameStateDTO;
 }
 
 export default function GameInfo(props: Props) {
