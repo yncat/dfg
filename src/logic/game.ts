@@ -1,9 +1,10 @@
 import * as Colyseus from "colyseus.js";
 import { GameState } from "./schema-def/GameState";
+import { GameStateDTO } from "./gameState";
 import { Pubsub } from "./pubsub";
 
 export interface Pubsubs {
-  stateUpdate: Pubsub<GameState>;
+  stateUpdate: Pubsub<GameStateDTO>;
   gameOwnerStatus: Pubsub<boolean>;
 }
 
@@ -26,7 +27,9 @@ class GameLogicImple implements GameLogic {
 
   public registerRoom(room: Colyseus.Room): void {
     room.onStateChange((state: GameState) => {
-      this.pubsubs.stateUpdate.publish(state);
+      // 昔はstateをそのまま使っていた。が、どうやら colyseus はインスタンスの再生成をしないらしいので、 react でうまく後進を拾ってくれなかった。
+      // そのへんのライフサイクルをいい感じにコントロールできるように、毎回DTOに詰め替える。
+      this.pubsubs.stateUpdate.publish(new GameStateDTO(state));
     });
     room.onMessage("GameMasterMessage", () => {
       this.pubsubs.gameOwnerStatus.publish(true);

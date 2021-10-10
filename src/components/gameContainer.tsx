@@ -1,6 +1,7 @@
 import React from "react";
 import { GlobalLogic } from "../logic/global";
 import { GameLogic } from "../logic/game";
+import { GameStateDTO } from "../logic/gameState";
 import GameInfo from "./gameInfo";
 import { GameState } from "../logic/schema-def/GameState";
 
@@ -11,7 +12,9 @@ interface Props {
 
 export default function GameContainer(props: Props) {
   const i18n = props.globalLogic.i18n;
-  const [gameState, setGameState] = React.useState<GameState>(new GameState());
+  const [gameState, setGameState] = React.useState<GameStateDTO>(
+    new GameStateDTO(new GameState())
+  );
   const [ownerStatus, setOwnerStatus] = React.useState<boolean>(false);
   React.useEffect(() => {
     const id = props.gameLogic.pubsubs.stateUpdate.subscribe(setGameState);
