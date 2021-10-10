@@ -4,7 +4,7 @@ export type ChatMessagePipelineFunc = (chatMessage: ChatMessage) => void;
 
 export interface ChatMessageListLogic {
   pubsub: Pubsub<ChatMessage[]>;
-  fetchLatest:()=>ChatMessage[];
+  fetchLatest: () => ChatMessage[];
   push: (chatMessage: ChatMessage) => void;
 }
 

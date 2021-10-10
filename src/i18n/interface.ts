@@ -40,8 +40,8 @@ export interface I18nService {
   currentRoom_currentStatusWaiting: (playerName: string) => string;
   currentRoom_lastResultHeader: () => string;
   currentRoom_result: (result: Result) => string;
-  currentRoom_startGame:()=>string;
-  currentRoom_cannotStartGame:()=>string;
+  currentRoom_startGame: () => string;
+  currentRoom_cannotStartGame: () => string;
   cardSelector_heading: () => string;
   game_rankType: (rankType: RankType) => string;
   game_cardMark: (cardMark: CardMark) => string;
