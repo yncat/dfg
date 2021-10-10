@@ -31,7 +31,7 @@ class GameLogicImple implements GameLogic {
       // そのへんのライフサイクルをいい感じにコントロールできるように、毎回DTOに詰め替える。
       this.pubsubs.stateUpdate.publish(new GameStateDTO(state));
     });
-    room.onMessage("GameMasterMessage", () => {
+    room.onMessage("RoomOwnerMessage", () => {
       this.pubsubs.gameOwnerStatus.publish(true);
     });
     this.room = room;
