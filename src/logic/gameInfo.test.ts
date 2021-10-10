@@ -22,3 +22,24 @@ describe("GameResult", () => {
     expect(gres.daihinminPlayerList).toStrictEqual(["monkey"]);
   });
 });
+
+describe("GameInfo", () => {
+  it("is constructable", () => {
+    const lgr = createResult();
+    const cgr = createResult();
+    const gs = new GameState();
+    gs.lastGameResult = lgr;
+    gs.currentGameResult = cgr;
+    gs.playerCount = 2;
+    gs.playerNameList.push("cat", "dog");
+    gs.ownerPlayerName = "cat";
+    gs.isInGame = true;
+    const gi = new GameInfo(gs);
+    expect(gi.playerCount).toBe(2);
+    expect(gi.playerNameList).toStrictEqual(["cat", "dog"]);
+    expect(gi.ownerPlayerName).toBe("cat");
+    expect(gi.isInGame).toBeTruthy();
+    expect(gi.lastGameResult.daifugoPlayerList[0]).toBe("cat");
+    expect(gi.currentGameResult.daifugoPlayerList[0]).toBe("cat");
+  });
+});
