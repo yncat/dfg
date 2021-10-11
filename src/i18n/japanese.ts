@@ -240,6 +240,10 @@ export class JapaneseI18nService implements I18nService {
     return name + "が入室しました。";
   }
 
+  public game_playerLeft(name: string): string {
+    return name + "が退室しました。";
+  }
+
   public settings_heading(): string {
     return "環境設定";
   }

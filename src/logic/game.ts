@@ -2,6 +2,8 @@ import * as Colyseus from "colyseus.js";
 import {
   PlayerJoinedMessage,
   PlayerJoinedMessageDecoder,
+  PlayerLeftMessage,
+  PlayerLeftMessageDecoder,
   decodePayload,
 } from "dfg-messages";
 import { GameState } from "./schema-def/GameState";
@@ -13,6 +15,7 @@ export interface Pubsubs {
   stateUpdate: Pubsub<GameStateDTO>;
   gameOwnerStatus: Pubsub<boolean>;
   playerJoined: Pubsub<string>;
+  playerLeft: Pubsub<string>;
 }
 
 export interface GameLogic {
@@ -30,6 +33,7 @@ class GameLogicImple implements GameLogic {
       stateUpdate: new Pubsub<GameStateDTO>(),
       gameOwnerStatus: new Pubsub<boolean>(),
       playerJoined: new Pubsub<string>(),
+      playerLeft: new Pubsub<string>(),
     };
   }
 
@@ -51,6 +55,16 @@ class GameLogicImple implements GameLogic {
         return;
       }
       this.pubsubs.playerJoined.publish(msg.playerName);
+    });
+    room.onMessage("PlayerLeftMessage", (payload: any) => {
+      const msg = decodePayload<PlayerLeftMessage>(
+        payload,
+        PlayerLeftMessageDecoder
+      );
+      if (!isDecodeSuccess<PlayerLeftMessage>(msg)) {
+        return;
+      }
+      this.pubsubs.playerLeft.publish(msg.playerName);
     });
 
     this.room = room;

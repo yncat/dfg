@@ -51,6 +51,7 @@ export interface I18nService {
   game_card: (cardMark: CardMark, cardNumber: number) => string;
   game_cardList: (cardList: CardMessage[]) => string;
   game_playerJoined: (name: string) => string;
+  game_playerLeft: (name: string) => string;
   settings_heading: () => string;
   settings_soundToggle: () => string;
   settings_musicToggle: () => string;

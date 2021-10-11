@@ -21,6 +21,11 @@ export default function GameContainer(props: Props) {
     props.globalLogic.sound.enqueueEvent(SoundEvent.JOINED);
     props.globalLogic.updateAutoRead(i18n.game_playerJoined(name));
   };
+  const handlePlayerLeft = (name: string) => {
+    props.globalLogic.sound.enqueueEvent(SoundEvent.LEFT);
+    props.globalLogic.updateAutoRead(i18n.game_playerLeft(name));
+  };
+
   React.useEffect(() => {
     const subscriberList: number[] = [];
     const id1 = props.gameLogic.pubsubs.stateUpdate.subscribe(setGameState);
@@ -39,9 +44,12 @@ export default function GameContainer(props: Props) {
     if (name !== null) {
       handlePlayerJoined(name);
     }
+    const id4 = props.gameLogic.pubsubs.playerLeft.subscribe(handlePlayerLeft);
     return () => {
       props.gameLogic.pubsubs.stateUpdate.unsubscribe(id1);
       props.gameLogic.pubsubs.gameOwnerStatus.unsubscribe(id2);
+      props.gameLogic.pubsubs.playerJoined.unsubscribe(id3);
+      props.gameLogic.pubsubs.playerLeft.unsubscribe(id4);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
