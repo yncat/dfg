@@ -45,11 +45,6 @@ function App(props: Props) {
     props.globalLogic.playerCountPubsub.subscribe(setPlayerCount);
     props.globalLogic.isInRoomPubsub.subscribe((isInRoom: boolean) => {
       setIsInRoom(isInRoom);
-      if (isInRoom === true) {
-        props.globalLogic.sound.enqueueEvent(SoundEvent.JOINED);
-      } else {
-        props.globalLogic.sound.enqueueEvent(SoundEvent.LEFT);
-      }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

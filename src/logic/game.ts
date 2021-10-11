@@ -1,11 +1,18 @@
 import * as Colyseus from "colyseus.js";
+import {
+  PlayerJoinedMessage,
+  PlayerJoinedMessageDecoder,
+  decodePayload,
+} from "dfg-messages";
 import { GameState } from "./schema-def/GameState";
 import { GameStateDTO } from "./gameState";
 import { Pubsub } from "./pubsub";
+import { isDecodeSuccess } from "./decodeValidator";
 
 export interface Pubsubs {
   stateUpdate: Pubsub<GameStateDTO>;
   gameOwnerStatus: Pubsub<boolean>;
+  playerJoined: Pubsub<string>;
 }
 
 export interface GameLogic {
@@ -20,8 +27,9 @@ class GameLogicImple implements GameLogic {
   constructor() {
     this.room = null;
     this.pubsubs = {
-      stateUpdate: new Pubsub<GameState>(),
+      stateUpdate: new Pubsub<GameStateDTO>(),
       gameOwnerStatus: new Pubsub<boolean>(),
+      playerJoined: new Pubsub<string>(),
     };
   }
 
@@ -34,6 +42,17 @@ class GameLogicImple implements GameLogic {
     room.onMessage("RoomOwnerMessage", () => {
       this.pubsubs.gameOwnerStatus.publish(true);
     });
+    room.onMessage("PlayerJoinedMessage", (payload: any) => {
+      const msg = decodePayload<PlayerJoinedMessage>(
+        payload,
+        PlayerJoinedMessageDecoder
+      );
+      if (!isDecodeSuccess<PlayerJoinedMessage>(msg)) {
+        return;
+      }
+      this.pubsubs.playerJoined.publish(msg.playerName);
+    });
+
     this.room = room;
   }
 

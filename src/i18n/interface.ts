@@ -37,7 +37,10 @@ export interface I18nService {
   currentRoom_memberListLabel: () => string;
   currentRoom_memberList: (playerList: string[]) => string;
   currentRoom_currentStatusLabel: () => string;
-  currentRoom_currentStatusWaiting: (playerName: string) => string;
+  currentRoom_currentStatusWaiting: (
+    playerName: string,
+    isOwner: boolean
+  ) => string;
   currentRoom_lastResultHeader: () => string;
   currentRoom_result: (result: Result) => string;
   currentRoom_startGame: () => string;
@@ -47,6 +50,7 @@ export interface I18nService {
   game_cardMark: (cardMark: CardMark) => string;
   game_card: (cardMark: CardMark, cardNumber: number) => string;
   game_cardList: (cardList: CardMessage[]) => string;
+  game_playerJoined: (name: string) => string;
   settings_heading: () => string;
   settings_soundToggle: () => string;
   settings_musicToggle: () => string;

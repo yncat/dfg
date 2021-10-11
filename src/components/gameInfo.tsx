@@ -5,12 +5,14 @@ import { GameStateDTO } from "../logic/gameState";
 interface Props {
   globalLogic: GlobalLogic;
   gameState: GameStateDTO;
+  isOwner: boolean;
 }
 
 export default function GameInfo(props: Props) {
   const i18n = props.globalLogic.i18n;
   const stat = i18n.currentRoom_currentStatusWaiting(
-    props.gameState.ownerPlayerName
+    props.gameState.ownerPlayerName,
+    props.isOwner
   );
 
   return (

@@ -116,8 +116,13 @@ export class JapaneseI18nService implements I18nService {
     return "現在の状況: ";
   }
 
-  public currentRoom_currentStatusWaiting(playerName: string): string {
-    return playerName + "さんがゲームを開始するまで待機しています。";
+  public currentRoom_currentStatusWaiting(
+    playerName: string,
+    isOwnerYourself: boolean
+  ): string {
+    return isOwnerYourself
+      ? "プレイヤーが集まったら、「ゲーム開始」ボタンを押してゲームを始めてください。"
+      : playerName + "さんがゲームを開始するまで待機しています。";
   }
 
   public currentRoom_lastResultHeader(): string {
@@ -229,6 +234,10 @@ export class JapaneseI18nService implements I18nService {
     return cds.length === 1
       ? cds[0]
       : cds.join("、") + "の" + cds.length + "枚";
+  }
+
+  public game_playerJoined(name: string): string {
+    return name + "が入室しました。";
   }
 
   public settings_heading(): string {
