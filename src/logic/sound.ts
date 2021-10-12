@@ -7,6 +7,8 @@ export const SoundEvent = {
   ROOMCREATED: 3,
   JOINED: 4,
   LEFT: 5,
+  START: 6,
+  TURN: 7,
 } as const;
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export type SoundEvent = typeof SoundEvent[keyof typeof SoundEvent];
@@ -34,6 +36,8 @@ const soundEventDefinitionMap: Map<SoundEvent, SoundEventDefinition> = new Map<
   [SoundEvent.ROOMCREATED, { soundWithoutExt: "newroom", waitTime: 600 }],
   [SoundEvent.JOINED, { soundWithoutExt: "join", waitTime: 600 }],
   [SoundEvent.LEFT, { soundWithoutExt: "leave", waitTime: 600 }],
+  [SoundEvent.START, { soundWithoutExt: "start", waitTime: 700 }],
+  [SoundEvent.TURN, { soundWithoutExt: "turn", waitTime: 0 }],
 ]);
 
 export class SoundLogicImple implements SoundLogic {
