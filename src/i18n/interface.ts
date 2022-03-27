@@ -41,7 +41,7 @@ export interface I18nService {
     playerName: string,
     isOwner: boolean
   ) => string;
-  currentRoom_currentStatusPlaying:()=>string;
+  currentRoom_currentStatusPlaying: () => string;
   currentRoom_lastResultHeader: () => string;
   currentRoom_result: (result: Result) => string;
   currentRoom_startGame: () => string;
@@ -56,6 +56,7 @@ export interface I18nService {
   game_initialInfo: (playerCount: number, deckCount: number) => string;
   game_cardsProvided: (playerName: string, cardCount: number) => string;
   game_yourTurn: () => string;
+  game_turn: (playerName: string) => string;
   settings_heading: () => string;
   settings_soundToggle: () => string;
   settings_musicToggle: () => string;

@@ -266,6 +266,10 @@ export class JapaneseI18nService implements I18nService {
     return "アクションを選択してください。";
   }
 
+  public game_turn(playerName: string): string {
+    return "" + playerName + "のターン。";
+  }
+
   public settings_heading(): string {
     return "環境設定";
   }

@@ -8,6 +8,8 @@ import {
   InitialInfoMessageDecoder,
   CardsProvidedMessage,
   CardsProvidedMessageDecoder,
+  TurnMessage,
+  TurnMessageDecoder,
   decodePayload,
 } from "dfg-messages";
 import { GameState } from "./schema-def/GameState";
@@ -26,11 +28,13 @@ export interface Pubsubs {
 type InitialInfoFunc = (playerCount: number, deckCount: number) => void;
 type CardsProvidedFunc = (playerName: string, cardCount: number) => void;
 type YourTurnFunc=()=>void;
+type TurnFunc = (playerName:string)=>void;
 
 export interface Pipelines {
   initialInfo: Pipeline<InitialInfoFunc>;
   cardsProvided: Pipeline<CardsProvidedFunc>;
   yourTurn:Pipeline<YourTurnFunc>;
+  turn:Pipeline<TurnFunc>;
 }
 
 export interface GameLogic {
@@ -57,6 +61,7 @@ class GameLogicImple implements GameLogic {
       initialInfo: new Pipeline<InitialInfoFunc>(),
       cardsProvided: new Pipeline<CardsProvidedFunc>(),
       yourTurn:new Pipeline<YourTurnFunc>(),
+      turn:new Pipeline<TurnFunc>(),
     };
   }
 
@@ -117,6 +122,17 @@ class GameLogicImple implements GameLogic {
 
     room.onMessage("YourTurnMessage", (payload: any) => {
       this.pipelines.yourTurn.call();
+    });
+
+    room.onMessage("TurnMessage", (payload: any) => {
+      const msg = decodePayload<TurnMessage>(
+        payload,
+        TurnMessageDecoder
+      );
+      if (!isDecodeSuccess<TurnMessage>(msg)) {
+        return;
+      }
+      this.pipelines.turn.call(msg.playerName);
     });
 
     this.room = room;
