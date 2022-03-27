@@ -55,6 +55,7 @@ export interface I18nService {
   game_playerLeft: (name: string) => string;
   game_initialInfo: (playerCount: number, deckCount: number) => string;
   game_cardsProvided: (playerName: string, cardCount: number) => string;
+  game_yourTurn: () => string;
   settings_heading: () => string;
   settings_soundToggle: () => string;
   settings_musicToggle: () => string;

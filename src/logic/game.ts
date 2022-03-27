@@ -25,10 +25,12 @@ export interface Pubsubs {
 
 type InitialInfoFunc = (playerCount: number, deckCount: number) => void;
 type CardsProvidedFunc = (playerName: string, cardCount: number) => void;
+type YourTurnFunc=()=>void;
 
 export interface Pipelines {
   initialInfo: Pipeline<InitialInfoFunc>;
   cardsProvided: Pipeline<CardsProvidedFunc>;
+  yourTurn:Pipeline<YourTurnFunc>;
 }
 
 export interface GameLogic {
@@ -54,6 +56,7 @@ class GameLogicImple implements GameLogic {
     this.pipelines = {
       initialInfo: new Pipeline<InitialInfoFunc>(),
       cardsProvided: new Pipeline<CardsProvidedFunc>(),
+      yourTurn:new Pipeline<YourTurnFunc>(),
     };
   }
 
@@ -110,6 +113,10 @@ class GameLogicImple implements GameLogic {
         return;
       }
       this.pipelines.cardsProvided.call(msg.playerName, msg.cardCount);
+    });
+
+    room.onMessage("YourTurnMessage", (payload: any) => {
+      this.pipelines.yourTurn.call();
     });
 
     this.room = room;

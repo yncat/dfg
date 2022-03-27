@@ -39,6 +39,11 @@ export default function GameContainer(props: Props) {
     );
   };
 
+  const handleTurn = () => {
+    props.globalLogic.updateAutoRead(i18n.game_yourTurn());
+    props.globalLogic.sound.enqueueEvent(SoundEvent.TURN);
+  };
+
   React.useEffect(() => {
     const id1 = props.gameLogic.pubsubs.stateUpdate.subscribe(setGameState);
     const latest = props.gameLogic.pubsubs.stateUpdate.fetchLatest();
@@ -59,6 +64,7 @@ export default function GameContainer(props: Props) {
     const id4 = props.gameLogic.pubsubs.playerLeft.subscribe(handlePlayerLeft);
     props.gameLogic.pipelines.initialInfo.register(handleInitialInfo);
     props.gameLogic.pipelines.cardsProvided.register(handleCardsProvided);
+    props.gameLogic.pipelines.yourTurn.register(handleTurn);
     return () => {
       props.gameLogic.pubsubs.stateUpdate.unsubscribe(id1);
       props.gameLogic.pubsubs.gameOwnerStatus.unsubscribe(id2);
@@ -66,6 +72,7 @@ export default function GameContainer(props: Props) {
       props.gameLogic.pubsubs.playerLeft.unsubscribe(id4);
       props.gameLogic.pipelines.initialInfo.unregister();
       props.gameLogic.pipelines.cardsProvided.unregister();
+      props.gameLogic.pipelines.yourTurn.unregister();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

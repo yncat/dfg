@@ -262,6 +262,10 @@ export class JapaneseI18nService implements I18nService {
     return "" + playerName + "に、" + cardCount + "枚のカードが配られました。";
   }
 
+  public game_yourTurn(): string {
+    return "アクションを選択してください。";
+  }
+
   public settings_heading(): string {
     return "環境設定";
   }
