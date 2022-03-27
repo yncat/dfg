@@ -57,17 +57,11 @@ export class SoundLogicImple implements SoundLogic {
   }
 
   public initIfNeeded(): void {
-    this.load([
-      "click",
-      "chat",
-      "connected",
-      "newroom",
-      "join",
-      "leave",
-      "start",
-      "shuffle",
-      "give",
-    ]);
+    const soundsToLoad = new Set<string>();
+    soundEventDefinitionMap.forEach((v) => {
+      soundsToLoad.add(v.soundWithoutExt);
+    });
+    this.load(Array.from(soundsToLoad));
     this.loadMusic();
   }
 
