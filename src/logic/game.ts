@@ -4,11 +4,16 @@ import {
   PlayerJoinedMessageDecoder,
   PlayerLeftMessage,
   PlayerLeftMessageDecoder,
+  InitialInfoMessage,
+  InitialInfoMessageDecoder,
+  CardsProvidedMessage,
+  CardsProvidedMessageDecoder,
   decodePayload,
 } from "dfg-messages";
 import { GameState } from "./schema-def/GameState";
 import { GameStateDTO } from "./gameState";
 import { Pubsub } from "./pubsub";
+import { Pipeline } from "./pipeline";
 import { isDecodeSuccess } from "./decodeValidator";
 
 export interface Pubsubs {
@@ -18,14 +23,25 @@ export interface Pubsubs {
   playerLeft: Pubsub<string>;
 }
 
+type InitialInfoFunc = (playerCount: number, deckCount: number) => void;
+type CardsProvidedFunc = (playerName: string, cardCount: number) => void;
+
+export interface Pipelines {
+  initialInfo: Pipeline<InitialInfoFunc>;
+  cardsProvided: Pipeline<CardsProvidedFunc>;
+}
+
 export interface GameLogic {
   pubsubs: Pubsubs;
+  pipelines: Pipelines;
   registerRoom: (room: Colyseus.Room) => void;
   unregisterRoom: () => void;
+  startGame: () => void;
 }
 
 class GameLogicImple implements GameLogic {
   pubsubs: Pubsubs;
+  pipelines: Pipelines;
   private room: Colyseus.Room | null;
   constructor() {
     this.room = null;
@@ -35,6 +51,10 @@ class GameLogicImple implements GameLogic {
       playerJoined: new Pubsub<string>(),
       playerLeft: new Pubsub<string>(),
     };
+    this.pipelines = {
+      initialInfo: new Pipeline<InitialInfoFunc>(),
+      cardsProvided: new Pipeline<CardsProvidedFunc>(),
+    };
   }
 
   public registerRoom(room: Colyseus.Room): void {
@@ -43,9 +63,11 @@ class GameLogicImple implements GameLogic {
       // そのへんのライフサイクルをいい感じにコントロールできるように、毎回DTOに詰め替える。
       this.pubsubs.stateUpdate.publish(new GameStateDTO(state));
     });
+
     room.onMessage("RoomOwnerMessage", () => {
       this.pubsubs.gameOwnerStatus.publish(true);
     });
+
     room.onMessage("PlayerJoinedMessage", (payload: any) => {
       const msg = decodePayload<PlayerJoinedMessage>(
         payload,
@@ -56,6 +78,7 @@ class GameLogicImple implements GameLogic {
       }
       this.pubsubs.playerJoined.publish(msg.playerName);
     });
+
     room.onMessage("PlayerLeftMessage", (payload: any) => {
       const msg = decodePayload<PlayerLeftMessage>(
         payload,
@@ -67,11 +90,40 @@ class GameLogicImple implements GameLogic {
       this.pubsubs.playerLeft.publish(msg.playerName);
     });
 
+    room.onMessage("InitialInfoMessage", (payload: any) => {
+      const msg = decodePayload<InitialInfoMessage>(
+        payload,
+        InitialInfoMessageDecoder
+      );
+      if (!isDecodeSuccess<InitialInfoMessage>(msg)) {
+        return;
+      }
+      this.pipelines.initialInfo.call(msg.playerCount, msg.deckCount);
+    });
+
+    room.onMessage("CardsProvidedMessage", (payload: any) => {
+      const msg = decodePayload<CardsProvidedMessage>(
+        payload,
+        CardsProvidedMessageDecoder
+      );
+      if (!isDecodeSuccess<CardsProvidedMessage>(msg)) {
+        return;
+      }
+      this.pipelines.cardsProvided.call(msg.playerName, msg.cardCount);
+    });
+
     this.room = room;
   }
 
   public unregisterRoom(): void {
     this.room = null;
+  }
+
+  public startGame(): void {
+    if (!this.room) {
+      return;
+    }
+    this.room.send("GameStartRequest", "");
   }
 }
 

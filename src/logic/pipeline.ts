@@ -8,6 +8,10 @@ export class Pipeline<T extends (...args: any) => void> {
     this.pipeFunction = pipeFunction;
   }
 
+  public unregister() {
+    this.pipeFunction = null;
+  }
+
   public call(...args: Parameters<T>) {
     if (this.pipeFunction) {
       this.pipeFunction(...args);

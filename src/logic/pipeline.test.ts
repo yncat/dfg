@@ -21,4 +21,14 @@ describe("pipeline", () => {
       pipeline.call(1);
     }).not.toThrow();
   });
+
+  it("does nothing after unregestering", () => {
+    const pipeline = new Pipeline<TestPipelineFunc>();
+    const f1 = makeFuncs();
+    pipeline.register(f1);
+    pipeline.unregister();
+    expect(() => {
+      pipeline.call(1);
+    }).not.toThrow();
+  });
 });

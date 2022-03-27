@@ -25,9 +25,21 @@ export default function GameContainer(props: Props) {
     props.globalLogic.sound.enqueueEvent(SoundEvent.LEFT);
     props.globalLogic.updateAutoRead(i18n.game_playerLeft(name));
   };
+  const handleInitialInfo = (playerCount: number, deckCount: number) => {
+    props.globalLogic.sound.enqueueEvent(SoundEvent.START);
+    props.globalLogic.sound.enqueueEvent(SoundEvent.SHUFFLE);
+    props.globalLogic.sound.enqueueEvent(SoundEvent.GIVE);
+    props.globalLogic.updateAutoRead(
+      i18n.game_initialInfo(playerCount, deckCount)
+    );
+  };
+  const handleCardsProvided = (playerName: string, cardCount: number) => {
+    props.globalLogic.updateAutoRead(
+      i18n.game_cardsProvided(playerName, cardCount)
+    );
+  };
 
   React.useEffect(() => {
-    const subscriberList: number[] = [];
     const id1 = props.gameLogic.pubsubs.stateUpdate.subscribe(setGameState);
     const latest = props.gameLogic.pubsubs.stateUpdate.fetchLatest();
     if (latest) {
@@ -45,11 +57,15 @@ export default function GameContainer(props: Props) {
       handlePlayerJoined(name);
     }
     const id4 = props.gameLogic.pubsubs.playerLeft.subscribe(handlePlayerLeft);
+    props.gameLogic.pipelines.initialInfo.register(handleInitialInfo);
+    props.gameLogic.pipelines.cardsProvided.register(handleCardsProvided);
     return () => {
       props.gameLogic.pubsubs.stateUpdate.unsubscribe(id1);
       props.gameLogic.pubsubs.gameOwnerStatus.unsubscribe(id2);
       props.gameLogic.pubsubs.playerJoined.unsubscribe(id3);
       props.gameLogic.pubsubs.playerLeft.unsubscribe(id4);
+      props.gameLogic.pipelines.initialInfo.unregister();
+      props.gameLogic.pipelines.cardsProvided.unregister();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -62,7 +78,13 @@ export default function GameContainer(props: Props) {
         isOwner={ownerStatus}
       />
       {ownerStatus === true ? (
-        <button type="button" disabled={startButtonDisabled}>
+        <button
+          type="button"
+          disabled={startButtonDisabled}
+          onClick={(evt) => {
+            props.gameLogic.startGame();
+          }}
+        >
           {startButtonDisabled
             ? i18n.currentRoom_cannotStartGame()
             : i18n.currentRoom_startGame()}

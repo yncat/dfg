@@ -244,6 +244,20 @@ export class JapaneseI18nService implements I18nService {
     return name + "が退室しました。";
   }
 
+  public game_initialInfo(playerCount: number, deckCount: number): string {
+    return (
+      "" +
+      playerCount +
+      "人でゲームを始めます。" +
+      deckCount +
+      "セットのデッキを使用します。"
+    );
+  }
+
+  public game_cardsProvided(playerName: string, cardCount: number): string {
+    return "" + playerName + "に、" + cardCount + "枚のカードが配られました。";
+  }
+
   public settings_heading(): string {
     return "環境設定";
   }
