@@ -39,7 +39,7 @@ export default function GameContainer(props: Props) {
     );
   };
 
-  const handleTurn = () => {
+  const handleYourTurn = () => {
     props.globalLogic.updateAutoRead(i18n.game_yourTurn());
     props.globalLogic.sound.enqueueEvent(SoundEvent.TURN);
   };
@@ -64,7 +64,7 @@ export default function GameContainer(props: Props) {
     const id4 = props.gameLogic.pubsubs.playerLeft.subscribe(handlePlayerLeft);
     props.gameLogic.pipelines.initialInfo.register(handleInitialInfo);
     props.gameLogic.pipelines.cardsProvided.register(handleCardsProvided);
-    props.gameLogic.pipelines.yourTurn.register(handleTurn);
+    props.gameLogic.pipelines.yourTurn.register(handleYourTurn);
     return () => {
       props.gameLogic.pubsubs.stateUpdate.unsubscribe(id1);
       props.gameLogic.pubsubs.gameOwnerStatus.unsubscribe(id2);
