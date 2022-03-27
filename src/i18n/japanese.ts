@@ -125,6 +125,10 @@ export class JapaneseI18nService implements I18nService {
       : playerName + "さんがゲームを開始するまで待機しています。";
   }
 
+  public currentRoom_currentStatusPlaying(): string {
+    return "プレイ中";
+  }
+
   public currentRoom_lastResultHeader(): string {
     return "前回の結果: ";
   }

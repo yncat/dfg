@@ -10,10 +10,15 @@ interface Props {
 
 export default function GameInfo(props: Props) {
   const i18n = props.globalLogic.i18n;
-  const stat = i18n.currentRoom_currentStatusWaiting(
-    props.gameState.ownerPlayerName,
-    props.isOwner
-  );
+  let stat:string;
+  if (props.gameState.isInGame) {
+    stat = i18n.currentRoom_currentStatusPlaying();
+  } else {
+    stat = i18n.currentRoom_currentStatusWaiting(
+      props.gameState.ownerPlayerName,
+      props.isOwner
+    );
+  }
 
   return (
     <div>

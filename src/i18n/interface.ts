@@ -41,6 +41,7 @@ export interface I18nService {
     playerName: string,
     isOwner: boolean
   ) => string;
+  currentRoom_currentStatusPlaying:()=>string;
   currentRoom_lastResultHeader: () => string;
   currentRoom_result: (result: Result) => string;
   currentRoom_startGame: () => string;
