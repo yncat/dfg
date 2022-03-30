@@ -2,7 +2,6 @@ import React from "react";
 import { act, render, screen, fireEvent } from "@testing-library/react";
 import CardSelector from "./cardSelector";
 import { createGlobalLogicForTest } from "../testHelper";
-import { createCardSelectorLogic } from "../logic/cardSelector";
 import {
   CardMark,
   encodeCardListMessage,
@@ -12,18 +11,14 @@ import {
   encodeDiscardPairMessage,
 } from "dfg-messages";
 
-test("render updated cardSelector checkboxes using CardSelectorLogic", () => {
+test("render updated cardSelector checkboxes using props", () => {
   const gl = createGlobalLogicForTest();
-  const csl = createCardSelectorLogic();
   const msg = encodeCardListMessage([
     encodeSelectableCardMessage(CardMark.DIAMONDS, 5, false, false),
     encodeSelectableCardMessage(CardMark.DIAMONDS, 6, true, true),
     encodeSelectableCardMessage(CardMark.DIAMONDS, 7, false, true),
   ]);
-  render(<CardSelector globalLogic={gl} cardSelectorLogic={csl} />);
-  act(() => {
-    csl.updateCardList(msg);
-  });
+  render(<CardSelector globalLogic={gl} cardList={msg} discardPairList={encodeDiscardPairListMessage([])} />);
   const d5 = screen.getByText("ダイヤの5");
   const d5chk = screen.getByLabelText("ダイヤの5");
   const d6 = screen.getByText("ダイヤの6");
@@ -41,9 +36,8 @@ test("render updated cardSelector checkboxes using CardSelectorLogic", () => {
   expect(d7chk).toBeEnabled();
 });
 
-test("render updated cardSelector buttons using CardSelectorLogic", () => {
+test("render updated cardSelector buttons using props", () => {
   const gl = createGlobalLogicForTest();
-  const csl = createCardSelectorLogic();
   const msg = encodeDiscardPairListMessage([
     encodeDiscardPairMessage([encodeCardMessage(CardMark.SPADES, 5)]),
     encodeDiscardPairMessage([
@@ -51,10 +45,13 @@ test("render updated cardSelector buttons using CardSelectorLogic", () => {
       encodeCardMessage(CardMark.CLUBS, 7),
     ]),
   ]);
-  render(<CardSelector globalLogic={gl} cardSelectorLogic={csl} />);
-  act(() => {
-    csl.updateDiscardPairList(msg);
-  });
+  render(
+    <CardSelector
+      globalLogic={gl}
+      cardList={encodeCardListMessage([])}
+      discardPairList={msg}
+    />
+  );
   const btn1 = screen.getByText("スペードの5");
   const btn2 = screen.getByText("ハートの7、クラブの7の2枚");
   expect(btn1).toBeInTheDocument();
