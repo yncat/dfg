@@ -10,6 +10,10 @@ import {
   CardsProvidedMessageDecoder,
   TurnMessage,
   TurnMessageDecoder,
+  CardListMessage,
+  CardListMessageDecoder,
+  DiscardPairListMessage,
+  DiscardPairMessageDecoder,
   decodePayload,
 } from "dfg-messages";
 import { GameState } from "./schema-def/GameState";
@@ -23,18 +27,20 @@ export interface Pubsubs {
   gameOwnerStatus: Pubsub<boolean>;
   playerJoined: Pubsub<string>;
   playerLeft: Pubsub<string>;
+  cardListUpdated: Pubsub<CardListMessage>;
+  discardPairListUpdated: Pubsub<DiscardPairListMessage>;
 }
 
 type InitialInfoFunc = (playerCount: number, deckCount: number) => void;
 type CardsProvidedFunc = (playerName: string, cardCount: number) => void;
-type YourTurnFunc=()=>void;
-type TurnFunc = (playerName:string)=>void;
+type YourTurnFunc = () => void;
+type TurnFunc = (playerName: string) => void;
 
 export interface Pipelines {
   initialInfo: Pipeline<InitialInfoFunc>;
   cardsProvided: Pipeline<CardsProvidedFunc>;
-  yourTurn:Pipeline<YourTurnFunc>;
-  turn:Pipeline<TurnFunc>;
+  yourTurn: Pipeline<YourTurnFunc>;
+  turn: Pipeline<TurnFunc>;
 }
 
 export interface GameLogic {
@@ -56,12 +62,14 @@ class GameLogicImple implements GameLogic {
       gameOwnerStatus: new Pubsub<boolean>(),
       playerJoined: new Pubsub<string>(),
       playerLeft: new Pubsub<string>(),
+      cardListUpdated: new Pubsub<CardListMessage>(),
+      discardPairListUpdated: new Pubsub<DiscardPairListMessage>(),
     };
     this.pipelines = {
       initialInfo: new Pipeline<InitialInfoFunc>(),
       cardsProvided: new Pipeline<CardsProvidedFunc>(),
-      yourTurn:new Pipeline<YourTurnFunc>(),
-      turn:new Pipeline<TurnFunc>(),
+      yourTurn: new Pipeline<YourTurnFunc>(),
+      turn: new Pipeline<TurnFunc>(),
     };
   }
 
@@ -125,14 +133,19 @@ class GameLogicImple implements GameLogic {
     });
 
     room.onMessage("TurnMessage", (payload: any) => {
-      const msg = decodePayload<TurnMessage>(
-        payload,
-        TurnMessageDecoder
-      );
+      const msg = decodePayload<TurnMessage>(payload, TurnMessageDecoder);
       if (!isDecodeSuccess<TurnMessage>(msg)) {
         return;
       }
       this.pipelines.turn.call(msg.playerName);
+    });
+
+    room.onMessage("DiscardPairListMessage", (payload: any) => {
+      const msg = decodePayload<DiscardPairListMessage>(payload, DiscardPairListMessageDecoder);
+      if (!isDecodeSuccess<DiscardPairListMessage>(msg)) {
+        return;
+      }
+      this.pubsubs.discardPairListUpdated.publish(msg);
     });
 
     this.room = room;
