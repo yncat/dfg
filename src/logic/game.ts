@@ -13,7 +13,7 @@ import {
   CardListMessage,
   CardListMessageDecoder,
   DiscardPairListMessage,
-  DiscardPairMessageDecoder,
+  DiscardPairListMessageDecoder,
   decodePayload,
 } from "dfg-messages";
 import { GameState } from "./schema-def/GameState";
@@ -140,8 +140,22 @@ class GameLogicImple implements GameLogic {
       this.pipelines.turn.call(msg.playerName);
     });
 
+    room.onMessage("CardListMessage", (payload: any) => {
+      const msg = decodePayload<CardListMessage>(
+        payload,
+        CardListMessageDecoder
+      );
+      if (!isDecodeSuccess<CardListMessage>(msg)) {
+        return;
+      }
+      this.pubsubs.cardListUpdated.publish(msg);
+    });
+
     room.onMessage("DiscardPairListMessage", (payload: any) => {
-      const msg = decodePayload<DiscardPairListMessage>(payload, DiscardPairListMessageDecoder);
+      const msg = decodePayload<DiscardPairListMessage>(
+        payload,
+        DiscardPairListMessageDecoder
+      );
       if (!isDecodeSuccess<DiscardPairListMessage>(msg)) {
         return;
       }
