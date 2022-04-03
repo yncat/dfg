@@ -228,6 +228,9 @@ export class JapaneseI18nService implements I18nService {
   }
 
   public game_card(cardMark: CardMark, cardNumber: number): string {
+    if (cardMark === CardMark.JOKER) {
+      return this.game_cardMark(cardMark);
+    }
     return this.game_cardMark(cardMark) + "の" + cardNumber;
   }
 
