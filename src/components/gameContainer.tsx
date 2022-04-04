@@ -3,10 +3,15 @@ import { GlobalLogic } from "../logic/global";
 import { GameLogic } from "../logic/game";
 import { GameStateDTO } from "../logic/gameState";
 import GameInfo from "./gameInfo";
-import CardSelector from "./cardSelector"
+import CardSelector from "./cardSelector";
 import { GameState } from "../logic/schema-def/GameState";
 import { SoundEvent } from "../logic/sound";
-import { CardListMessage, encodeCardListMessage, DiscardPairListMessage, encodeDiscardPairListMessage } from "dfg-messages"
+import {
+  CardListMessage,
+  encodeCardListMessage,
+  DiscardPairListMessage,
+  encodeDiscardPairListMessage,
+} from "dfg-messages";
 
 interface Props {
   globalLogic: GlobalLogic;
@@ -19,8 +24,11 @@ export default function GameContainer(props: Props) {
     new GameStateDTO(new GameState())
   );
   const [ownerStatus, setOwnerStatus] = React.useState<boolean>(false);
-  const [cardList, setCardList] = React.useState<CardListMessage>(encodeCardListMessage([]));
-  const [discardPairList, setDiscardPairList] = React.useState<DiscardPairListMessage>(encodeDiscardPairListMessage([]));
+  const [cardList, setCardList] = React.useState<CardListMessage>(
+    encodeCardListMessage([])
+  );
+  const [discardPairList, setDiscardPairList] =
+    React.useState<DiscardPairListMessage>(encodeDiscardPairListMessage([]));
   const handlePlayerJoined = (name: string) => {
     props.globalLogic.sound.enqueueEvent(SoundEvent.JOINED);
     props.globalLogic.updateAutoRead(i18n.game_playerJoined(name));
@@ -48,9 +56,9 @@ export default function GameContainer(props: Props) {
     props.globalLogic.sound.enqueueEvent(SoundEvent.TURN);
   };
 
-  const handleTurn = (playerName:string)=>{
+  const handleTurn = (playerName: string) => {
     props.globalLogic.updateAutoRead(i18n.game_turn(playerName));
-  }
+  };
 
   React.useEffect(() => {
     const id1 = props.gameLogic.pubsubs.stateUpdate.subscribe(setGameState);
@@ -71,7 +79,10 @@ export default function GameContainer(props: Props) {
     }
     const id4 = props.gameLogic.pubsubs.playerLeft.subscribe(handlePlayerLeft);
     const id5 = props.gameLogic.pubsubs.cardListUpdated.subscribe(setCardList);
-    const id6 = props.gameLogic.pubsubs.discardPairListUpdated.subscribe(setDiscardPairList);
+    const id6 =
+      props.gameLogic.pubsubs.discardPairListUpdated.subscribe(
+        setDiscardPairList
+      );
     props.gameLogic.pipelines.initialInfo.register(handleInitialInfo);
     props.gameLogic.pipelines.cardsProvided.register(handleCardsProvided);
     props.gameLogic.pipelines.yourTurn.register(handleYourTurn);
@@ -111,7 +122,12 @@ export default function GameContainer(props: Props) {
             : i18n.currentRoom_startGame()}
         </button>
       ) : null}
-      <CardSelector globalLogic={props.globalLogic} cardList={cardList} discardPairList={discardPairList} />
+      <CardSelector
+        globalLogic={props.globalLogic}
+        cardList={cardList}
+        discardPairList={discardPairList}
+        onCardSelectionChange={props.gameLogic.selectCard.bind(props.gameLogic)}
+      />
     </div>
   );
 }

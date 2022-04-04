@@ -1,14 +1,12 @@
 import React from "react";
-import {
-  CardListMessage,
-  DiscardPairListMessage,
-} from "dfg-messages";
+import { CardListMessage, DiscardPairListMessage } from "dfg-messages";
 import { GlobalLogic } from "../logic/global";
 
 interface Props {
   globalLogic: GlobalLogic;
   cardList: CardListMessage;
   discardPairList: DiscardPairListMessage;
+  onCardSelectionChange: (index: number) => void;
 }
 
 export default function CardSelector(props: Props) {
@@ -26,6 +24,10 @@ export default function CardSelector(props: Props) {
                   type="checkbox"
                   checked={v.isChecked}
                   disabled={!v.isCheckable}
+                  onClick={(evt) => {
+                    props.onCardSelectionChange(i);
+                    evt.preventDefault();
+                  }}
                 />
               </label>
             </li>

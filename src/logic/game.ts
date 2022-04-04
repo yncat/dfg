@@ -14,6 +14,7 @@ import {
   CardListMessageDecoder,
   DiscardPairListMessage,
   DiscardPairListMessageDecoder,
+  encodeCardSelectRequest,
   decodePayload,
 } from "dfg-messages";
 import { GameState } from "./schema-def/GameState";
@@ -49,6 +50,7 @@ export interface GameLogic {
   registerRoom: (room: Colyseus.Room) => void;
   unregisterRoom: () => void;
   startGame: () => void;
+  selectCard: (index: number) => void;
 }
 
 class GameLogicImple implements GameLogic {
@@ -174,6 +176,13 @@ class GameLogicImple implements GameLogic {
       return;
     }
     this.room.send("GameStartRequest", "");
+  }
+
+  public selectCard(index: number): void {
+    if (!this.room) {
+      return;
+    }
+    this.room.send("CardSelectRequest", encodeCardSelectRequest(index));
   }
 }
 

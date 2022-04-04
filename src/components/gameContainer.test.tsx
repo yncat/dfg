@@ -1,6 +1,5 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import { ArraySchema } from "@colyseus/schema";
 import GameContainer from "./gameContainer";
 import {
   createGlobalLogicForTest,
@@ -8,7 +7,6 @@ import {
 } from "../testHelper";
 import { GameState } from "../logic/schema-def/GameState";
 import { GameStateDTO } from "../logic/gameState";
-import { Result } from "../logic/schema-def/Result";
 
 test("show game start button when the user is the game owner", () => {
   const gl = createGlobalLogicForTest();
