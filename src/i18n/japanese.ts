@@ -1,5 +1,11 @@
 import { Result, I18nService } from "./interface";
-import { RankType, RoomState, CardMark, CardMessage } from "dfg-messages";
+import {
+  RankType,
+  RoomState,
+  CardMark,
+  CardMessage,
+  DiscardPairMessage,
+} from "dfg-messages";
 
 export class JapaneseI18nService implements I18nService {
   public login_as(playerName: string): string {
@@ -176,7 +182,7 @@ export class JapaneseI18nService implements I18nService {
       );
     }
 
-    if (ret.length == 0) {
+    if (ret.length === 0) {
       return "結果なし。";
     }
 
@@ -272,6 +278,21 @@ export class JapaneseI18nService implements I18nService {
 
   public game_turn(playerName: string): string {
     return "" + playerName + "のターン。";
+  }
+
+  public game_discard(
+    playerName: string,
+    discardPair: DiscardPairMessage,
+    remainingHandCount: number
+  ): string {
+    return (
+      playerName +
+      "は、" +
+      this.game_cardList(discardPair.cardList) +
+      "をプレイ、残り" +
+      remainingHandCount +
+      "枚。"
+    );
   }
 
   public settings_heading(): string {

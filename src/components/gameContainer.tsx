@@ -11,6 +11,7 @@ import {
   encodeCardListMessage,
   DiscardPairListMessage,
   encodeDiscardPairListMessage,
+  DiscardPairMessage,
 } from "dfg-messages";
 
 interface Props {
@@ -60,6 +61,17 @@ export default function GameContainer(props: Props) {
     props.globalLogic.updateAutoRead(i18n.game_turn(playerName));
   };
 
+  const handleDiscard = (
+    playerName: string,
+    discardPair: DiscardPairMessage,
+    remainingHandCount: number
+  ) => {
+    props.globalLogic.sound.enqueueEvent(SoundEvent.DISCARD);
+    props.globalLogic.updateAutoRead(
+      i18n.game_discard(playerName, discardPair, remainingHandCount)
+    );
+  };
+
   React.useEffect(() => {
     const id1 = props.gameLogic.pubsubs.stateUpdate.subscribe(setGameState);
     const latest = props.gameLogic.pubsubs.stateUpdate.fetchLatest();
@@ -87,6 +99,7 @@ export default function GameContainer(props: Props) {
     props.gameLogic.pipelines.cardsProvided.register(handleCardsProvided);
     props.gameLogic.pipelines.yourTurn.register(handleYourTurn);
     props.gameLogic.pipelines.turn.register(handleTurn);
+    props.gameLogic.pipelines.discard.register(handleDiscard);
     return () => {
       props.gameLogic.pubsubs.stateUpdate.unsubscribe(id1);
       props.gameLogic.pubsubs.gameOwnerStatus.unsubscribe(id2);
@@ -98,6 +111,7 @@ export default function GameContainer(props: Props) {
       props.gameLogic.pipelines.cardsProvided.unregister();
       props.gameLogic.pipelines.yourTurn.unregister();
       props.gameLogic.pipelines.turn.unregister();
+      props.gameLogic.pipelines.discard.unregister();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

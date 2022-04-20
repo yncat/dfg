@@ -1,4 +1,4 @@
-import { RankType, RoomState, CardMark, CardMessage } from "dfg-messages";
+import { RankType, RoomState, CardMark, CardMessage, DiscardPairMessage } from "dfg-messages";
 
 export interface Result {
   daifugoPlayerList: string[];
@@ -57,6 +57,7 @@ export interface I18nService {
   game_cardsProvided: (playerName: string, cardCount: number) => string;
   game_yourTurn: () => string;
   game_turn: (playerName: string) => string;
+  game_discard: (playerName: string, discardPair:DiscardPairMessage, remainingHandCount:number) => string;
   settings_heading: () => string;
   settings_soundToggle: () => string;
   settings_musicToggle: () => string;
