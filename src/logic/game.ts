@@ -1,22 +1,5 @@
 import * as Colyseus from "colyseus.js";
-import {
-  PlayerJoinedMessage,
-  PlayerJoinedMessageDecoder,
-  PlayerLeftMessage,
-  PlayerLeftMessageDecoder,
-  InitialInfoMessage,
-  InitialInfoMessageDecoder,
-  CardsProvidedMessage,
-  CardsProvidedMessageDecoder,
-  TurnMessage,
-  TurnMessageDecoder,
-  CardListMessage,
-  CardListMessageDecoder,
-  DiscardPairListMessage,
-  DiscardPairListMessageDecoder,
-  encodeCardSelectRequest,
-  decodePayload,
-} from "dfg-messages";
+import * as dfgmsg from "dfg-messages";
 import { GameState } from "./schema-def/GameState";
 import { GameStateDTO } from "./gameState";
 import { Pubsub } from "./pubsub";
@@ -28,8 +11,8 @@ export interface Pubsubs {
   gameOwnerStatus: Pubsub<boolean>;
   playerJoined: Pubsub<string>;
   playerLeft: Pubsub<string>;
-  cardListUpdated: Pubsub<CardListMessage>;
-  discardPairListUpdated: Pubsub<DiscardPairListMessage>;
+  cardListUpdated: Pubsub<dfgmsg.CardListMessage>;
+  discardPairListUpdated: Pubsub<dfgmsg.DiscardPairListMessage>;
 }
 
 type InitialInfoFunc = (playerCount: number, deckCount: number) => void;
@@ -64,8 +47,8 @@ class GameLogicImple implements GameLogic {
       gameOwnerStatus: new Pubsub<boolean>(),
       playerJoined: new Pubsub<string>(),
       playerLeft: new Pubsub<string>(),
-      cardListUpdated: new Pubsub<CardListMessage>(),
-      discardPairListUpdated: new Pubsub<DiscardPairListMessage>(),
+      cardListUpdated: new Pubsub<dfgmsg.CardListMessage>(),
+      discardPairListUpdated: new Pubsub<dfgmsg.DiscardPairListMessage>(),
     };
     this.pipelines = {
       initialInfo: new Pipeline<InitialInfoFunc>(),
@@ -87,44 +70,44 @@ class GameLogicImple implements GameLogic {
     });
 
     room.onMessage("PlayerJoinedMessage", (payload: any) => {
-      const msg = decodePayload<PlayerJoinedMessage>(
+      const msg = dfgmsg.decodePayload<dfgmsg.PlayerJoinedMessage>(
         payload,
-        PlayerJoinedMessageDecoder
+        dfgmsg.PlayerJoinedMessageDecoder
       );
-      if (!isDecodeSuccess<PlayerJoinedMessage>(msg)) {
+      if (!isDecodeSuccess<dfgmsg.PlayerJoinedMessage>(msg)) {
         return;
       }
       this.pubsubs.playerJoined.publish(msg.playerName);
     });
 
     room.onMessage("PlayerLeftMessage", (payload: any) => {
-      const msg = decodePayload<PlayerLeftMessage>(
+      const msg = dfgmsg.decodePayload<dfgmsg.PlayerLeftMessage>(
         payload,
-        PlayerLeftMessageDecoder
+        dfgmsg.PlayerLeftMessageDecoder
       );
-      if (!isDecodeSuccess<PlayerLeftMessage>(msg)) {
+      if (!isDecodeSuccess<dfgmsg.PlayerLeftMessage>(msg)) {
         return;
       }
       this.pubsubs.playerLeft.publish(msg.playerName);
     });
 
     room.onMessage("InitialInfoMessage", (payload: any) => {
-      const msg = decodePayload<InitialInfoMessage>(
+      const msg = dfgmsg.decodePayload<dfgmsg.InitialInfoMessage>(
         payload,
-        InitialInfoMessageDecoder
+        dfgmsg.InitialInfoMessageDecoder
       );
-      if (!isDecodeSuccess<InitialInfoMessage>(msg)) {
+      if (!isDecodeSuccess<dfgmsg.InitialInfoMessage>(msg)) {
         return;
       }
       this.pipelines.initialInfo.call(msg.playerCount, msg.deckCount);
     });
 
     room.onMessage("CardsProvidedMessage", (payload: any) => {
-      const msg = decodePayload<CardsProvidedMessage>(
+      const msg = dfgmsg.decodePayload<dfgmsg.CardsProvidedMessage>(
         payload,
-        CardsProvidedMessageDecoder
+        dfgmsg.CardsProvidedMessageDecoder
       );
-      if (!isDecodeSuccess<CardsProvidedMessage>(msg)) {
+      if (!isDecodeSuccess<dfgmsg.CardsProvidedMessage>(msg)) {
         return;
       }
       this.pipelines.cardsProvided.call(msg.playerName, msg.cardCount);
@@ -135,30 +118,33 @@ class GameLogicImple implements GameLogic {
     });
 
     room.onMessage("TurnMessage", (payload: any) => {
-      const msg = decodePayload<TurnMessage>(payload, TurnMessageDecoder);
-      if (!isDecodeSuccess<TurnMessage>(msg)) {
+      const msg = dfgmsg.decodePayload<dfgmsg.TurnMessage>(
+        payload,
+        dfgmsg.TurnMessageDecoder
+      );
+      if (!isDecodeSuccess<dfgmsg.TurnMessage>(msg)) {
         return;
       }
       this.pipelines.turn.call(msg.playerName);
     });
 
     room.onMessage("CardListMessage", (payload: any) => {
-      const msg = decodePayload<CardListMessage>(
+      const msg = dfgmsg.decodePayload<dfgmsg.CardListMessage>(
         payload,
-        CardListMessageDecoder
+        dfgmsg.CardListMessageDecoder
       );
-      if (!isDecodeSuccess<CardListMessage>(msg)) {
+      if (!isDecodeSuccess<dfgmsg.CardListMessage>(msg)) {
         return;
       }
       this.pubsubs.cardListUpdated.publish(msg);
     });
 
     room.onMessage("DiscardPairListMessage", (payload: any) => {
-      const msg = decodePayload<DiscardPairListMessage>(
+      const msg = dfgmsg.decodePayload<dfgmsg.DiscardPairListMessage>(
         payload,
-        DiscardPairListMessageDecoder
+        dfgmsg.DiscardPairListMessageDecoder
       );
-      if (!isDecodeSuccess<DiscardPairListMessage>(msg)) {
+      if (!isDecodeSuccess<dfgmsg.DiscardPairListMessage>(msg)) {
         return;
       }
       this.pubsubs.discardPairListUpdated.publish(msg);
@@ -182,7 +168,7 @@ class GameLogicImple implements GameLogic {
     if (!this.room) {
       return;
     }
-    this.room.send("CardSelectRequest", encodeCardSelectRequest(index));
+    this.room.send("CardSelectRequest", dfgmsg.encodeCardSelectRequest(index));
   }
 }
 
