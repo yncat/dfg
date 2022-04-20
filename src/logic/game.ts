@@ -19,12 +19,18 @@ type InitialInfoFunc = (playerCount: number, deckCount: number) => void;
 type CardsProvidedFunc = (playerName: string, cardCount: number) => void;
 type YourTurnFunc = () => void;
 type TurnFunc = (playerName: string) => void;
+type DiscardFunc = (
+  playerName: string,
+  discardPair: dfgmsg.DiscardPairMessage,
+  remainingHandCount: number
+) => void;
 
 export interface Pipelines {
   initialInfo: Pipeline<InitialInfoFunc>;
   cardsProvided: Pipeline<CardsProvidedFunc>;
   yourTurn: Pipeline<YourTurnFunc>;
   turn: Pipeline<TurnFunc>;
+  discard: Pipeline<DiscardFunc>;
 }
 
 export interface GameLogic {
@@ -55,6 +61,7 @@ class GameLogicImple implements GameLogic {
       cardsProvided: new Pipeline<CardsProvidedFunc>(),
       yourTurn: new Pipeline<YourTurnFunc>(),
       turn: new Pipeline<TurnFunc>(),
+      discard: new Pipeline<DiscardFunc>(),
     };
   }
 
@@ -148,6 +155,21 @@ class GameLogicImple implements GameLogic {
         return;
       }
       this.pubsubs.discardPairListUpdated.publish(msg);
+    });
+
+    room.onMessage("DiscardMessage", (payload: any) => {
+      const msg = dfgmsg.decodePayload<dfgmsg.DiscardMessage>(
+        payload,
+        dfgmsg.DiscardMessageDecoder
+      );
+      if (!isDecodeSuccess<dfgmsg.DiscardMessage>(msg)) {
+        return;
+      }
+      this.pipelines.discard.call(
+        msg.playerName,
+        msg.discardPair,
+        msg.remainingHandCount
+      );
     });
 
     this.room = room;
