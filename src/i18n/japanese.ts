@@ -222,6 +222,7 @@ export class JapaneseI18nService implements I18nService {
       case CardMark.SPADES:
         return "スペード";
       case CardMark.JOKER:
+      case CardMark.WILD:
         return "ジョーカー";
     }
     return "";
