@@ -40,6 +40,7 @@ export interface GameLogic {
   unregisterRoom: () => void;
   startGame: () => void;
   selectCard: (index: number) => void;
+  discard: (index: number) => void;
 }
 
 class GameLogicImple implements GameLogic {
@@ -191,6 +192,13 @@ class GameLogicImple implements GameLogic {
       return;
     }
     this.room.send("CardSelectRequest", dfgmsg.encodeCardSelectRequest(index));
+  }
+
+  public discard(index: number): void {
+    if (!this.room) {
+      return;
+    }
+    this.room.send("DiscardRequest", dfgmsg.encodeDiscardRequest(index));
   }
 }
 

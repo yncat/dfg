@@ -7,6 +7,7 @@ interface Props {
   cardList: CardListMessage;
   discardPairList: DiscardPairListMessage;
   onCardSelectionChange: (index: number) => void;
+  onDiscard: (index: number) => void;
 }
 
 export default function CardSelector(props: Props) {
@@ -37,7 +38,13 @@ export default function CardSelector(props: Props) {
       <ul>
         {props.discardPairList.discardPairList.map((v, i) => {
           return (
-            <button key={i} type="button">
+            <button
+              key={i}
+              type="button"
+              onClick={(evt) => {
+                props.onDiscard(i);
+              }}
+            >
               {i18n.game_cardList(v.cardList)}
             </button>
           );
