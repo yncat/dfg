@@ -12,6 +12,7 @@ export const SoundEvent = {
   SHUFFLE: 8,
   GIVE: 9,
   DISCARD: 10,
+  RESET: 10,
 } as const;
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export type SoundEvent = typeof SoundEvent[keyof typeof SoundEvent];
@@ -44,6 +45,7 @@ const soundEventDefinitionMap: Map<SoundEvent, SoundEventDefinition> = new Map<
   [SoundEvent.SHUFFLE, { soundWithoutExt: "shuffle", waitTime: 700 }],
   [SoundEvent.GIVE, { soundWithoutExt: "give", waitTime: 2500 }],
   [SoundEvent.DISCARD, { soundWithoutExt: "discard", waitTime: 300 }],
+  [SoundEvent.RESET, { soundWithoutExt: "reset", waitTime: 1000 }],
 ]);
 
 export class SoundLogicImple implements SoundLogic {
