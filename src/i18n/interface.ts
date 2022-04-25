@@ -58,6 +58,7 @@ export interface I18nService {
   game_yourTurn: () => string;
   game_turn: (playerName: string) => string;
   game_discard: (playerName: string, discardPair:DiscardPairMessage, remainingHandCount:number) => string;
+  game_nagare: () => string;
   settings_heading: () => string;
   settings_soundToggle: () => string;
   settings_musicToggle: () => string;

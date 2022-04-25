@@ -295,6 +295,10 @@ export class JapaneseI18nService implements I18nService {
     );
   }
 
+  public game_nagare() {
+    return "場のカードが流れました。";
+  }
+
   public settings_heading(): string {
     return "環境設定";
   }

@@ -24,6 +24,7 @@ type DiscardFunc = (
   discardPair: dfgmsg.DiscardPairMessage,
   remainingHandCount: number
 ) => void;
+type NagareFunc = () => void;
 
 export interface Pipelines {
   initialInfo: Pipeline<InitialInfoFunc>;
@@ -31,6 +32,7 @@ export interface Pipelines {
   yourTurn: Pipeline<YourTurnFunc>;
   turn: Pipeline<TurnFunc>;
   discard: Pipeline<DiscardFunc>;
+  nagare: Pipeline<NagareFunc>;
 }
 
 export interface GameLogic {
@@ -63,6 +65,7 @@ class GameLogicImple implements GameLogic {
       yourTurn: new Pipeline<YourTurnFunc>(),
       turn: new Pipeline<TurnFunc>(),
       discard: new Pipeline<DiscardFunc>(),
+      nagare: new Pipeline<NagareFunc>(),
     };
   }
 
@@ -171,6 +174,10 @@ class GameLogicImple implements GameLogic {
         msg.discardPair,
         msg.remainingHandCount
       );
+    });
+
+    room.onMessage("NagareMessage", (payload: any) => {
+      this.pipelines.nagare.call();
     });
 
     this.room = room;
