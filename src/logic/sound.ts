@@ -12,7 +12,7 @@ export const SoundEvent = {
   SHUFFLE: 8,
   GIVE: 9,
   DISCARD: 10,
-  RESET: 10,
+  RESET: 11,
 } as const;
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export type SoundEvent = typeof SoundEvent[keyof typeof SoundEvent];
