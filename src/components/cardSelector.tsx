@@ -8,6 +8,8 @@ interface Props {
   discardPairList: DiscardPairListMessage;
   onCardSelectionChange: (index: number) => void;
   onDiscard: (index: number) => void;
+  onPass: () => void;
+  isPassable: boolean;
 }
 
 export default function CardSelector(props: Props) {
@@ -50,6 +52,15 @@ export default function CardSelector(props: Props) {
           );
         })}
       </ul>
+      <button
+        type="button"
+        onClick={(e) => {
+          props.onPass();
+        }}
+        disabled={!props.isPassable}
+      >
+        {i18n.game_pass()}
+      </button>
     </div>
   );
 }

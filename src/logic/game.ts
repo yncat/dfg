@@ -43,6 +43,7 @@ export interface GameLogic {
   startGame: () => void;
   selectCard: (index: number) => void;
   discard: (index: number) => void;
+  pass:()=>void;
 }
 
 class GameLogicImple implements GameLogic {
@@ -206,6 +207,13 @@ class GameLogicImple implements GameLogic {
       return;
     }
     this.room.send("DiscardRequest", dfgmsg.encodeDiscardRequest(index));
+  }
+
+  public pass():void{
+    if(!this.room){
+      return;
+    }
+    this.room.send("PassRequest", "");
   }
 }
 

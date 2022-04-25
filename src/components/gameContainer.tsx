@@ -149,6 +149,8 @@ export default function GameContainer(props: Props) {
         discardPairList={discardPairList}
         onCardSelectionChange={props.gameLogic.selectCard.bind(props.gameLogic)}
         onDiscard={props.gameLogic.discard.bind(props.gameLogic)}
+        onPass={props.gameLogic.pass.bind(props.gameLogic)}
+        isPassable={true}
       />
     </div>
   );

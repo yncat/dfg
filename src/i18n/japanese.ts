@@ -258,6 +258,10 @@ export class JapaneseI18nService implements I18nService {
     return name + "が退室しました。";
   }
 
+  public game_pass() {
+    return "パス";
+  }
+
   public game_initialInfo(playerCount: number, deckCount: number): string {
     return (
       "" +
