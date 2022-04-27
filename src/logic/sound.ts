@@ -13,6 +13,7 @@ export const SoundEvent = {
   GIVE: 9,
   DISCARD: 10,
   RESET: 11,
+  PASS: 12,
 } as const;
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export type SoundEvent = typeof SoundEvent[keyof typeof SoundEvent];
@@ -46,6 +47,7 @@ const soundEventDefinitionMap: Map<SoundEvent, SoundEventDefinition> = new Map<
   [SoundEvent.GIVE, { soundWithoutExt: "give", waitTime: 2500 }],
   [SoundEvent.DISCARD, { soundWithoutExt: "discard", waitTime: 300 }],
   [SoundEvent.RESET, { soundWithoutExt: "reset", waitTime: 1000 }],
+  [SoundEvent.PASS, { soundWithoutExt: "pass", waitTime: 300 }],
 ]);
 
 export class SoundLogicImple implements SoundLogic {
