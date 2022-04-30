@@ -28,6 +28,11 @@ type NagareFunc = () => void;
 type PassFunc = (playerName: string) => void;
 type InvertFunc = (inverted: boolean) => void;
 type KakumeiFunc = () => void;
+type RankChangedFunc = (
+  playerName: string,
+  before: dfgmsg.RankType,
+  after: dfgmsg.RankType
+) => void;
 
 export interface Pipelines {
   initialInfo: Pipeline<InitialInfoFunc>;
@@ -39,6 +44,7 @@ export interface Pipelines {
   pass: Pipeline<PassFunc>;
   invert: Pipeline<InvertFunc>;
   kakumei: Pipeline<KakumeiFunc>;
+  rankChanged: Pipeline<RankChangedFunc>;
 }
 
 export interface GameLogic {
@@ -76,6 +82,7 @@ class GameLogicImple implements GameLogic {
       pass: new Pipeline<PassFunc>(),
       invert: new Pipeline<InvertFunc>(),
       kakumei: new Pipeline<KakumeiFunc>(),
+      rankChanged: new Pipeline<RankChangedFunc>(),
     };
   }
 
@@ -216,6 +223,18 @@ class GameLogicImple implements GameLogic {
 
     room.onMessage("KakumeiMessage", (payload: any) => {
       this.pipelines.kakumei.call();
+    });
+
+    room.onMessage("PlayerRankChangedMessage", (payload: any) => {
+      const msg = dfgmsg.decodePayload<dfgmsg.PlayerRankChangedMessage>(
+        payload,
+        dfgmsg.PlayerRankChangedMessageDecoder
+      );
+      if (!isDecodeSuccess<dfgmsg.PlayerRankChangedMessage>(msg)) {
+        return;
+      }
+
+      this.pipelines.rankChanged.call(msg.playerName, msg.before, msg.after);
     });
 
     this.room = room;

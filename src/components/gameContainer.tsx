@@ -12,6 +12,7 @@ import {
   DiscardPairListMessage,
   encodeDiscardPairListMessage,
   DiscardPairMessage,
+  RankType,
 } from "dfg-messages";
 
 interface Props {
@@ -95,9 +96,42 @@ export default function GameContainer(props: Props) {
     props.globalLogic.updateAutoRead(i18n.game_strengthInverted(inverted));
   };
 
-  const handleKakumei=()=>{
+  const handleKakumei = () => {
     props.globalLogic.sound.enqueueEvent(SoundEvent.KAKUMEI);
     props.globalLogic.updateAutoRead(i18n.game_kakumei());
+  };
+
+  const handleRankChanged = (
+    playerName: string,
+    before: RankType,
+    after: RankType
+  ) => {
+    switch (after) {
+      case RankType.DAIFUGO:
+        props.globalLogic.sound.enqueueEvent(SoundEvent.DAIFUGO);
+        break;
+      case RankType.FUGO:
+        props.globalLogic.sound.enqueueEvent(SoundEvent.FUGO);
+        break;
+      case RankType.HEIMIN:
+        props.globalLogic.sound.enqueueEvent(SoundEvent.HEIMIN);
+        break;
+      case RankType.HINMIN:
+        props.globalLogic.sound.enqueueEvent(SoundEvent.HINMIN);
+        break;
+      case RankType.DAIHINMIN:
+        props.globalLogic.sound.enqueueEvent(SoundEvent.DAIHINMIN);
+        break;
+      default:
+        break;
+    }
+    let msg: string;
+    if (before === RankType.UNDETERMINED) {
+      msg = i18n.game_ranked(playerName, after);
+    } else {
+      msg = i18n.game_rankChanged(playerName, before, after);
+    }
+    props.globalLogic.updateAutoRead(msg);
   };
 
   React.useEffect(() => {
@@ -132,6 +166,7 @@ export default function GameContainer(props: Props) {
     props.gameLogic.pipelines.pass.register(handlePass);
     props.gameLogic.pipelines.invert.register(handleInvert);
     props.gameLogic.pipelines.kakumei.register(handleKakumei);
+    props.gameLogic.pipelines.rankChanged.register(handleRankChanged);
     return () => {
       props.gameLogic.pubsubs.stateUpdate.unsubscribe(id1);
       props.gameLogic.pubsubs.gameOwnerStatus.unsubscribe(id2);
@@ -148,6 +183,7 @@ export default function GameContainer(props: Props) {
       props.gameLogic.pipelines.pass.unregister();
       props.gameLogic.pipelines.invert.unregister();
       props.gameLogic.pipelines.kakumei.unregister();
+      props.gameLogic.pipelines.rankChanged.unregister();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

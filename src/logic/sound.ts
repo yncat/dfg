@@ -17,6 +17,11 @@ export const SoundEvent = {
   BACK: 13,
   UNBACK: 14,
   KAKUMEI: 15,
+  DAIFUGO: 16,
+  FUGO: 17,
+  HEIMIN: 18,
+  HINMIN: 19,
+  DAIHINMIN: 20,
 } as const;
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export type SoundEvent = typeof SoundEvent[keyof typeof SoundEvent];
@@ -54,6 +59,11 @@ const soundEventDefinitionMap: Map<SoundEvent, SoundEventDefinition> = new Map<
   [SoundEvent.BACK, { soundWithoutExt: "back", waitTime: 600 }],
   [SoundEvent.UNBACK, { soundWithoutExt: "unback", waitTime: 600 }],
   [SoundEvent.KAKUMEI, { soundWithoutExt: "kakumei", waitTime: 700 }],
+  [SoundEvent.DAIFUGO, { soundWithoutExt: "daifugo", waitTime: 2500 }],
+  [SoundEvent.FUGO, { soundWithoutExt: "fugo", waitTime: 1500 }],
+  [SoundEvent.HEIMIN, { soundWithoutExt: "heimin", waitTime: 1000 }],
+  [SoundEvent.HINMIN, { soundWithoutExt: "hinmin", waitTime: 700 }],
+  [SoundEvent.DAIHINMIN, { soundWithoutExt: "daihinmin", waitTime: 3500 }],
 ]);
 
 export class SoundLogicImple implements SoundLogic {

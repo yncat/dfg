@@ -309,12 +309,33 @@ export class JapaneseI18nService implements I18nService {
 
   public game_strengthInverted(inverted: boolean): string {
     return inverted
-      ? "カードの強さが逆になった！"
-      : "カードの強さが元に戻った！";
+      ? "カードの強さが逆になりました。"
+      : "カードの強さが元に戻りました。";
   }
 
   public game_kakumei(): string {
     return "革命！";
+  }
+
+  public game_ranked(playerName: string, rankType: RankType): string {
+    return (
+      playerName + "は、" + this.game_rankType(rankType) + "になりました！"
+    );
+  }
+
+  public game_rankChanged(
+    playerName: string,
+    before: RankType,
+    after: RankType
+  ): string {
+    return (
+      playerName +
+      "は、" +
+      this.game_rankType(before) +
+      "から" +
+      this.game_rankType(after) +
+      "になりました！"
+    );
   }
 
   public settings_heading(): string {

@@ -72,7 +72,13 @@ export interface I18nService {
   ) => string;
   game_nagare: () => string;
   game_strengthInverted: (inverted: boolean) => string;
-  game_kakumei:()=>string;
+  game_kakumei: () => string;
+  game_ranked: (playerName: string, rankType: RankType) => string;
+  game_rankChanged: (
+    playerName: string,
+    before: RankType,
+    after: RankType
+  ) => string;
   settings_heading: () => string;
   settings_soundToggle: () => string;
   settings_musicToggle: () => string;
