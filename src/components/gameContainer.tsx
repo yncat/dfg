@@ -95,6 +95,11 @@ export default function GameContainer(props: Props) {
     props.globalLogic.updateAutoRead(i18n.game_strengthInverted(inverted));
   };
 
+  const handleKakumei=()=>{
+    props.globalLogic.sound.enqueueEvent(SoundEvent.KAKUMEI);
+    props.globalLogic.updateAutoRead(i18n.game_kakumei());
+  };
+
   React.useEffect(() => {
     const id1 = props.gameLogic.pubsubs.stateUpdate.subscribe(setGameState);
     const latest = props.gameLogic.pubsubs.stateUpdate.fetchLatest();
@@ -126,6 +131,7 @@ export default function GameContainer(props: Props) {
     props.gameLogic.pipelines.nagare.register(handleNagare);
     props.gameLogic.pipelines.pass.register(handlePass);
     props.gameLogic.pipelines.invert.register(handleInvert);
+    props.gameLogic.pipelines.kakumei.register(handleKakumei);
     return () => {
       props.gameLogic.pubsubs.stateUpdate.unsubscribe(id1);
       props.gameLogic.pubsubs.gameOwnerStatus.unsubscribe(id2);
@@ -141,6 +147,7 @@ export default function GameContainer(props: Props) {
       props.gameLogic.pipelines.nagare.unregister();
       props.gameLogic.pipelines.pass.unregister();
       props.gameLogic.pipelines.invert.unregister();
+      props.gameLogic.pipelines.kakumei.unregister();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

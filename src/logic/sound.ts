@@ -16,6 +16,7 @@ export const SoundEvent = {
   PASS: 12,
   BACK: 13,
   UNBACK: 14,
+  KAKUMEI: 15,
 } as const;
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export type SoundEvent = typeof SoundEvent[keyof typeof SoundEvent];
@@ -52,6 +53,7 @@ const soundEventDefinitionMap: Map<SoundEvent, SoundEventDefinition> = new Map<
   [SoundEvent.PASS, { soundWithoutExt: "pass", waitTime: 300 }],
   [SoundEvent.BACK, { soundWithoutExt: "back", waitTime: 600 }],
   [SoundEvent.UNBACK, { soundWithoutExt: "unback", waitTime: 600 }],
+  [SoundEvent.KAKUMEI, { soundWithoutExt: "kakumei", waitTime: 700 }],
 ]);
 
 export class SoundLogicImple implements SoundLogic {

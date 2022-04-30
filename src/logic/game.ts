@@ -27,6 +27,7 @@ type DiscardFunc = (
 type NagareFunc = () => void;
 type PassFunc = (playerName: string) => void;
 type InvertFunc = (inverted: boolean) => void;
+type KakumeiFunc = () => void;
 
 export interface Pipelines {
   initialInfo: Pipeline<InitialInfoFunc>;
@@ -37,6 +38,7 @@ export interface Pipelines {
   nagare: Pipeline<NagareFunc>;
   pass: Pipeline<PassFunc>;
   invert: Pipeline<InvertFunc>;
+  kakumei: Pipeline<KakumeiFunc>;
 }
 
 export interface GameLogic {
@@ -73,6 +75,7 @@ class GameLogicImple implements GameLogic {
       nagare: new Pipeline<NagareFunc>(),
       pass: new Pipeline<PassFunc>(),
       invert: new Pipeline<InvertFunc>(),
+      kakumei: new Pipeline<KakumeiFunc>(),
     };
   }
 
@@ -209,6 +212,10 @@ class GameLogicImple implements GameLogic {
       }
 
       this.pipelines.invert.call(msg.isStrengthInverted);
+    });
+
+    room.onMessage("KakumeiMessage", (payload: any) => {
+      this.pipelines.kakumei.call();
     });
 
     this.room = room;

@@ -313,6 +313,10 @@ export class JapaneseI18nService implements I18nService {
       : "カードの強さが元に戻った！";
   }
 
+  public game_kakumei(): string {
+    return "革命！";
+  }
+
   public settings_heading(): string {
     return "環境設定";
   }

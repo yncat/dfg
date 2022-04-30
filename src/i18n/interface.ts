@@ -72,6 +72,7 @@ export interface I18nService {
   ) => string;
   game_nagare: () => string;
   game_strengthInverted: (inverted: boolean) => string;
+  game_kakumei:()=>string;
   settings_heading: () => string;
   settings_soundToggle: () => string;
   settings_musicToggle: () => string;
