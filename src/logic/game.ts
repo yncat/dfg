@@ -26,6 +26,7 @@ type DiscardFunc = (
 ) => void;
 type NagareFunc = () => void;
 type PassFunc = (playerName: string) => void;
+type InvertFunc = (inverted: boolean) => void;
 
 export interface Pipelines {
   initialInfo: Pipeline<InitialInfoFunc>;
@@ -35,6 +36,7 @@ export interface Pipelines {
   discard: Pipeline<DiscardFunc>;
   nagare: Pipeline<NagareFunc>;
   pass: Pipeline<PassFunc>;
+  invert: Pipeline<InvertFunc>;
 }
 
 export interface GameLogic {
@@ -70,6 +72,7 @@ class GameLogicImple implements GameLogic {
       discard: new Pipeline<DiscardFunc>(),
       nagare: new Pipeline<NagareFunc>(),
       pass: new Pipeline<PassFunc>(),
+      invert: new Pipeline<InvertFunc>(),
     };
   }
 
@@ -194,6 +197,18 @@ class GameLogicImple implements GameLogic {
       }
 
       this.pipelines.pass.call(msg.playerName);
+    });
+
+    room.onMessage("StrengthInversionMessage", (payload: any) => {
+      const msg = dfgmsg.decodePayload<dfgmsg.StrengthInversionMessage>(
+        payload,
+        dfgmsg.StrengthInversionMessageDecoder
+      );
+      if (!isDecodeSuccess<dfgmsg.StrengthInversionMessage>(msg)) {
+        return;
+      }
+
+      this.pipelines.invert.call(msg.isStrengthInverted);
     });
 
     this.room = room;

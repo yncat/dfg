@@ -307,6 +307,12 @@ export class JapaneseI18nService implements I18nService {
     return "場のカードが流れました。";
   }
 
+  public game_strengthInverted(inverted: boolean): string {
+    return inverted
+      ? "カードの強さが逆になった！"
+      : "カードの強さが元に戻った！";
+  }
+
   public settings_heading(): string {
     return "環境設定";
   }
