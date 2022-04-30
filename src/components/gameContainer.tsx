@@ -193,6 +193,14 @@ export default function GameContainer(props: Props) {
   const startButtonDisabled = gameState.playerCount <= 1;
   return (
     <div>
+      <button
+        type="button"
+        onClick={(e) => {
+          props.globalLogic.leaveGameRoom();
+        }}
+      >
+        {i18n.currentRoom_leave()}
+      </button>
       <GameInfo
         globalLogic={props.globalLogic}
         gameState={gameState}

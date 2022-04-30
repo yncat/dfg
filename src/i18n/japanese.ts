@@ -197,6 +197,14 @@ export class JapaneseI18nService implements I18nService {
     return "一人ではゲームを開始できません";
   }
 
+  public currentRoom_leave(): string {
+    return "ルームを退室";
+  }
+
+  public currentRoom_left(): string {
+    return "ルームから退室しました。";
+  }
+
   public cardSelector_heading(): string {
     return "自分の手札";
   }

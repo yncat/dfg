@@ -39,6 +39,7 @@ export interface GlobalLogic {
   requestRoomListUpdate: () => void;
   createGameRoom: () => void;
   joinGameRoomByID: (roomID: string) => void;
+  leaveGameRoom: () => void;
   getRoomInstance: (lobbyOrRoom: "lobby" | "room") => Colyseus.Room | null;
   updateAutoRead: (updateString: string) => void;
   lobbyChatMessagePipeline: Pipeline<ChatMessagePipelineFunc>;
@@ -224,6 +225,15 @@ export class GlobalLogicImple implements GlobalLogic {
     // game specific actions are handled by GameLogic.
     // Register the room using the pipeline.
     this.roomRegistrationPipeline.call(grm);
+  }
+
+  public leaveGameRoom() {
+    if (!this.gameRoom) {
+      return;
+    }
+
+    this.gameRoom.leave();
+    this.isInRoomPubsub.publish(false);
   }
 
   public getRoomInstance(lobbyOrRoom: "lobby" | "room"): Colyseus.Room | null {
