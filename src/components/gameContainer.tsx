@@ -141,7 +141,7 @@ export default function GameContainer(props: Props) {
         gameState={gameState}
         isOwner={ownerStatus}
       />
-      {ownerStatus === true ? (
+      {!gameState.isInGame && ownerStatus === true ? (
         <button
           type="button"
           disabled={startButtonDisabled}
