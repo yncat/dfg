@@ -26,6 +26,7 @@ export default function GameContainer(props: Props) {
     new GameStateDTO(new GameState())
   );
   const [ownerStatus, setOwnerStatus] = React.useState<boolean>(false);
+  const [isMyTurn, setIsMyTurn] = React.useState<boolean>(false);
   const [cardList, setCardList] = React.useState<CardListMessage>(
     encodeCardListMessage([])
   );
@@ -57,9 +58,10 @@ export default function GameContainer(props: Props) {
     );
   };
 
-  const handleYourTurn = () => {
+  const handleMyTurn = () => {
     props.globalLogic.updateAutoRead(i18n.game_yourTurn());
     props.globalLogic.sound.enqueueEvent(SoundEvent.TURN);
+    setIsMyTurn(true);
   };
 
   const handleTurn = (playerName: string) => {
@@ -71,6 +73,7 @@ export default function GameContainer(props: Props) {
     discardPair: DiscardPairMessage,
     remainingHandCount: number
   ) => {
+    setIsMyTurn(false);
     props.globalLogic.sound.enqueueEvent(SoundEvent.DISCARD);
     props.globalLogic.updateAutoRead(
       i18n.game_discard(playerName, discardPair, remainingHandCount)
@@ -159,7 +162,7 @@ export default function GameContainer(props: Props) {
       );
     props.gameLogic.pipelines.initialInfo.register(handleInitialInfo);
     props.gameLogic.pipelines.cardsProvided.register(handleCardsProvided);
-    props.gameLogic.pipelines.yourTurn.register(handleYourTurn);
+    props.gameLogic.pipelines.yourTurn.register(handleMyTurn);
     props.gameLogic.pipelines.turn.register(handleTurn);
     props.gameLogic.pipelines.discard.register(handleDiscard);
     props.gameLogic.pipelines.nagare.register(handleNagare);
@@ -215,7 +218,7 @@ export default function GameContainer(props: Props) {
         onCardSelectionChange={props.gameLogic.selectCard.bind(props.gameLogic)}
         onDiscard={props.gameLogic.discard.bind(props.gameLogic)}
         onPass={props.gameLogic.pass.bind(props.gameLogic)}
-        isPassable={true}
+        isPassable={isMyTurn}
       />
     </div>
   );

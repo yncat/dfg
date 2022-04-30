@@ -52,15 +52,16 @@ export default function CardSelector(props: Props) {
           );
         })}
       </ul>
-      <button
-        type="button"
-        onClick={(e) => {
-          props.onPass();
-        }}
-        disabled={!props.isPassable}
-      >
-        {i18n.game_pass()}
-      </button>
+      {props.isPassable ? (
+        <button
+          type="button"
+          onClick={(e) => {
+            props.onPass();
+          }}
+        >
+          {i18n.game_pass()}
+        </button>
+      ) : null}
     </div>
   );
 }
