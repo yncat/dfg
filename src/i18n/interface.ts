@@ -60,6 +60,7 @@ export interface I18nService {
   game_playerJoined: (name: string) => string;
   game_playerLeft: (name: string) => string;
   game_pass: () => string;
+  game_passMessage:(playerName:string)=>string;
   game_initialInfo: (playerCount: number, deckCount: number) => string;
   game_cardsProvided: (playerName: string, cardCount: number) => string;
   game_yourTurn: () => string;

@@ -25,6 +25,7 @@ type DiscardFunc = (
   remainingHandCount: number
 ) => void;
 type NagareFunc = () => void;
+type PassFunc = (playerName: string) => void;
 
 export interface Pipelines {
   initialInfo: Pipeline<InitialInfoFunc>;
@@ -33,6 +34,7 @@ export interface Pipelines {
   turn: Pipeline<TurnFunc>;
   discard: Pipeline<DiscardFunc>;
   nagare: Pipeline<NagareFunc>;
+  pass: Pipeline<PassFunc>;
 }
 
 export interface GameLogic {
@@ -43,7 +45,7 @@ export interface GameLogic {
   startGame: () => void;
   selectCard: (index: number) => void;
   discard: (index: number) => void;
-  pass:()=>void;
+  pass: () => void;
 }
 
 class GameLogicImple implements GameLogic {
@@ -67,6 +69,7 @@ class GameLogicImple implements GameLogic {
       turn: new Pipeline<TurnFunc>(),
       discard: new Pipeline<DiscardFunc>(),
       nagare: new Pipeline<NagareFunc>(),
+      pass: new Pipeline<PassFunc>(),
     };
   }
 
@@ -181,6 +184,18 @@ class GameLogicImple implements GameLogic {
       this.pipelines.nagare.call();
     });
 
+    room.onMessage("PassMessage", (payload: any) => {
+      const msg = dfgmsg.decodePayload<dfgmsg.PassMessage>(
+        payload,
+        dfgmsg.PassMessageDecoder
+      );
+      if (!isDecodeSuccess<dfgmsg.PassMessage>(msg)) {
+        return;
+      }
+
+      this.pipelines.pass.call(msg.playerName);
+    });
+
     this.room = room;
   }
 
@@ -209,8 +224,8 @@ class GameLogicImple implements GameLogic {
     this.room.send("DiscardRequest", dfgmsg.encodeDiscardRequest(index));
   }
 
-  public pass():void{
-    if(!this.room){
+  public pass(): void {
+    if (!this.room) {
       return;
     }
     this.room.send("PassRequest", "");

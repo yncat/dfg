@@ -30,14 +30,17 @@ export default function GameContainer(props: Props) {
   );
   const [discardPairList, setDiscardPairList] =
     React.useState<DiscardPairListMessage>(encodeDiscardPairListMessage([]));
+
   const handlePlayerJoined = (name: string) => {
     props.globalLogic.sound.enqueueEvent(SoundEvent.JOINED);
     props.globalLogic.updateAutoRead(i18n.game_playerJoined(name));
   };
+
   const handlePlayerLeft = (name: string) => {
     props.globalLogic.sound.enqueueEvent(SoundEvent.LEFT);
     props.globalLogic.updateAutoRead(i18n.game_playerLeft(name));
   };
+
   const handleInitialInfo = (playerCount: number, deckCount: number) => {
     props.globalLogic.sound.enqueueEvent(SoundEvent.START);
     props.globalLogic.sound.enqueueEvent(SoundEvent.SHUFFLE);
@@ -46,6 +49,7 @@ export default function GameContainer(props: Props) {
       i18n.game_initialInfo(playerCount, deckCount)
     );
   };
+
   const handleCardsProvided = (playerName: string, cardCount: number) => {
     props.globalLogic.updateAutoRead(
       i18n.game_cardsProvided(playerName, cardCount)
@@ -77,6 +81,11 @@ export default function GameContainer(props: Props) {
     props.globalLogic.updateAutoRead(i18n.game_nagare());
   };
 
+  const handlePass = (playerName: string) => {
+    props.globalLogic.sound.enqueueEvent(SoundEvent.PASS);
+    props.globalLogic.updateAutoRead(i18n.game_passMessage(playerName));
+  };
+
   React.useEffect(() => {
     const id1 = props.gameLogic.pubsubs.stateUpdate.subscribe(setGameState);
     const latest = props.gameLogic.pubsubs.stateUpdate.fetchLatest();
@@ -106,6 +115,7 @@ export default function GameContainer(props: Props) {
     props.gameLogic.pipelines.turn.register(handleTurn);
     props.gameLogic.pipelines.discard.register(handleDiscard);
     props.gameLogic.pipelines.nagare.register(handleNagare);
+    props.gameLogic.pipelines.pass.register(handlePass);
     return () => {
       props.gameLogic.pubsubs.stateUpdate.unsubscribe(id1);
       props.gameLogic.pubsubs.gameOwnerStatus.unsubscribe(id2);
@@ -119,6 +129,7 @@ export default function GameContainer(props: Props) {
       props.gameLogic.pipelines.turn.unregister();
       props.gameLogic.pipelines.discard.unregister();
       props.gameLogic.pipelines.nagare.unregister();
+      props.gameLogic.pipelines.pass.unregister();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
