@@ -81,6 +81,7 @@ export interface I18nService {
     before: RankType,
     after: RankType
   ) => string;
+  gameLog_heading:()=>string;
   settings_heading: () => string;
   settings_soundToggle: () => string;
   settings_musicToggle: () => string;

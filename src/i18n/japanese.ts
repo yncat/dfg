@@ -346,6 +346,10 @@ export class JapaneseI18nService implements I18nService {
     );
   }
 
+  public gameLog_heading(): string {
+    return "最新のログ";
+  }
+
   public settings_heading(): string {
     return "環境設定";
   }

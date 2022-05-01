@@ -4,6 +4,7 @@ import { GameLogic } from "../logic/game";
 import { GameStateDTO } from "../logic/gameState";
 import GameInfo from "./gameInfo";
 import CardSelector from "./cardSelector";
+import Log from "./log";
 import { GameState } from "../logic/schema-def/GameState";
 import { SoundEvent } from "../logic/sound";
 import {
@@ -32,40 +33,58 @@ export default function GameContainer(props: Props) {
   );
   const [discardPairList, setDiscardPairList] =
     React.useState<DiscardPairListMessage>(encodeDiscardPairListMessage([]));
+  const [log, setLog] = React.useState<Array<string>>([]);
+  const updateLog = (content: string) => {
+    setLog((prev: Array<string>) => {
+      let newlog = [content, ...prev];
+      if (newlog.length > 10) {
+        newlog = newlog.slice(0, 10);
+      }
+      return newlog;
+    });
+  };
 
   const handlePlayerJoined = (name: string) => {
     props.globalLogic.sound.enqueueEvent(SoundEvent.JOINED);
-    props.globalLogic.updateAutoRead(i18n.game_playerJoined(name));
+    const msg = i18n.game_playerJoined(name);
+    props.globalLogic.updateAutoRead(msg);
+    updateLog(msg);
   };
 
   const handlePlayerLeft = (name: string) => {
     props.globalLogic.sound.enqueueEvent(SoundEvent.LEFT);
-    props.globalLogic.updateAutoRead(i18n.game_playerLeft(name));
+    const msg = i18n.game_playerLeft(name);
+    props.globalLogic.updateAutoRead(msg);
+    updateLog(msg);
   };
 
   const handleInitialInfo = (playerCount: number, deckCount: number) => {
     props.globalLogic.sound.enqueueEvent(SoundEvent.START);
     props.globalLogic.sound.enqueueEvent(SoundEvent.SHUFFLE);
     props.globalLogic.sound.enqueueEvent(SoundEvent.GIVE);
-    props.globalLogic.updateAutoRead(
-      i18n.game_initialInfo(playerCount, deckCount)
-    );
+    const msg = i18n.game_initialInfo(playerCount, deckCount);
+    props.globalLogic.updateAutoRead(msg);
+    updateLog(msg);
   };
 
   const handleCardsProvided = (playerName: string, cardCount: number) => {
-    props.globalLogic.updateAutoRead(
-      i18n.game_cardsProvided(playerName, cardCount)
-    );
+    const msg = i18n.game_cardsProvided(playerName, cardCount);
+    props.globalLogic.updateAutoRead(msg);
+    updateLog(msg);
   };
 
   const handleMyTurn = () => {
-    props.globalLogic.updateAutoRead(i18n.game_yourTurn());
+    const msg = i18n.game_yourTurn();
+    props.globalLogic.updateAutoRead(msg);
+    updateLog(msg);
     props.globalLogic.sound.enqueueEvent(SoundEvent.TURN);
     setIsMyTurn(true);
   };
 
   const handleTurn = (playerName: string) => {
-    props.globalLogic.updateAutoRead(i18n.game_turn(playerName));
+    const msg = i18n.game_turn(playerName);
+    props.globalLogic.updateAutoRead(msg);
+    updateLog(msg);
   };
 
   const handleDiscard = (
@@ -75,19 +94,23 @@ export default function GameContainer(props: Props) {
   ) => {
     setIsMyTurn(false);
     props.globalLogic.sound.enqueueEvent(SoundEvent.DISCARD);
-    props.globalLogic.updateAutoRead(
-      i18n.game_discard(playerName, discardPair, remainingHandCount)
-    );
+    const msg = i18n.game_discard(playerName, discardPair, remainingHandCount);
+    props.globalLogic.updateAutoRead(msg);
+    updateLog(msg);
   };
 
   const handleNagare = () => {
     props.globalLogic.sound.enqueueEvent(SoundEvent.RESET);
-    props.globalLogic.updateAutoRead(i18n.game_nagare());
+    const msg = i18n.game_nagare();
+    props.globalLogic.updateAutoRead(msg);
+    updateLog(msg);
   };
 
   const handlePass = (playerName: string) => {
     props.globalLogic.sound.enqueueEvent(SoundEvent.PASS);
-    props.globalLogic.updateAutoRead(i18n.game_passMessage(playerName));
+    const msg = i18n.game_passMessage(playerName);
+    props.globalLogic.updateAutoRead(msg);
+    updateLog(msg);
   };
 
   const handleInvert = (inverted: boolean) => {
@@ -96,12 +119,16 @@ export default function GameContainer(props: Props) {
     } else {
       props.globalLogic.sound.enqueueEvent(SoundEvent.UNBACK);
     }
-    props.globalLogic.updateAutoRead(i18n.game_strengthInverted(inverted));
+    const msg = i18n.game_strengthInverted(inverted);
+    props.globalLogic.updateAutoRead(msg);
+    updateLog(msg);
   };
 
   const handleKakumei = () => {
     props.globalLogic.sound.enqueueEvent(SoundEvent.KAKUMEI);
-    props.globalLogic.updateAutoRead(i18n.game_kakumei());
+    const msg = i18n.game_kakumei();
+    props.globalLogic.updateAutoRead(msg);
+    updateLog(msg);
   };
 
   const handleRankChanged = (
@@ -135,6 +162,7 @@ export default function GameContainer(props: Props) {
       msg = i18n.game_rankChanged(playerName, before, after);
     }
     props.globalLogic.updateAutoRead(msg);
+    updateLog(msg);
   };
 
   React.useEffect(() => {
@@ -228,6 +256,7 @@ export default function GameContainer(props: Props) {
         onPass={props.gameLogic.pass.bind(props.gameLogic)}
         isPassable={isMyTurn}
       />
+      <Log globalLogic={props.globalLogic} contents={log} />
     </div>
   );
 }
