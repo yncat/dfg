@@ -10,7 +10,7 @@ interface Props {
 
 export default function GameInfo(props: Props) {
   const i18n = props.globalLogic.i18n;
-  let stat:string;
+  let stat: string;
   if (props.gameState.isInGame) {
     stat = i18n.currentRoom_currentStatusPlaying();
   } else {

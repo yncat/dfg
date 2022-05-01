@@ -46,7 +46,7 @@ function App(props: Props) {
     props.globalLogic.isInRoomPubsub.subscribe((isInRoom: boolean) => {
       setIsInRoom(isInRoom);
       // 退室したときはもうgameRoomにいないので、退室メッセージを受け取れない。なので手動でイベント発生させる。
-      if(!isInRoom){
+      if (!isInRoom) {
         props.globalLogic.sound.enqueueEvent(SoundEvent.LEFT);
         props.globalLogic.updateAutoRead(i18n.currentRoom_left());
       }

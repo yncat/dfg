@@ -18,7 +18,13 @@ test("render updated cardSelector checkboxes using props", () => {
     encodeSelectableCardMessage(CardMark.DIAMONDS, 6, true, true),
     encodeSelectableCardMessage(CardMark.DIAMONDS, 7, false, true),
   ]);
-  render(<CardSelector globalLogic={gl} cardList={msg} discardPairList={encodeDiscardPairListMessage([])} />);
+  render(
+    <CardSelector
+      globalLogic={gl}
+      cardList={msg}
+      discardPairList={encodeDiscardPairListMessage([])}
+    />
+  );
   const d5 = screen.getByText("ダイヤの5");
   const d5chk = screen.getByLabelText("ダイヤの5");
   const d6 = screen.getByText("ダイヤの6");
