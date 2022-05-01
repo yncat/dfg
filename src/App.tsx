@@ -19,6 +19,10 @@ export type Props = {
 
 function App(props: Props) {
   const i18n = props.globalLogic.i18n;
+  // TODO: delete after switched to session-based
+  const [pname, setPname] = React.useState<string>(
+    props.globalLogic.registeredPlayerName
+  );
   const [connectionStatusString, setConnectionStatusString] =
     React.useState<ConnectionStatusString>("not_connected");
   const [playerCount, setPlayerCount] = React.useState<number>(0);
@@ -61,18 +65,30 @@ function App(props: Props) {
         playerCount={playerCount}
       />
       {connectionStatusString === "not_connected" ? (
-        <button
-          type="button"
-          onClick={() => {
-            props.globalLogic.updateAutoRead(i18n.login_connecting());
-            props.globalLogic.sound.initIfNeeded();
-            props.globalLogic.connect();
-          }}
-        >
-          {props.globalLogic.i18n.login_as(
-            props.globalLogic.registeredPlayerName
-          )}
-        </button>
+        <React.Fragment>
+          <label>
+            名前{" "}
+            <input
+              type="text"
+              maxLength={20}
+              value={pname}
+              onChange={(e) => {
+                setPname(e.target.value);
+                props.globalLogic.registeredPlayerName = e.target.value;
+              }}
+            />
+          </label>
+          <button
+            type="button"
+            onClick={() => {
+              props.globalLogic.updateAutoRead(i18n.login_connecting());
+              props.globalLogic.sound.initIfNeeded();
+              props.globalLogic.connect();
+            }}
+          >
+            {props.globalLogic.i18n.login_as(pname)}
+          </button>
+        </React.Fragment>
       ) : null}
       {connectionStatusString === "connected" ? (
         <MainContainer
