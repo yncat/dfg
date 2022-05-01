@@ -33,6 +33,8 @@ type RankChangedFunc = (
   before: dfgmsg.RankType,
   after: dfgmsg.RankType
 ) => void;
+type AgariFunc=(playerName:string)=>void;
+type ForbiddenAgariFunc=(playerName:string)=>void;
 
 export interface Pipelines {
   initialInfo: Pipeline<InitialInfoFunc>;
@@ -45,6 +47,8 @@ export interface Pipelines {
   invert: Pipeline<InvertFunc>;
   kakumei: Pipeline<KakumeiFunc>;
   rankChanged: Pipeline<RankChangedFunc>;
+  agari:Pipeline<AgariFunc>;
+  forbiddenAgari:Pipeline<ForbiddenAgariFunc>;
 }
 
 export interface GameLogic {
@@ -83,6 +87,8 @@ class GameLogicImple implements GameLogic {
       invert: new Pipeline<InvertFunc>(),
       kakumei: new Pipeline<KakumeiFunc>(),
       rankChanged: new Pipeline<RankChangedFunc>(),
+      agari: new Pipeline<AgariFunc>(),
+      forbiddenAgari: new Pipeline<ForbiddenAgariFunc>(),
     };
   }
 
@@ -235,6 +241,28 @@ class GameLogicImple implements GameLogic {
       }
 
       this.pipelines.rankChanged.call(msg.playerName, msg.before, msg.after);
+    });
+
+    room.onMessage("AgariMessage", (payload: any) => {
+      const msg = dfgmsg.decodePayload<dfgmsg.AgariMessage>(
+        payload,
+        dfgmsg.AgariMessageDecoder
+      );
+      if (!isDecodeSuccess<dfgmsg.AgariMessage>(msg)) {
+        return;
+      }
+      this.pipelines.agari.call(msg.playerName);
+    });
+
+    room.onMessage("ForbiddenAgariMessage", (payload: any) => {
+      const msg = dfgmsg.decodePayload<dfgmsg.ForbiddenAgariMessage>(
+        payload,
+        dfgmsg.ForbiddenAgariMessageDecoder
+      );
+      if (!isDecodeSuccess<dfgmsg.ForbiddenAgariMessage>(msg)) {
+        return;
+      }
+      this.pipelines.forbiddenAgari.call(msg.playerName);
     });
 
     this.room = room;

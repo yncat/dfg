@@ -81,6 +81,8 @@ export interface I18nService {
     before: RankType,
     after: RankType
   ) => string;
+  game_agari: (playerName: string) => string;
+  game_forbiddenAgari: (playerName: string) => string;
   gameLog_heading: () => string;
   settings_heading: () => string;
   settings_soundToggle: () => string;

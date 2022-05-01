@@ -165,6 +165,19 @@ export default function GameContainer(props: Props) {
     updateLog(msg);
   };
 
+  const handleAgari = (playerName: string) => {
+    const msg = i18n.game_agari(playerName);
+    props.globalLogic.updateAutoRead(msg);
+    updateLog(msg);
+  };
+
+  const handleForbiddenAgari = (playerName: string) => {
+    props.globalLogic.sound.enqueueEvent(SoundEvent.FORBIDDEN)
+    const msg = i18n.game_forbiddenAgari(playerName);
+    props.globalLogic.updateAutoRead(msg);
+    updateLog(msg);
+  };
+
   React.useEffect(() => {
     const id1 = props.gameLogic.pubsubs.stateUpdate.subscribe(setGameState);
     const latest = props.gameLogic.pubsubs.stateUpdate.fetchLatest();
@@ -198,6 +211,8 @@ export default function GameContainer(props: Props) {
     props.gameLogic.pipelines.invert.register(handleInvert);
     props.gameLogic.pipelines.kakumei.register(handleKakumei);
     props.gameLogic.pipelines.rankChanged.register(handleRankChanged);
+    props.gameLogic.pipelines.agari.register(handleAgari);
+    props.gameLogic.pipelines.forbiddenAgari.register(handleForbiddenAgari);
     return () => {
       props.gameLogic.pubsubs.stateUpdate.unsubscribe(id1);
       props.gameLogic.pubsubs.gameOwnerStatus.unsubscribe(id2);
@@ -215,6 +230,8 @@ export default function GameContainer(props: Props) {
       props.gameLogic.pipelines.invert.unregister();
       props.gameLogic.pipelines.kakumei.unregister();
       props.gameLogic.pipelines.rankChanged.unregister();
+      props.gameLogic.pipelines.agari.unregister();
+      props.gameLogic.pipelines.forbiddenAgari.unregister();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

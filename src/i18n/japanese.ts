@@ -346,6 +346,14 @@ export class JapaneseI18nService implements I18nService {
     );
   }
 
+  public game_agari(playerName: string): string {
+    return playerName + "は上がり！";
+  }
+
+  public game_forbiddenAgari(playerName: string): string {
+    return playerName + "は禁止上がり！";
+  }
+
   public gameLog_heading(): string {
     return "最新のログ";
   }
