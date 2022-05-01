@@ -4,6 +4,7 @@ import "./index.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import { Config } from "./logic/config"
 import { createGlobalLogic } from "./logic/global";
 import { createSoundLogic } from "./logic/sound";
 import { createRoomListLogic } from "./logic/roomList";
@@ -13,9 +14,10 @@ import { createI18nService } from "./i18n/i18n";
 import { createAutoReadLogic } from "./logic/autoRead";
 import { createGameLogic } from "./logic/game";
 
+const config = new Config(process.env.REACT_APP_SERVER_ADDRESS);
 const defaultI18nService = createI18nService("Japanese");
 const soundLogic = createSoundLogic();
-const globalLogic = createGlobalLogic(defaultI18nService, soundLogic);
+const globalLogic = createGlobalLogic(defaultI18nService, soundLogic, config);
 globalLogic.registeredPlayerName = "cat" + Math.floor(Math.random() * 1000);
 const roomListLogic = createRoomListLogic();
 const lobbyChatMessageListLogic = createChatMessageListLogic();

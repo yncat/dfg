@@ -16,6 +16,7 @@ import { isDecodeSuccess } from "./decodeValidator";
 import { Pubsub } from "./pubsub";
 import { Pipeline } from "./pipeline";
 import { GlobalState } from "./schema-def/GlobalState";
+import { Config } from "./config";
 
 export type ConnectionStatusString =
   | "not_connected"
@@ -61,6 +62,7 @@ export class GlobalLogicImple implements GlobalLogic {
   lobbyRoom: Colyseus.Room | null;
   gameRoom: Colyseus.Room | null;
   i18n: I18nService;
+  config: Config;
   sound: SoundLogic;
   registeredPlayerName: string;
   lobbyChatMessagePipeline: Pipeline<ChatMessagePipelineFunc>;
@@ -69,14 +71,15 @@ export class GlobalLogicImple implements GlobalLogic {
   roomRegistrationPipeline: Pipeline<RoomRegistrationPipelineFunc>;
   private roomListUpdatePollingID: NodeJS.Timer | null;
 
-  constructor(i18n: I18nService, sound: SoundLogic) {
+  constructor(i18n: I18nService, sound: SoundLogic, config: Config) {
     this.connectionStatusPubsub = new Pubsub<ConnectionStatusString>();
     this.connectionErrorPubsub = new Pubsub<unknown>();
     this.playerCountPubsub = new Pubsub<number>();
     this.autoReadPubsub = new Pubsub<string>();
     this.roomCreatedPubsub = new Pubsub<string>();
     this.isInRoomPubsub = new Pubsub<boolean>();
-    const c = new Colyseus.Client("ws://localhost:2567");
+    this.config=config;
+    const c = new Colyseus.Client(this.config.serverAddress);
     this.client = c;
     this.lobbyRoom = null;
     this.gameRoom = null;
@@ -247,7 +250,8 @@ export class GlobalLogicImple implements GlobalLogic {
 
 export function createGlobalLogic(
   i18n: I18nService,
-  sound: SoundLogic
+  sound: SoundLogic,
+  config:Config
 ): GlobalLogic {
-  return new GlobalLogicImple(i18n, sound);
+  return new GlobalLogicImple(i18n, sound, config);
 }

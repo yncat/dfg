@@ -1,3 +1,4 @@
+import { Config } from "./logic/config"
 import { createGlobalLogic } from "./logic/global";
 import { createRoomListLogic } from "./logic/roomList";
 import { createChatMessageListLogic } from "./logic/chatMessageList";
@@ -10,7 +11,7 @@ import { SubLogicList } from "./logic/sub";
 import { mock } from "jest-mock-extended";
 
 export function createGlobalLogicForTest() {
-  return createGlobalLogic(createI18nService("Japanese"), mock<SoundLogic>());
+  return createGlobalLogic(createI18nService("Japanese"), mock<SoundLogic>(), new Config(undefined));
 }
 
 export function createSubLogicListForTest(): SubLogicList {
