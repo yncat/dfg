@@ -1,50 +1,45 @@
-# Getting Started with Create React App
+# Online daifugo
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a text-based [Daifugo](https://en.wikipedia.org/wiki/Daifug%C5%8D) game. It has completely playable with screen readers. Internet Explorer is not supported.
 
-## Available Scripts
+## Setup development environment
 
-In the project directory, you can run:
+I'm currently using Node.JS v15. 16 or later will work, but I haven't tested.
 
-### `npm start`
+You need [the server-side program](https://github.com/yncat/dfg-server) .
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+First, clone the server-side program. Run `npm ci` to install dependencies, then run `npm start` to start serving. It starts waiting for connections at `localhost:2567` .
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Next, clone this repository, run `npm run ci` then `npm start` . It launches browser for the first time. While the development server is running, the game be accessed by requesting to `localhost:3000` .
 
-### `npm test`
+The development server supports hot-reloading. When you make changes to the source, it will be automatically applied. When you have compilation errors, your browser window will display it for you.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Testing
 
-### `npm run build`
+Run `npm run test` to run tests. 
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Building
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Run `npm run build` to make a optimized production build. If you're trying to host the game somewhere, you need to modify package.json since the homepage field now points to my website domain.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+If you build the app with default setting, it will try to connect to localhost. In order to change endpoint for production, create `.env.production.local` inside the project root directory, and specify like this.
 
-### sounds:build
+```
+REACT_APP_SERVER_ADDRESS=wss://example.com
+```
 
-Make mp3 and webm files from dev/sounds_wave directory.
+If you want to specify port number,
 
-### `npm run eject`
+```
+REACT_APP_SERVER_ADDRESS=wss://example.com:portnum
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Adding sounds
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+If you want to add sounds, you first need to place it as a wave format in dev/sounds_wave directory. Then, run `npm run sounds:build` to convert them into supported formats. For file conversion, you must have ffmpeg installed in your system. 
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+In order to use the added sounds inside the game, you must define sound events in `src/logic/sound.ts` . The definition is very straitforward.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Translation
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+I haven't coded language switching, but multiple language can be supported. Implement the interface located at `src/i18n/interface.ts` and place the class into the same directory. See japanese.ts for example.
