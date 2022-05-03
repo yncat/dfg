@@ -28,8 +28,8 @@
     "web-vitals": "^1.1.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "node dev/tools/gen_version.js && react-scripts start",
+    "build": "node dev/tools/gen_version.js && react-scripts build",
     "test": "react-scripts test",
     "fmt": "prettier --write ./src/**/*.{ts,tsx}",
     "eject": "react-scripts eject",

@@ -1,6 +1,6 @@
 import React from "react";
-import { version } from "../version";
+import { versionHash, builtAt } from "../versionInfo";
 
 export default function Version() {
-  return <div className="Version">Version: {version}</div>;
+  return <div className="Version">build version: {versionHash} ({builtAt})</div>;
 }
