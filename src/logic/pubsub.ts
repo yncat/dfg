@@ -32,4 +32,8 @@ export class Pubsub<T> {
   public fetchLatest(): T | null {
     return this.latest;
   }
+
+  public clearLatest(): void {
+    this.latest = null;
+  }
 }

@@ -45,4 +45,11 @@ describe("pubsub", () => {
     pubsub.publish(1);
     expect(pubsub.fetchLatest()).toBe(1);
   });
+
+  it("fetchLatest result can be cleared by clearLatest", () => {
+    const pubsub = new Pubsub<number>();
+    pubsub.publish(1);
+    pubsub.clearLatest();
+    expect(pubsub.fetchLatest()).toBeNull();
+  });
 });

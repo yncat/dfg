@@ -271,6 +271,7 @@ class GameLogicImple implements GameLogic {
   public unregisterRoom(): void {
     this.room = null;
     this.pubsubs.gameOwnerStatus.publish(false);
+    this.pubsubs.playerJoined.clearLatest();
   }
 
   public startGame(): void {
