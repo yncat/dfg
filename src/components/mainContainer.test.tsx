@@ -18,6 +18,7 @@ test("renders lobbyContainer when the player is not in a game room", () => {
         lobbyChatPanelLogic: sbl.lobbyChatPanelLogic,
         roomChatMessageListLogic: sbl.roomChatMessageListLogic,
         roomChatPanelLogic: sbl.roomChatPanelLogic,
+        gameLogic: sbl.gameLogic,
       }}
       isInRoom={false}
     />
