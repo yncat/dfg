@@ -33,8 +33,8 @@ type RankChangedFunc = (
   before: dfgmsg.RankType,
   after: dfgmsg.RankType
 ) => void;
-type AgariFunc=(playerName:string)=>void;
-type ForbiddenAgariFunc=(playerName:string)=>void;
+type AgariFunc = (playerName: string) => void;
+type ForbiddenAgariFunc = (playerName: string) => void;
 
 export interface Pipelines {
   initialInfo: Pipeline<InitialInfoFunc>;
@@ -47,8 +47,8 @@ export interface Pipelines {
   invert: Pipeline<InvertFunc>;
   kakumei: Pipeline<KakumeiFunc>;
   rankChanged: Pipeline<RankChangedFunc>;
-  agari:Pipeline<AgariFunc>;
-  forbiddenAgari:Pipeline<ForbiddenAgariFunc>;
+  agari: Pipeline<AgariFunc>;
+  forbiddenAgari: Pipeline<ForbiddenAgariFunc>;
 }
 
 export interface GameLogic {

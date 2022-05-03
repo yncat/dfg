@@ -78,7 +78,7 @@ export class GlobalLogicImple implements GlobalLogic {
     this.autoReadPubsub = new Pubsub<string>();
     this.roomCreatedPubsub = new Pubsub<string>();
     this.isInRoomPubsub = new Pubsub<boolean>();
-    this.config=config;
+    this.config = config;
     const c = new Colyseus.Client(this.config.serverAddress);
     this.client = c;
     this.lobbyRoom = null;
@@ -251,7 +251,7 @@ export class GlobalLogicImple implements GlobalLogic {
 export function createGlobalLogic(
   i18n: I18nService,
   sound: SoundLogic,
-  config:Config
+  config: Config
 ): GlobalLogic {
   return new GlobalLogicImple(i18n, sound, config);
 }

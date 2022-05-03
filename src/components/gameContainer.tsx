@@ -172,7 +172,7 @@ export default function GameContainer(props: Props) {
   };
 
   const handleForbiddenAgari = (playerName: string) => {
-    props.globalLogic.sound.enqueueEvent(SoundEvent.FORBIDDEN)
+    props.globalLogic.sound.enqueueEvent(SoundEvent.FORBIDDEN);
     const msg = i18n.game_forbiddenAgari(playerName);
     props.globalLogic.updateAutoRead(msg);
     updateLog(msg);

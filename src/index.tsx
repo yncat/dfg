@@ -4,7 +4,7 @@ import "./index.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { Config } from "./logic/config"
+import { Config } from "./logic/config";
 import { createGlobalLogic } from "./logic/global";
 import { createSoundLogic } from "./logic/sound";
 import { createRoomListLogic } from "./logic/roomList";
