@@ -241,6 +241,7 @@ export default function GameContainer(props: Props) {
       <button
         type="button"
         onClick={(e) => {
+          props.gameLogic.unregisterRoom();
           props.globalLogic.leaveGameRoom();
         }}
       >
