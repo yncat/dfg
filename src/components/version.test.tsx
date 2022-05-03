@@ -5,6 +5,6 @@ import { version } from "../version";
 
 test("renders version", () => {
   render(<Version />);
-  const e = screen.getByText("Version: " + version);
+  const e = screen.getByText(/Build version/);
   expect(e).toBeInTheDocument();
 });
