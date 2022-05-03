@@ -38,7 +38,7 @@ export interface GlobalLogic {
   startRoomListUpdatePolling: () => void;
   stopRoomListUpdatePolling: () => void;
   requestRoomListUpdate: () => void;
-  createGameRoom: () => void;
+  createGameRoom: (onFinish:(success:boolean)=>void) => void;
   joinGameRoomByID: (roomID: string) => void;
   leaveGameRoom: () => void;
   getRoomInstance: (lobbyOrRoom: "lobby" | "room") => Colyseus.Room | null;
@@ -177,13 +177,15 @@ export class GlobalLogicImple implements GlobalLogic {
     }
   }
 
-  public async createGameRoom() {
+  public async createGameRoom(onFinish:(success:boolean)=>void) {
     try {
       this.gameRoom = await this.client.create("game_room", {
         playerName: this.registeredPlayerName,
       });
+      onFinish(true);
     } catch (e) {
       console.log(e);
+      onFinish(false);
     }
 
     const lrm = this.lobbyRoom as Colyseus.Room;

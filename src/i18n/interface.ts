@@ -30,6 +30,7 @@ export interface I18nService {
   chat_inputLabel: (lobbyOrLabel: "lobby" | "room") => string;
   chat_send: () => string;
   createRoomButton_createRoom: () => string;
+  createRoomButton_creating: () => string;
   roomList_creator: () => string;
   roomList_currentPlayerCount: () => string;
   roomList_state: () => string;

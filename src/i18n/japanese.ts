@@ -70,6 +70,10 @@ export class JapaneseI18nService implements I18nService {
     return "ルームを作成";
   }
 
+  public createRoomButton_creating(): string {
+    return "作成中...";
+  }
+
   public roomList_creator(): string {
     return "作成者";
   }
