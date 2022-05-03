@@ -1,6 +1,6 @@
 import React from "react";
 import { GlobalLogic } from "../logic/global";
-import { SoundEvent } from "../logic/sound"
+import { SoundEvent } from "../logic/sound";
 
 interface Props {
   globalLogic: GlobalLogic;
@@ -14,15 +14,17 @@ export default function CreateRoomButton(props: Props) {
       disabled={isCreating}
       onClick={() => {
         setIsCreating(true);
-        props.globalLogic.createGameRoom((success:boolean)=>{
+        props.globalLogic.createGameRoom((success: boolean) => {
           setIsCreating(false);
-          if(!success){
+          if (!success) {
             props.globalLogic.sound.enqueueEvent(SoundEvent.FORBIDDEN);
           }
         });
       }}
     >
-      {isCreating ? props.globalLogic.i18n.createRoomButton_creating() : props.globalLogic.i18n.createRoomButton_createRoom()}
+      {isCreating
+        ? props.globalLogic.i18n.createRoomButton_creating()
+        : props.globalLogic.i18n.createRoomButton_createRoom()}
     </button>
   );
 }
