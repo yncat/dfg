@@ -38,8 +38,11 @@ export interface GlobalLogic {
   startRoomListUpdatePolling: () => void;
   stopRoomListUpdatePolling: () => void;
   requestRoomListUpdate: () => void;
-  createGameRoom: (onFinish:(success:boolean)=>void) => void;
-  joinGameRoomByID: (roomID: string) => void;
+  createGameRoom: (onFinish: (success: boolean) => void) => void;
+  joinGameRoomByID: (
+    roomID: string,
+    onFinish: (success: boolean) => void
+  ) => void;
   leaveGameRoom: () => void;
   getRoomInstance: (lobbyOrRoom: "lobby" | "room") => Colyseus.Room | null;
   updateAutoRead: (updateString: string) => void;
@@ -177,7 +180,7 @@ export class GlobalLogicImple implements GlobalLogic {
     }
   }
 
-  public async createGameRoom(onFinish:(success:boolean)=>void) {
+  public async createGameRoom(onFinish: (success: boolean) => void) {
     try {
       this.gameRoom = await this.client.create("game_room", {
         playerName: this.registeredPlayerName,
@@ -207,13 +210,18 @@ export class GlobalLogicImple implements GlobalLogic {
     this.roomRegistrationPipeline.call(grm);
   }
 
-  public async joinGameRoomByID(roomID: string) {
+  public async joinGameRoomByID(
+    roomID: string,
+    onFinish: (success: boolean) => void
+  ) {
     try {
       this.gameRoom = await this.client.joinById(roomID, {
         playerName: this.registeredPlayerName,
       });
+      onFinish(true);
     } catch (e) {
       console.log(e);
+      onFinish(false);
     }
 
     this.isInRoomPubsub.publish(true);

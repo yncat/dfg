@@ -37,6 +37,7 @@ export interface I18nService {
   roomList_action: () => string;
   roomList_join: () => string;
   roomList_watch: () => string;
+  roomList_joining: () => string;
   roomList_stateValue: (state: RoomState) => string;
   leaveRoomButton_leaveRoom: () => string;
   currentRoom_roomName: (playerName: string) => string;

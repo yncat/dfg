@@ -12,9 +12,18 @@ interface Props {
 
 export default function RoomList(props: Props) {
   const i18n = props.globalLogic.i18n;
+  const [joiningIndex, setJoiningIndex] = React.useState<number>(-1); // -1: not joining to any room
   const [entryList, setEntryList] = React.useState<RoomListEntry[]>(
     props.roomListLogic.fetchLatest()
   );
+  const genJoinButtonLabel = (v: RoomListEntry, i: number) => {
+    if (joiningIndex !== i) {
+      return v.state === RoomState.WAITING
+        ? i18n.roomList_join()
+        : i18n.roomList_watch();
+    }
+    return i18n.roomList_joining();
+  };
   React.useEffect(() => {
     props.roomListLogic.pubsub.subscribe(setEntryList);
     const id = props.globalLogic.roomCreatedPubsub.subscribe(
@@ -50,13 +59,23 @@ export default function RoomList(props: Props) {
               <td>
                 <button
                   type="button"
+                  disabled={joiningIndex !== -1}
                   onClick={() => {
-                    props.globalLogic.joinGameRoomByID(v.roomID);
+                    setJoiningIndex(i);
+                    props.globalLogic.joinGameRoomByID(
+                      v.roomID,
+                      (success: boolean) => {
+                        setJoiningIndex(-1);
+                        if (!success) {
+                          props.globalLogic.sound.enqueueEvent(
+                            SoundEvent.FORBIDDEN
+                          );
+                        }
+                      }
+                    );
                   }}
                 >
-                  {v.state === RoomState.WAITING
-                    ? i18n.roomList_join()
-                    : i18n.roomList_watch()}
+                  {genJoinButtonLabel(v, i)}
                 </button>
               </td>
             </tr>

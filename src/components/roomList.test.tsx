@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import RoomList from "./roomList";
 import {
   createGlobalLogicForTest,
@@ -7,6 +7,7 @@ import {
 } from "../testHelper";
 import { createRoomListEntry } from "../logic/roomList";
 import { RoomState } from "dfg-messages";
+import { act } from "react-dom/test-utils";
 
 test("renders room list table", () => {
   const gl = createGlobalLogicForTest();
@@ -46,4 +47,32 @@ test("renders playing status", () => {
   const b = screen.getByText("観戦");
   expect(e).toBeInTheDocument();
   expect(b).toBeInTheDocument();
+});
+
+test("changes button label and disabled status when joining", () => {
+  const gl = createGlobalLogicForTest();
+  const rll = createSubLogicListForTest().roomListLogic;
+  const ents = [
+    createRoomListEntry("cat", 2, RoomState.WAITING, "abcdabcd"),
+    createRoomListEntry("dog", 2, RoomState.PLAYING, "abcdabcd"),
+  ];
+  jest.spyOn(rll, "fetchLatest").mockImplementation(() => {
+    return ents;
+  });
+  jest
+    .spyOn(gl, "joinGameRoomByID")
+    .mockImplementation(
+      (roomID: string, onFinish: (success: boolean) => void) => {}
+    );
+  render(<RoomList globalLogic={gl} roomListLogic={rll} />);
+  const e1 = screen.getByText("参加");
+  const e2 = screen.getByText("観戦");
+  act(() => {
+    fireEvent(e1, new MouseEvent("click", { bubbles: true, cancelable: true }));
+  });
+
+  expect(e1).toHaveTextContent("参加中...");
+  expect(e1).toBeDisabled();
+  expect(e2).toHaveTextContent("観戦");
+  expect(e2).toBeDisabled();
 });

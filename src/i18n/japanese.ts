@@ -98,6 +98,10 @@ export class JapaneseI18nService implements I18nService {
     return "観戦";
   }
 
+  public roomList_joining(): string {
+    return "参加中...";
+  }
+
   public roomList_stateValue(state: RoomState): string {
     return state === RoomState.PLAYING ? "ゲーム中" : "待機中";
   }
