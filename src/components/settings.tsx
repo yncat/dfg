@@ -13,7 +13,6 @@ export default function Settings(props: Props) {
     <div>
       <h2>{i18n.settings_heading()}</h2>
       <label>
-        {i18n.settings_soundToggle()}
         <input
           type="checkbox"
           checked={soundToggle}
@@ -22,9 +21,9 @@ export default function Settings(props: Props) {
             setSoundToggle(!soundToggle);
           }}
         />
+        {i18n.settings_soundToggle()}
       </label>
       <label>
-        {i18n.settings_musicToggle()}
         <input
           type="checkbox"
           checked={musicToggle}
@@ -33,6 +32,7 @@ export default function Settings(props: Props) {
             setMusicToggle(!musicToggle);
           }}
         />
+        {i18n.settings_musicToggle()}
       </label>
     </div>
   );

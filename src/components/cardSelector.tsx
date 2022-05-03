@@ -22,7 +22,6 @@ export default function CardSelector(props: Props) {
           return (
             <li key={i}>
               <label>
-                {i18n.game_card(v.mark, v.cardNumber)}
                 <input
                   type="checkbox"
                   checked={v.isChecked}
@@ -32,6 +31,7 @@ export default function CardSelector(props: Props) {
                     evt.preventDefault();
                   }}
                 />
+                {i18n.game_card(v.mark, v.cardNumber)}
               </label>
             </li>
           );
