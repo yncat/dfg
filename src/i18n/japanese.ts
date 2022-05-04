@@ -12,6 +12,10 @@ export class JapaneseI18nService implements I18nService {
     return playerName + "としてログイン";
   }
 
+  public login_needName(): string {
+    return "接続するには、名前を入力してください";
+  }
+
   public login_connecting(): string {
     return "接続中...";
   }

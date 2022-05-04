@@ -16,6 +16,7 @@ export interface Result {
 
 export interface I18nService {
   login_as: (playerName: string) => string;
+  login_needName: () => string;
   login_connecting: () => string;
   login_connected: () => string;
   login_cannotConnect: () => string;

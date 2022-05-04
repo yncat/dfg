@@ -80,13 +80,16 @@ function App(props: Props) {
           </label>
           <button
             type="button"
+            disabled={pname === ""}
             onClick={() => {
               props.globalLogic.updateAutoRead(i18n.login_connecting());
               props.globalLogic.sound.initIfNeeded();
               props.globalLogic.connect();
             }}
           >
-            {props.globalLogic.i18n.login_as(pname)}
+            {pname === ""
+              ? props.globalLogic.i18n.login_needName()
+              : props.globalLogic.i18n.login_as(pname)}
           </button>
         </React.Fragment>
       ) : null}
