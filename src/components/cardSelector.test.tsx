@@ -23,6 +23,10 @@ test("render updated cardSelector checkboxes using props", () => {
       globalLogic={gl}
       cardList={msg}
       discardPairList={encodeDiscardPairListMessage([])}
+      onCardSelectionChange={(index: number) => {}}
+      onDiscard={(index: number) => {}}
+      onPass={() => {}}
+      isPassable={true}
     />
   );
   const d5 = screen.getByText("ダイヤの5");
@@ -56,10 +60,55 @@ test("render updated cardSelector buttons using props", () => {
       globalLogic={gl}
       cardList={encodeCardListMessage([])}
       discardPairList={msg}
+      onCardSelectionChange={(index: number) => {}}
+      onDiscard={(index: number) => {}}
+      onPass={() => {}}
+      isPassable={true}
     />
   );
   const btn1 = screen.getByText("スペードの5");
   const btn2 = screen.getByText("ハートの7、クラブの7の2枚");
   expect(btn1).toBeInTheDocument();
   expect(btn2).toBeInTheDocument();
+});
+
+test("when more than one card is checked, pass button is disabled", () => {
+  const gl = createGlobalLogicForTest();
+  const msg = encodeCardListMessage([
+    encodeSelectableCardMessage(CardMark.DIAMONDS, 6, true, true),
+  ]);
+  render(
+    <CardSelector
+      globalLogic={gl}
+      cardList={msg}
+      discardPairList={encodeDiscardPairListMessage([])}
+      onCardSelectionChange={(index: number) => {}}
+      onDiscard={(index: number) => {}}
+      onPass={() => {}}
+      isPassable={true}
+    />
+  );
+  const pb = screen.getByText("パス");
+  expect(pb).toBeInTheDocument();
+  expect(pb).toBeDisabled();
+});
+
+test("hide the passbutton when isPassable==false", () => {
+  const gl = createGlobalLogicForTest();
+  const msg = encodeCardListMessage([
+    encodeSelectableCardMessage(CardMark.DIAMONDS, 6, false, false),
+  ]);
+  render(
+    <CardSelector
+      globalLogic={gl}
+      cardList={msg}
+      discardPairList={encodeDiscardPairListMessage([])}
+      onCardSelectionChange={(index: number) => {}}
+      onDiscard={(index: number) => {}}
+      onPass={() => {}}
+      isPassable={false}
+    />
+  );
+  const pb = screen.queryByText("パス");
+  expect(pb).toBeNull();
 });

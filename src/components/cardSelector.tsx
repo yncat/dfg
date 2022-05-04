@@ -14,6 +14,11 @@ interface Props {
 
 export default function CardSelector(props: Props) {
   const i18n = props.globalLogic.i18n;
+  const foundChecked =
+    props.cardList.cardList.filter((v) => {
+      return v.isChecked;
+    }).length > 0;
+
   return (
     <div>
       <h2>{i18n.cardSelector_heading()}</h2>
@@ -55,6 +60,7 @@ export default function CardSelector(props: Props) {
       {props.isPassable ? (
         <button
           type="button"
+          disabled={foundChecked}
           onClick={(e) => {
             props.onPass();
           }}
