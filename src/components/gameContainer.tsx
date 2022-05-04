@@ -106,9 +106,9 @@ export default function GameContainer(props: Props) {
     updateLog(msg);
   };
 
-  const handlePass = (playerName: string) => {
+  const handlePass = (playerName: string, remainingHandCount: number) => {
     props.globalLogic.sound.enqueueEvent(SoundEvent.PASS);
-    const msg = i18n.game_passMessage(playerName);
+    const msg = i18n.game_passMessage(playerName, remainingHandCount);
     props.globalLogic.updateAutoRead(msg);
     updateLog(msg);
   };

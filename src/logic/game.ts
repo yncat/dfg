@@ -25,7 +25,7 @@ type DiscardFunc = (
   remainingHandCount: number
 ) => void;
 type NagareFunc = () => void;
-type PassFunc = (playerName: string) => void;
+type PassFunc = (playerName: string, remainingHandCount: number) => void;
 type InvertFunc = (inverted: boolean) => void;
 type KakumeiFunc = () => void;
 type RankChangedFunc = (
@@ -212,7 +212,7 @@ class GameLogicImple implements GameLogic {
         return;
       }
 
-      this.pipelines.pass.call(msg.playerName);
+      this.pipelines.pass.call(msg.playerName, msg.remainingHandCount);
     });
 
     room.onMessage("StrengthInversionMessage", (payload: any) => {

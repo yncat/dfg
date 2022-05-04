@@ -278,8 +278,11 @@ export class JapaneseI18nService implements I18nService {
     return "パス";
   }
 
-  public game_passMessage(playerName: string): string {
-    return playerName + "はパス。";
+  public game_passMessage(
+    playerName: string,
+    remainingHandCount: number
+  ): string {
+    return playerName + "はパス、残り" + remainingHandCount + "枚。";
   }
 
   public game_initialInfo(playerCount: number, deckCount: number): string {
