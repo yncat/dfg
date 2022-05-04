@@ -107,6 +107,7 @@ export default function GameContainer(props: Props) {
   };
 
   const handlePass = (playerName: string, remainingHandCount: number) => {
+    setIsMyTurn(false);
     props.globalLogic.sound.enqueueEvent(SoundEvent.PASS);
     const msg = i18n.game_passMessage(playerName, remainingHandCount);
     props.globalLogic.updateAutoRead(msg);
