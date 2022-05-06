@@ -26,7 +26,9 @@ test("render currentRoomInfo for waiting status", () => {
   lr.hinminPlayerList = new ArraySchema<string>("dog");
   lr.daihinminPlayerList = new ArraySchema<string>("monkey");
   state.lastGameResult = lr;
-  render(<CurrentRoomInfo globalLogic={gl} gameState={state} isOwner={true} />);
+  render(
+    <CurrentRoomInfo globalLogic={gl} gameState={state} isOwner={false} />
+  );
   const heading = screen.getByText("catさんのルーム(6人)");
   const memberList = screen.getByText(
     "メンバー: cat、dog、rabbit、lion、tiger、monkey"
