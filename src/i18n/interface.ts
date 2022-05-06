@@ -41,6 +41,7 @@ export interface I18nService {
   roomList_joining: () => string;
   roomList_stateValue: (state: RoomState) => string;
   leaveRoomButton_leaveRoom: () => string;
+  leaveRoomButton_confirmLeaving: () => string;
   currentRoom_roomName: (playerName: string) => string;
   currentRoom_playerCount: (playerCount: number) => string;
   currentRoom_memberListLabel: () => string;

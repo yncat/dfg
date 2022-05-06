@@ -15,6 +15,7 @@ import {
   DiscardPairMessage,
   RankType,
 } from "dfg-messages";
+import LeaveRoomButton from "./leaveRoomButton";
 
 interface Props {
   globalLogic: GlobalLogic;
@@ -239,15 +240,13 @@ export default function GameContainer(props: Props) {
   const startButtonDisabled = gameState.playerCount <= 1;
   return (
     <div>
-      <button
-        type="button"
-        onClick={(e) => {
+      <LeaveRoomButton
+        globalLogic={props.globalLogic}
+        onLeave={() => {
           props.gameLogic.unregisterRoom();
           props.globalLogic.leaveGameRoom();
         }}
-      >
-        {i18n.currentRoom_leave()}
-      </button>
+      />
       <GameInfo
         globalLogic={props.globalLogic}
         gameState={gameState}
