@@ -59,6 +59,7 @@ export default function CardSelector(props: Props) {
       </ul>
       {props.isPassable ? (
         <button
+          accessKey="p"
           type="button"
           disabled={foundChecked}
           onClick={(e) => {

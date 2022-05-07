@@ -35,6 +35,7 @@ export default function ChatPanel(props: Props) {
       <label>
         {i18n.chat_inputLabel(props.lobbyOrRoom)}{" "}
         <input
+          accessKey="/"
           type="text"
           maxLength={200}
           value={chatContent}
