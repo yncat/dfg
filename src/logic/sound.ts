@@ -1,5 +1,7 @@
 import { Howl } from "howler";
 
+const MUSIC_DEFAULT_VOL = 0.5;
+
 export const SoundEvent = {
   CLICK: 0,
   CHAT: 1,
@@ -110,9 +112,9 @@ export class SoundLogicImple implements SoundLogic {
       return;
     }
     if (output) {
-      music.fade(0, 1, 500);
+      music.fade(0, MUSIC_DEFAULT_VOL, 500);
     } else {
-      music.fade(1, 0, 500);
+      music.fade(MUSIC_DEFAULT_VOL, 0, 500);
     }
   }
 
@@ -121,6 +123,7 @@ export class SoundLogicImple implements SoundLogic {
     if (howl === undefined) {
       return;
     }
+    howl.volume(MUSIC_DEFAULT_VOL);
     if (!this.musicOutput) {
       howl.volume(0);
     }

@@ -110,6 +110,10 @@ export class JapaneseI18nService implements I18nService {
     return state === RoomState.PLAYING ? "ゲーム中" : "待機中";
   }
 
+  public roomList_noRoom(): string {
+    return "現在、利用可能なルームはありません。";
+  }
+
   public leaveRoomButton_leaveRoom(): string {
     return "ルームを退室";
   }

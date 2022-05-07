@@ -39,7 +39,7 @@ export default function RoomList(props: Props) {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  return (
+  return entryList.length > 0 ? (
     <table className="room-list-table">
       <thead>
         <tr>
@@ -83,5 +83,7 @@ export default function RoomList(props: Props) {
         })}
       </tbody>
     </table>
+  ) : (
+    <p>{i18n.roomList_noRoom()}</p>
   );
 }

@@ -9,6 +9,17 @@ import { createRoomListEntry } from "../logic/roomList";
 import { RoomState } from "dfg-messages";
 import { act } from "react-dom/test-utils";
 
+test("renders no room message when no rooms are available", () => {
+  const gl = createGlobalLogicForTest();
+  const rll = createSubLogicListForTest().roomListLogic;
+  jest.spyOn(rll, "fetchLatest").mockImplementation(() => {
+    return [];
+  });
+  render(<RoomList globalLogic={gl} roomListLogic={rll} />);
+  const e = screen.getByText(/利用可能なルームはありません/);
+  expect(e).toBeInTheDocument();
+});
+
 test("renders room list table", () => {
   const gl = createGlobalLogicForTest();
   const rll = createSubLogicListForTest().roomListLogic;
