@@ -144,7 +144,6 @@ export class SoundLogicImple implements SoundLogic {
       "music",
       new Howl({
         src: process.env.PUBLIC_URL + "/sounds/music.mp3",
-        html5: true,
         loop: true,
       })
     );
