@@ -59,6 +59,7 @@ export default function CardSelector(props: Props) {
       </ul>
       {props.isPassable ? (
         <button
+          // eslint-disable-next-line jsx-a11y/no-access-key
           accessKey="p"
           type="button"
           disabled={foundChecked}
