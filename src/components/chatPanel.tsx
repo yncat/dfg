@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-access-key */
+
 import React from "react";
 import { GlobalLogic } from "../logic/global";
 import ChatMessageList from "./chatMessageList";
@@ -35,7 +37,6 @@ export default function ChatPanel(props: Props) {
       <label>
         {i18n.chat_inputLabel(props.lobbyOrRoom)}{" "}
         <input
-          // eslint-disable-next-line jsx-a11y/no-access-key
           accessKey="/"
           type="text"
           maxLength={200}

@@ -118,6 +118,10 @@ export class JapaneseI18nService implements I18nService {
     return "ルームを退室";
   }
 
+  public leaveRoomButton_cancel(): string {
+    return "ルームに残る";
+  }
+
   public leaveRoomButton_confirmLeaving(): string {
     return "本当にルームを退室しますか？";
   }

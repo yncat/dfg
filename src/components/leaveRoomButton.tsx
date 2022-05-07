@@ -20,7 +20,7 @@ export default function LeaveRoomButton(props: Props) {
           });
         }}
       >
-        {i18n.currentRoom_leave()}
+        {isExpanded ? i18n.leaveRoomButton_cancel() : i18n.currentRoom_leave()}
       </button>
       {isExpanded ? (
         <React.Fragment>

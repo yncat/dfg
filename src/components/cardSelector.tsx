@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-access-key */
+
 import React from "react";
 import { CardListMessage, DiscardPairListMessage } from "dfg-messages";
 import { GlobalLogic } from "../logic/global";
@@ -59,7 +61,6 @@ export default function CardSelector(props: Props) {
       </ul>
       {props.isPassable ? (
         <button
-          // eslint-disable-next-line jsx-a11y/no-access-key
           accessKey="p"
           type="button"
           disabled={foundChecked}
