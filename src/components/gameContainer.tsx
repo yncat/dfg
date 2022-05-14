@@ -77,7 +77,6 @@ export default function GameContainer(props: Props) {
   const handleMyTurn = () => {
     const msg = i18n.game_yourTurn();
     props.globalLogic.updateAutoRead(msg);
-    updateLog(msg);
     props.globalLogic.sound.enqueueEvent(SoundEvent.TURN);
     setIsMyTurn(true);
   };
