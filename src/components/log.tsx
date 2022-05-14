@@ -1,5 +1,6 @@
 import React from "react";
 import { GlobalLogic } from "../logic/global";
+import { ButtonGroup } from "react-bootstrap";
 
 const defaultRowsCount = 10;
 const maxRowsCount = 100;
@@ -36,24 +37,26 @@ export default function Log(props: Props) {
           return <li key={i}>{v}</li>;
         })}
       </ul>
-      <button
-        type="button"
-        disabled={rowsCount === maxRowsCount}
-        onClick={(evt) => {
-          handleRowsCount("in");
-        }}
-      >
-        {i18n.gameLog_increase()}
-      </button>
-      <button
-        type="button"
-        disabled={rowsCount === minRowsCount}
-        onClick={(evt) => {
-          handleRowsCount("de");
-        }}
-      >
-        {i18n.gameLog_decrease()}
-      </button>
+      <ButtonGroup>
+        <button
+          type="button"
+          disabled={rowsCount === maxRowsCount}
+          onClick={(evt) => {
+            handleRowsCount("in");
+          }}
+        >
+          {i18n.gameLog_increase()}
+        </button>
+        <button
+          type="button"
+          disabled={rowsCount === minRowsCount}
+          onClick={(evt) => {
+            handleRowsCount("de");
+          }}
+        >
+          {i18n.gameLog_decrease()}
+        </button>
+      </ButtonGroup>
     </div>
   );
 }
