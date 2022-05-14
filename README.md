@@ -1,6 +1,6 @@
 # Online daifugo
 
-This is a text-based [Daifugo](https://en.wikipedia.org/wiki/Daifug%C5%8D) game. It has completely playable with screen readers. Internet Explorer is not supported.
+This is a text-based [Daifugo](https://en.wikipedia.org/wiki/Daifug%C5%8D) game. It is completely playable with screen readers. Internet Explorer is not supported.
 
 ## Setup development environment
 
@@ -10,7 +10,7 @@ You need [the server-side program](https://github.com/yncat/dfg-server) .
 
 First, clone the server-side program. Run `npm ci` to install dependencies, then run `npm start` to start serving. It starts waiting for connections at `localhost:2567` .
 
-Next, clone this repository, run `npm run ci` then `npm start` . It launches browser for the first time. While the development server is running, the game be accessed by requesting to `localhost:3000` .
+Next, clone this repository, run `npm run ci` then `npm start` . It launches browser for the first time. While the development server is running, the game can be accessed by requesting to `localhost:3000` .
 
 The development server supports hot-reloading. When you make changes to the source, it will be automatically applied. When you have compilation errors, your browser window will display it for you.
 
