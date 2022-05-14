@@ -38,9 +38,6 @@ export default function GameContainer(props: Props) {
   const updateLog = (content: string) => {
     setLog((prev: Array<string>) => {
       let newlog = [content, ...prev];
-      if (newlog.length > 10) {
-        newlog = newlog.slice(0, 10);
-      }
       return newlog;
     });
   };

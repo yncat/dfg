@@ -90,6 +90,9 @@ export interface I18nService {
   game_agari: (playerName: string) => string;
   game_forbiddenAgari: (playerName: string) => string;
   gameLog_heading: () => string;
+  gameLog_increase: () => string;
+  gameLog_decrease: () => string;
+  gameLog_changedRowsCount: (rowsCount: number) => string;
   settings_heading: () => string;
   settings_soundToggle: () => string;
   settings_musicToggle: () => string;

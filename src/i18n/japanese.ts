@@ -385,6 +385,18 @@ export class JapaneseI18nService implements I18nService {
     return "最新のログ";
   }
 
+  public gameLog_increase(): string {
+    return "表示を増やす";
+  }
+
+  public gameLog_decrease(): string {
+    return "表示を減らす";
+  }
+
+  public gameLog_changedRowsCount(rowsCount: number): string {
+    return `${rowsCount}件`;
+  }
+
   public settings_heading(): string {
     return "環境設定";
   }
