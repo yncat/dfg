@@ -58,12 +58,7 @@ test("renders list contents when increased", () => {
   const over1 = screen.queryByText("10");
   expect(over1).toBeNull();
   const inc = screen.getByText("表示を増やす");
-  act(() => {
-    fireEvent(
-      inc,
-      new MouseEvent("click", { bubbles: true, cancelable: true })
-    );
-  });
+  fireEvent(inc, new MouseEvent("click", { bubbles: true, cancelable: true }));
   for (let i = 0; i < 20; i++) {
     const e = screen.getByText(i.toString());
     expect(e).toBeInTheDocument();
