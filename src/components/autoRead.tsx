@@ -20,7 +20,7 @@ export default function AutoRead(props: Props) {
   }, []);
 
   return (
-    <div className="auto-read" aria-live="polite">
+    <div className="auto-read" aria-live="polite" aria-atomic="true">
       {message}
     </div>
   );
