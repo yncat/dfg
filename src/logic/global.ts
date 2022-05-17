@@ -17,6 +17,7 @@ import { Pubsub } from "./pubsub";
 import { Pipeline } from "./pipeline";
 import { GlobalState } from "./schema-def/GlobalState";
 import { Config } from "./config";
+import protocolVersion from "./protocolVersion"
 
 export type ConnectionStatusString =
   | "not_connected"
@@ -102,6 +103,7 @@ export class GlobalLogicImple implements GlobalLogic {
     try {
       this.lobbyRoom = await this.client.joinOrCreate("global_room", {
         playerName: this.registeredPlayerName,
+        protocolVersion: protocolVersion,
       });
     } catch (e) {
       this.connectionStatusPubsub.publish("not_connected");
@@ -217,6 +219,7 @@ export class GlobalLogicImple implements GlobalLogic {
     try {
       this.gameRoom = await this.client.joinById(roomID, {
         playerName: this.registeredPlayerName,
+        protocolVersion: protocolVersion,
       });
       onFinish(true);
     } catch (e) {
