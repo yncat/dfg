@@ -412,4 +412,8 @@ export class JapaneseI18nService implements I18nService {
   public lobbyAnnouncement_roomCreated(playerName: string): string {
     return playerName + "さんが、新しいルームを作成しました。";
   }
+
+  public exit_confirmation(): string {
+    return "このまま終了すると、ルームから抜けてしまいますがよろしいですか？";
+  }
 }

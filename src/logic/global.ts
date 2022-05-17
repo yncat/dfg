@@ -17,7 +17,7 @@ import { Pubsub } from "./pubsub";
 import { Pipeline } from "./pipeline";
 import { GlobalState } from "./schema-def/GlobalState";
 import { Config } from "./config";
-import protocolVersion from "./protocolVersion"
+import { protocolVersion } from "./protocolVersion";
 
 export type ConnectionStatusString =
   | "not_connected"
