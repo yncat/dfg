@@ -97,4 +97,5 @@ export interface I18nService {
   settings_soundToggle: () => string;
   settings_musicToggle: () => string;
   lobbyAnnouncement_roomCreated: (playerCount: string) => string;
+  exit_confirmation: () => string;
 }

@@ -27,7 +27,7 @@ export default function CardSelector(props: Props) {
       <ul>
         {props.cardList.cardList.map((v, i) => {
           return (
-            <li key={i}>
+            <li key={v.ID}>
               <label>
                 <input
                   type="checkbox"

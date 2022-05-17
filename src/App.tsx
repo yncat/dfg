@@ -27,7 +27,14 @@ function App(props: Props) {
     React.useState<ConnectionStatusString>("not_connected");
   const [playerCount, setPlayerCount] = React.useState<number>(0);
   const [isInRoom, setIsInRoom] = React.useState<boolean>(false);
+  const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+    if (props.globalLogic.isInRoomPubsub.fetchLatest()) {
+      event.preventDefault();
+      event.returnValue = "aaaaa";
+    }
+  };
   React.useEffect(() => {
+    window.addEventListener("beforeunload", handleBeforeUnload);
     props.globalLogic.connectionStatusPubsub.subscribe(
       (connectionStatusString: ConnectionStatusString) => {
         setConnectionStatusString(connectionStatusString);

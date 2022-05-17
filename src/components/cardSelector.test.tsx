@@ -14,9 +14,9 @@ import {
 test("render updated cardSelector checkboxes using props", () => {
   const gl = createGlobalLogicForTest();
   const msg = encodeCardListMessage([
-    encodeSelectableCardMessage(CardMark.DIAMONDS, 5, false, false),
-    encodeSelectableCardMessage(CardMark.DIAMONDS, 6, true, true),
-    encodeSelectableCardMessage(CardMark.DIAMONDS, 7, false, true),
+    encodeSelectableCardMessage("abcd1", CardMark.DIAMONDS, 5, false, false),
+    encodeSelectableCardMessage("abcd2", CardMark.DIAMONDS, 6, true, true),
+    encodeSelectableCardMessage("abcd3", CardMark.DIAMONDS, 7, false, true),
   ]);
   render(
     <CardSelector
@@ -75,7 +75,7 @@ test("render updated cardSelector buttons using props", () => {
 test("when more than one card is checked, pass button is disabled", () => {
   const gl = createGlobalLogicForTest();
   const msg = encodeCardListMessage([
-    encodeSelectableCardMessage(CardMark.DIAMONDS, 6, true, true),
+    encodeSelectableCardMessage("abcd1", CardMark.DIAMONDS, 6, true, true),
   ]);
   render(
     <CardSelector
@@ -96,7 +96,7 @@ test("when more than one card is checked, pass button is disabled", () => {
 test("hide the passbutton when isPassable==false", () => {
   const gl = createGlobalLogicForTest();
   const msg = encodeCardListMessage([
-    encodeSelectableCardMessage(CardMark.DIAMONDS, 6, false, false),
+    encodeSelectableCardMessage("abcd1", CardMark.DIAMONDS, 6, false, false),
   ]);
   render(
     <CardSelector
