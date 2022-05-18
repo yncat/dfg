@@ -4,6 +4,7 @@ import {
   CardMark,
   CardMessage,
   DiscardPairMessage,
+  WebSocketErrorCode
 } from "dfg-messages";
 
 export interface Result {
@@ -98,4 +99,5 @@ export interface I18nService {
   settings_musicToggle: () => string;
   lobbyAnnouncement_roomCreated: (playerCount: string) => string;
   exit_confirmation: () => string;
+  error_ws: (code:WebSocketErrorCode)=>string;
 }

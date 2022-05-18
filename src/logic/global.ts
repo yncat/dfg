@@ -30,7 +30,7 @@ export interface GlobalLogic {
   i18n: I18nService;
   sound: SoundLogic;
   connectionStatusPubsub: Pubsub<ConnectionStatusString>;
-  connectionErrorPubsub: Pubsub<unknown>;
+  connectionErrorPubsub: Pubsub<any>;
   playerCountPubsub: Pubsub<number>;
   autoReadPubsub: Pubsub<string>;
   roomCreatedPubsub: Pubsub<string>;

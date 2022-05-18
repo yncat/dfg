@@ -5,6 +5,7 @@ import {
   CardMark,
   CardMessage,
   DiscardPairMessage,
+  WebSocketErrorCode,
 } from "dfg-messages";
 
 export class JapaneseI18nService implements I18nService {
@@ -415,5 +416,16 @@ export class JapaneseI18nService implements I18nService {
 
   public exit_confirmation(): string {
     return "このまま終了すると、ルームから抜けてしまいますがよろしいですか？";
+  }
+
+  public error_ws(code: WebSocketErrorCode): string {
+    switch (code) {
+      case WebSocketErrorCode.PROTOCOL_VERSION_MISMATCH:
+        return "クライアントのバージョンが古いです。ブラウザを再読み込みしてから、もう一度接続してください。それでも解決しない場合は、ブラウザのキャッシュを削除してからお試しください。";
+      case WebSocketErrorCode.INVALID_PLAYER_NAME:
+        return "プレイヤー名が入力されなかったか、使用できない文字を含んでいたため、サーバーによって接続が拒否されました。スペースのみ、または、句読点のみの名前は使用できません。";
+      default:
+        return "原因不明のエラーです。";
+    }
   }
 }

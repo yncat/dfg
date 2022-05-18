@@ -7,9 +7,10 @@ import AutoRead from "./components/autoRead";
 import { ConnectionStatusString, GlobalLogic } from "./logic/global";
 import { SubLogicList } from "./logic/sub";
 import { SoundEvent } from "./logic/sound";
+import { AuthError } from "dfg-messages";
 
-interface ConnectionError {
-  code?: number;
+function isAuthError(e: any): e is AuthError {
+  return e.code !== undefined && e.message !== undefined;
 }
 
 export type Props = {
@@ -45,13 +46,12 @@ function App(props: Props) {
         }
       }
     );
-    props.globalLogic.connectionErrorPubsub.subscribe((e: unknown) => {
-      const error = e as ConnectionError;
-      if (error.code === undefined) {
-        alert(i18n.login_serverOffline());
+    props.globalLogic.connectionErrorPubsub.subscribe((e: any) => {
+      if (isAuthError(e)) {
+        alert(i18n.error_ws(e.code));
         return;
       }
-      alert(i18n.login_cannotConnect() + JSON.stringify(error));
+      alert(i18n.login_serverOffline());
     });
     props.globalLogic.playerCountPubsub.subscribe(setPlayerCount);
     props.globalLogic.isInRoomPubsub.subscribe((isInRoom: boolean) => {
