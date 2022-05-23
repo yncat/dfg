@@ -9,6 +9,10 @@ import {
 } from "dfg-messages";
 
 export class JapaneseI18nService implements I18nService {
+  public html_lang(): string {
+    return "ja";
+  }
+
   public login_as(playerName: string): string {
     return playerName + "としてログイン";
   }

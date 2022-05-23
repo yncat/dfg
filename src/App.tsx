@@ -65,7 +65,7 @@ function App(props: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
-    <div className="App">
+    <div className="App" lang={i18n.html_lang()}>
       <ConnectionStatus
         globalLogic={props.globalLogic}
         connectionStatusString={connectionStatusString}
