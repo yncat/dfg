@@ -91,7 +91,10 @@ export interface I18nService {
   ) => string;
   game_agari: (playerName: string) => string;
   game_forbiddenAgari: (playerName: string) => string;
-  gameLog_heading: () => string;
+  playingInfo_heading:()=>string;
+  playingInfo_log: () => string;
+  playingInfo_discardStack:()=>string;
+  playingInfo_removedCardList:()=>string;
   gameLog_increase: () => string;
   gameLog_decrease: () => string;
   gameLog_changedRowsCount: (rowsCount: number) => string;

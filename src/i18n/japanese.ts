@@ -386,8 +386,20 @@ export class JapaneseI18nService implements I18nService {
     return playerName + "は禁止上がり！";
   }
 
-  public gameLog_heading(): string {
-    return "最新のログ";
+  public playingInfo_heading(): string {
+    return "ゲームの状況";
+  }
+
+  public playingInfo_log(): string {
+    return "ゲームログ";
+  }
+
+  public playingInfo_discardStack(): string {
+    return "場のカード";
+  }
+
+  public playingInfo_removedCardList(): string {
+    return "未使用のカード";
   }
 
   public gameLog_increase(): string {

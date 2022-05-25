@@ -4,7 +4,7 @@ import { GameLogic } from "../logic/game";
 import { GameStateDTO } from "../logic/gameState";
 import GameInfo from "./gameInfo";
 import CardSelector from "./cardSelector";
-import Log from "./log";
+import PlayingInfoPanel from "./playingInfoPanel";
 import { GameState } from "../logic/schema-def/GameState";
 import { SoundEvent } from "../logic/sound";
 import {
@@ -270,7 +270,11 @@ export default function GameContainer(props: Props) {
         onPass={props.gameLogic.pass.bind(props.gameLogic)}
         isPassable={isMyTurn}
       />
-      <Log globalLogic={props.globalLogic} contents={log} />
+      <PlayingInfoPanel
+        globalLogic={props.globalLogic}
+        logContents={log}
+        gameState={gameState}
+      />
     </div>
   );
 }

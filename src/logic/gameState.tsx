@@ -23,6 +23,33 @@ export class GameResultDTO {
   }
 }
 
+export class CardDTO {
+  mark: number;
+  cardNumber: number;
+  constructor(mark: number, cardNumber: number) {
+    this.mark = mark;
+    this.cardNumber = cardNumber;
+  }
+}
+
+export class DiscardPairDTO {
+  cards: CardDTO[];
+  constructor(...cards: CardDTO[]) {
+    this.cards = cards;
+  }
+}
+
+export class RemovedCardEntryDTO {
+  mark: number;
+  cardNumber: number;
+  count: number;
+  constructor(mark: number, cardNumber: number, count: number) {
+    this.mark = mark;
+    this.cardNumber = cardNumber;
+    this.count = count;
+  }
+}
+
 export class GameStateDTO {
   playerCount: number;
   playerNameList: string[];
@@ -30,6 +57,8 @@ export class GameStateDTO {
   isInGame: boolean;
   lastGameResult: GameResultDTO;
   currentGameResult: GameResultDTO;
+  discardStack: DiscardPairDTO[];
+  removedCardList: RemovedCardEntryDTO[];
   constructor(gameState: GameState) {
     this.playerCount = gameState.playerCount;
     this.playerNameList = extract(gameState.playerNameList);
@@ -37,5 +66,15 @@ export class GameStateDTO {
     this.isInGame = gameState.isInGame;
     this.lastGameResult = new GameResultDTO(gameState.lastGameResult);
     this.currentGameResult = new GameResultDTO(gameState.currentGameResult);
+    const dps = gameState.discardStack.map((v) => {
+      const cards = v.cards.map((w) => {
+        return new CardDTO(w.mark, w.cardNumber);
+      });
+      return new DiscardPairDTO(...cards);
+    });
+    this.discardStack = dps;
+    this.removedCardList = gameState.removedCardList.map((v) => {
+      return new RemovedCardEntryDTO(v.mark, v.cardNumber, v.count);
+    });
   }
 }
