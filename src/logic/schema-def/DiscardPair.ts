@@ -6,8 +6,8 @@
 // 
 
 import { Schema, type, ArraySchema, MapSchema, SetSchema, DataChange } from '@colyseus/schema';
+import { Card } from './Card'
 
-
-export class GlobalState extends Schema {
-    @type("number") public playerCount!: number;
+export class DiscardPair extends Schema {
+    @type([ Card ]) public cards: ArraySchema<Card> = new ArraySchema<Card>();
 }
