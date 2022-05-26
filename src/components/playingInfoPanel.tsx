@@ -4,6 +4,7 @@ import "react-tabs/style/react-tabs.css";
 import { GlobalLogic } from "../logic/global";
 import { GameStateDTO } from "../logic/gameState";
 import Log from "./log";
+import DiscardStack from "./discardStack";
 
 interface Props {
   globalLogic: GlobalLogic;
@@ -30,7 +31,12 @@ export default function PlayingInfoPanel(props: Props) {
         <TabPanel>
           <Log globalLogic={props.globalLogic} contents={props.logContents} />
         </TabPanel>
-        <TabPanel></TabPanel>
+        <TabPanel>
+          <DiscardStack
+            globalLogic={props.globalLogic}
+            discardStack={props.gameState.discardStack}
+          />
+        </TabPanel>
         <TabPanel></TabPanel>
       </Tabs>
     </div>
