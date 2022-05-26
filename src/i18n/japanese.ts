@@ -406,6 +406,10 @@ export class JapaneseI18nService implements I18nService {
     return "表示を増やす";
   }
 
+  public discardStack_noCards(): string {
+    return "場に出ているカードはありません。";
+  }
+
   public gameLog_decrease(): string {
     return "表示を減らす";
   }

@@ -4,7 +4,7 @@ import {
   CardMark,
   CardMessage,
   DiscardPairMessage,
-  WebSocketErrorCode
+  WebSocketErrorCode,
 } from "dfg-messages";
 
 export interface Result {
@@ -16,7 +16,7 @@ export interface Result {
 }
 
 export interface I18nService {
-  html_lang:()=>string;
+  html_lang: () => string;
   login_as: (playerName: string) => string;
   login_needName: () => string;
   login_connecting: () => string;
@@ -91,17 +91,18 @@ export interface I18nService {
   ) => string;
   game_agari: (playerName: string) => string;
   game_forbiddenAgari: (playerName: string) => string;
-  playingInfo_heading:()=>string;
+  playingInfo_heading: () => string;
   playingInfo_log: () => string;
-  playingInfo_discardStack:()=>string;
-  playingInfo_removedCardList:()=>string;
+  playingInfo_discardStack: () => string;
+  playingInfo_removedCardList: () => string;
   gameLog_increase: () => string;
   gameLog_decrease: () => string;
   gameLog_changedRowsCount: (rowsCount: number) => string;
+  discardStack_noCards: () => string;
   settings_heading: () => string;
   settings_soundToggle: () => string;
   settings_musicToggle: () => string;
   lobbyAnnouncement_roomCreated: (playerCount: string) => string;
   exit_confirmation: () => string;
-  error_ws: (code:WebSocketErrorCode)=>string;
+  error_ws: (code: WebSocketErrorCode) => string;
 }
