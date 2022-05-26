@@ -5,6 +5,7 @@ import CurrentRoomInfo from "./gameInfo";
 import { createGlobalLogicForTest } from "../testHelper";
 import { GameState } from "../logic/schema-def/GameState";
 import { Result } from "../logic/schema-def/Result";
+import * as dto from "../logic/gameState"
 
 test("render currentRoomInfo for waiting status", () => {
   const gl = createGlobalLogicForTest();
@@ -26,6 +27,7 @@ test("render currentRoomInfo for waiting status", () => {
   lr.hinminPlayerList = new ArraySchema<string>("dog");
   lr.daihinminPlayerList = new ArraySchema<string>("monkey");
   state.lastGameResult = lr;
+  const dto = new GameStateDTO(state);
   render(
     <CurrentRoomInfo globalLogic={gl} gameState={state} isOwner={false} />
   );
