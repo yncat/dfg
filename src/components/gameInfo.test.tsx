@@ -27,9 +27,9 @@ test("render currentRoomInfo for waiting status", () => {
   lr.hinminPlayerList = new ArraySchema<string>("dog");
   lr.daihinminPlayerList = new ArraySchema<string>("monkey");
   state.lastGameResult = lr;
-  const dto = new GameStateDTO(state);
+  const gsdto = new dto.GameStateDTO(state);
   render(
-    <CurrentRoomInfo globalLogic={gl} gameState={state} isOwner={false} />
+    <CurrentRoomInfo globalLogic={gl} gameState={gsdto} isOwner={false} />
   );
   const heading = screen.getByText("catさんのルーム(6人)");
   const memberList = screen.getByText(
@@ -60,7 +60,8 @@ test("empty result", () => {
     "tiger",
     "monkey"
   );
-  render(<CurrentRoomInfo globalLogic={gl} gameState={state} isOwner={true} />);
+  const gsdto = new dto.GameStateDTO(state);
+  render(<CurrentRoomInfo globalLogic={gl} gameState={gsdto} isOwner={true} />);
   const lastRes = screen.getByText("前回の結果: 結果なし。");
   expect(lastRes).toBeInTheDocument();
 });
