@@ -5,6 +5,7 @@ import { GlobalLogic } from "../logic/global";
 import { GameStateDTO } from "../logic/gameState";
 import Log from "./log";
 import DiscardStack from "./discardStack";
+import RemovedCardList from "./removedCardList";
 
 interface Props {
   globalLogic: GlobalLogic;
@@ -37,7 +38,12 @@ export default function PlayingInfoPanel(props: Props) {
             discardStack={props.gameState.discardStack}
           />
         </TabPanel>
-        <TabPanel></TabPanel>
+        <TabPanel>
+          <RemovedCardList
+            globalLogic={props.globalLogic}
+            removedCardList={props.gameState.removedCardList}
+          />
+        </TabPanel>
       </Tabs>
     </div>
   );

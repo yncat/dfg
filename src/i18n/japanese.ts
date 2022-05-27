@@ -418,6 +418,18 @@ export class JapaneseI18nService implements I18nService {
     return `${rowsCount}件`;
   }
 
+  public removedCardEntry(
+    mark: CardMark,
+    cardNumber: number,
+    count: number
+  ): string {
+    return `${this.game_card(mark, cardNumber)}が${count}枚`;
+  }
+
+  public removedCards_description(): string {
+    return "途中でゲームから抜けたプレイヤーのカードは、このゲーム中では使用されなくなり、ここに表示されます。";
+  }
+
   public settings_heading(): string {
     return "環境設定";
   }

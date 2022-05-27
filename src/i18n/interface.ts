@@ -99,6 +99,12 @@ export interface I18nService {
   gameLog_decrease: () => string;
   gameLog_changedRowsCount: (rowsCount: number) => string;
   discardStack_noCards: () => string;
+  removedCardEntry: (
+    mark: CardMark,
+    cardNumber: number,
+    count: number
+  ) => string;
+  removedCards_description: () => string;
   settings_heading: () => string;
   settings_soundToggle: () => string;
   settings_musicToggle: () => string;
