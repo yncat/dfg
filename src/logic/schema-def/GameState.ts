@@ -14,6 +14,8 @@ import {
   DataChange,
 } from "@colyseus/schema";
 import { Result } from "./Result";
+import { DiscardPair } from "./DiscardPair";
+import { RemovedCardEntry } from "./RemovedCardEntry";
 
 export class GameState extends Schema {
   @type("number") public playerCount!: number;
@@ -23,4 +25,8 @@ export class GameState extends Schema {
   @type("boolean") public isInGame!: boolean;
   @type(Result) public lastGameResult: Result = new Result();
   @type(Result) public currentGameResult: Result = new Result();
+  @type([DiscardPair]) public discardStack: ArraySchema<DiscardPair> =
+    new ArraySchema<DiscardPair>();
+  @type([RemovedCardEntry])
+  public removedCardList: ArraySchema<RemovedCardEntry> = new ArraySchema<RemovedCardEntry>();
 }

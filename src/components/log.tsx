@@ -31,7 +31,6 @@ export default function Log(props: Props) {
 
   return (
     <div>
-      <h2>{i18n.gameLog_heading()}</h2>
       <ul>
         {props.contents.slice(0, rowsCount).map((v, i) => {
           return <li key={i}>{v}</li>;

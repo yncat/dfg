@@ -386,12 +386,28 @@ export class JapaneseI18nService implements I18nService {
     return playerName + "は禁止上がり！";
   }
 
-  public gameLog_heading(): string {
-    return "最新のログ";
+  public playingInfo_heading(): string {
+    return "ゲームの状況";
+  }
+
+  public playingInfo_log(): string {
+    return "ゲームログ";
+  }
+
+  public playingInfo_discardStack(): string {
+    return "場のカード";
+  }
+
+  public playingInfo_removedCardList(): string {
+    return "未使用のカード";
   }
 
   public gameLog_increase(): string {
     return "表示を増やす";
+  }
+
+  public discardStack_noCards(): string {
+    return "場に出ているカードはありません。";
   }
 
   public gameLog_decrease(): string {
@@ -400,6 +416,18 @@ export class JapaneseI18nService implements I18nService {
 
   public gameLog_changedRowsCount(rowsCount: number): string {
     return `${rowsCount}件`;
+  }
+
+  public removedCardEntry(
+    mark: CardMark,
+    cardNumber: number,
+    count: number
+  ): string {
+    return `${this.game_card(mark, cardNumber)}が${count}枚`;
+  }
+
+  public removedCards_description(): string {
+    return "途中でゲームから抜けたプレイヤーのカードは、このゲーム中では使用されなくなり、ここに表示されます。";
   }
 
   public settings_heading(): string {
