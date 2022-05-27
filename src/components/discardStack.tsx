@@ -8,7 +8,7 @@ interface Props {
   discardStack: DiscardPairDTO[];
 }
 
-export default function GameInfo(props: Props) {
+export default function DiscardStack(props: Props) {
   const i18n = props.globalLogic.i18n;
 
   return (

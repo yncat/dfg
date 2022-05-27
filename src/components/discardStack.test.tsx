@@ -18,3 +18,10 @@ test("renders discard stack", () => {
   const e = screen.getByText("クラブの4、クラブの4の2枚");
   expect(e).toBeInTheDocument();
 });
+
+test("renders no cards when the list is empty", () => {
+  const gl = createGlobalLogicForTest();
+  render(<DiscardStack globalLogic={gl} discardStack={[]} />);
+  const e = screen.getByText("場に出ているカードはありません。");
+  expect(e).toBeInTheDocument();
+});
