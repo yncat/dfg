@@ -5,7 +5,7 @@ import CurrentRoomInfo from "./gameInfo";
 import { createGlobalLogicForTest } from "../testHelper";
 import { GameState } from "../logic/schema-def/GameState";
 import { Result } from "../logic/schema-def/Result";
-import * as dto from "../logic/gameState"
+import * as dto from "../logic/gameState";
 
 test("render currentRoomInfo for waiting status", () => {
   const gl = createGlobalLogicForTest();
