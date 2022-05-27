@@ -9,8 +9,8 @@ test("renders discard stack", () => {
   const gl = createGlobalLogicForTest();
   const ds = [
     new DiscardPairDTO(
-      new CardDTO(CardMark.CLUBS as number, 4),
-      new CardDTO(CardMark.CLUBS as number, 4)
+      new CardDTO(CardMark.CLUBS, 4),
+      new CardDTO(CardMark.CLUBS, 4)
     ),
   ];
 

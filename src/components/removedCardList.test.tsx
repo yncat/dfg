@@ -7,7 +7,7 @@ import RemovedCardList from "./removedCardList";
 
 test("renders discard stack", () => {
   const gl = createGlobalLogicForTest();
-  const es = [new RemovedCardEntryDTO(CardMark.HEARTS as number, 3, 3)];
+  const es = [new RemovedCardEntryDTO(CardMark.HEARTS, 3, 3)];
   render(<RemovedCardList globalLogic={gl} removedCardList={es} />);
   const e = screen.getByText("ハートの3が3枚");
   expect(e).toBeInTheDocument();
