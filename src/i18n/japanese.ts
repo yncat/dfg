@@ -83,6 +83,54 @@ export class JapaneseI18nService implements I18nService {
     return "作成中...";
   }
 
+  public roomSettings_title(): string {
+    return "ルームの設定";
+  }
+
+  public roomSettings_create(): string {
+    return "作成";
+  }
+
+  public roomSettings_cancel(): string {
+    return "キャンセル";
+  }
+
+  public roomSettings_ruleSettingsHeading(): string {
+    return "ルール設定";
+  }
+
+  public roomSettings_yagiri(): string {
+    return "8で場のカードを流す(8切り)";
+  }
+
+  public roomSettings_jBack(): string {
+    return "11でカードの強さを逆にする(11バック、Jバック)";
+  }
+
+  public roomSettings_kakumei(): string {
+    return "4枚同時だしで、返されるまでカードの強さを逆にする(革命/革命返し)";
+  }
+
+  public roomSettings_reverse(): string {
+    return "9でターンの順番を逆にする(9リバース)";
+  }
+
+  public roomSettings_skip(): string {
+    return "5で次のプレイヤーの順番を飛ばす(5飛ばし、5スキップ)";
+  }
+
+  public roomSettings_skip_off(): string {
+    return "飛ばさない";
+  }
+
+  public roomSettings_skip_single(): string {
+    return "次のプレイヤーを飛ばす";
+  }
+
+  public roomSettings_skip_multiple(): string {
+    return "出した枚数分のプレイヤーを飛ばす";
+  }
+
   public roomList_creator(): string {
     return "作成者";
   }
