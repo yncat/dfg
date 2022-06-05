@@ -4,6 +4,7 @@ import {
   CardMark,
   CardMessage,
   DiscardPairMessage,
+  RuleConfig,
   WebSocketErrorCode,
 } from "dfg-messages";
 
@@ -49,12 +50,14 @@ export interface I18nService {
   roomList_creator: () => string;
   roomList_currentPlayerCount: () => string;
   roomList_state: () => string;
+  roomList_ruleConfig:()=>string;
   roomList_action: () => string;
   roomList_join: () => string;
   roomList_watch: () => string;
   roomList_joining: () => string;
   roomList_stateValue: (state: RoomState) => string;
   roomList_noRoom: () => string;
+  ruleConfig:(config:RuleConfig)=>string;
   leaveRoomButton_leaveRoom: () => string;
   leaveRoomButton_cancel: () => string;
   leaveRoomButton_confirmLeaving: () => string;
@@ -95,6 +98,8 @@ export interface I18nService {
   game_nagare: () => string;
   game_strengthInverted: (inverted: boolean) => string;
   game_kakumei: () => string;
+  game_reversed:()=>string;
+  game_skipped:(playerName:string)=>string;
   game_ranked: (playerName: string, rankType: RankType) => string;
   game_rankChanged: (
     playerName: string,

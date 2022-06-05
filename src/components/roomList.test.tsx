@@ -6,7 +6,17 @@ import {
   createSubLogicListForTest,
 } from "../testHelper";
 import { createRoomListEntry } from "../logic/roomList";
-import { RoomState } from "dfg-messages";
+import { RoomState, SkipConfig, RuleConfig } from "dfg-messages";
+
+function createRuleConfig(): RuleConfig {
+  return {
+    yagiri: true,
+    jBack: true,
+    kakumei: true,
+    reverse: false,
+    skip: SkipConfig.OFF,
+  };
+}
 
 test("renders no room message when no rooms are available", () => {
   const gl = createGlobalLogicForTest();
@@ -22,7 +32,7 @@ test("renders no room message when no rooms are available", () => {
 test("renders room list table", () => {
   const gl = createGlobalLogicForTest();
   const rll = createSubLogicListForTest().roomListLogic;
-  const ent = createRoomListEntry("cat", 2, RoomState.WAITING, "abcdabcd");
+  const ent = createRoomListEntry("cat", 2, RoomState.WAITING, createRuleConfig(), "abcdabcd");
   jest.spyOn(rll, "fetchLatest").mockImplementation(() => {
     return [ent];
   });
@@ -34,7 +44,7 @@ test("renders room list table", () => {
 test("renders waiting status", () => {
   const gl = createGlobalLogicForTest();
   const rll = createSubLogicListForTest().roomListLogic;
-  const ent = createRoomListEntry("cat", 2, RoomState.WAITING, "abcdabcd");
+  const ent = createRoomListEntry("cat", 2, RoomState.WAITING, createRuleConfig(), "abcdabcd");
   jest.spyOn(rll, "fetchLatest").mockImplementation(() => {
     return [ent];
   });
@@ -48,7 +58,7 @@ test("renders waiting status", () => {
 test("renders playing status", () => {
   const gl = createGlobalLogicForTest();
   const rll = createSubLogicListForTest().roomListLogic;
-  const ent = createRoomListEntry("cat", 2, RoomState.PLAYING, "abcdabcd");
+  const ent = createRoomListEntry("cat", 2, RoomState.PLAYING, createRuleConfig(), "abcdabcd");
   jest.spyOn(rll, "fetchLatest").mockImplementation(() => {
     return [ent];
   });
@@ -59,12 +69,24 @@ test("renders playing status", () => {
   expect(b).toBeInTheDocument();
 });
 
+test("renders rule configuration status", () => {
+  const gl = createGlobalLogicForTest();
+  const rll = createSubLogicListForTest().roomListLogic;
+  const ent = createRoomListEntry("cat", 2, RoomState.PLAYING, createRuleConfig(), "abcdabcd");
+  jest.spyOn(rll, "fetchLatest").mockImplementation(() => {
+    return [ent];
+  });
+  render(<RoomList globalLogic={gl} roomListLogic={rll} />);
+  const e = screen.getByText("8切り、11バック、革命");
+  expect(e).toBeInTheDocument();
+});
+
 test("changes button label and disabled status when joining", () => {
   const gl = createGlobalLogicForTest();
   const rll = createSubLogicListForTest().roomListLogic;
   const ents = [
-    createRoomListEntry("cat", 2, RoomState.WAITING, "abcdabcd"),
-    createRoomListEntry("dog", 2, RoomState.PLAYING, "abcdabcd"),
+    createRoomListEntry("cat", 2, RoomState.WAITING, createRuleConfig(), "abcdabcd"),
+    createRoomListEntry("dog", 2, RoomState.PLAYING, createRuleConfig(), "abcdabcd"),
   ];
   jest.spyOn(rll, "fetchLatest").mockImplementation(() => {
     return ents;

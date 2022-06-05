@@ -7,7 +7,7 @@ import { SkipConfig } from "dfg-messages";
 test("renders settings with given parameters", () => {
   const gl = createGlobalLogicForTest();
   const yagiri = true;
-  const jBack = false;
+const jBack = false;
   const kakumei = true;
   const reverse = false;
   const skip = SkipConfig.OFF;

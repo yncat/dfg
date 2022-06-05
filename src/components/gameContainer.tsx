@@ -129,6 +129,20 @@ export default function GameContainer(props: Props) {
     updateLog(msg);
   };
 
+  const handleReverse = () => {
+    props.globalLogic.sound.enqueueEvent(SoundEvent.REVERSE);
+    const msg = i18n.game_reversed();
+    props.globalLogic.updateAutoRead(msg);
+    updateLog(msg);
+  };
+
+  const handleSkip = (playerName: string) => {
+    props.globalLogic.sound.enqueueEvent(SoundEvent.SKIP);
+    const msg = i18n.game_skipped(playerName);
+    props.globalLogic.updateAutoRead(msg);
+    updateLog(msg);
+  };
+
   const handleRankChanged = (
     playerName: string,
     before: RankType,
@@ -208,6 +222,8 @@ export default function GameContainer(props: Props) {
     props.gameLogic.pipelines.pass.register(handlePass);
     props.gameLogic.pipelines.invert.register(handleInvert);
     props.gameLogic.pipelines.kakumei.register(handleKakumei);
+    props.gameLogic.pipelines.reverse.register(handleReverse);
+    props.gameLogic.pipelines.skip.register(handleSkip);
     props.gameLogic.pipelines.rankChanged.register(handleRankChanged);
     props.gameLogic.pipelines.agari.register(handleAgari);
     props.gameLogic.pipelines.forbiddenAgari.register(handleForbiddenAgari);

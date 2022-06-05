@@ -1,10 +1,11 @@
 import { Pubsub } from "./pubsub";
-import { RoomState } from "dfg-messages";
+import { RoomState, RuleConfig } from "dfg-messages";
 
 export type RoomListEntry = {
   creator: string;
   currentPlayerCount: number;
   state: RoomState;
+  ruleConfig:RuleConfig;
   roomID: string;
 };
 
@@ -12,9 +13,10 @@ export function createRoomListEntry(
   creator: string,
   currentPlayerCount: number,
   state: RoomState,
+  ruleConfig:RuleConfig,
   roomID: string
 ): RoomListEntry {
-  return { creator, currentPlayerCount, state, roomID };
+  return { creator, currentPlayerCount, state, ruleConfig, roomID };
 }
 
 export type RoomListUpdatePipelineFunc = (roomList: RoomListEntry[]) => void;

@@ -5,6 +5,8 @@ import {
   CardMark,
   CardMessage,
   DiscardPairMessage,
+  RuleConfig,
+  SkipConfig,
   WebSocketErrorCode,
 } from "dfg-messages";
 
@@ -139,6 +141,10 @@ export class JapaneseI18nService implements I18nService {
     return "現在の人数";
   }
 
+  public roomList_ruleConfig(): string {
+    return "ルール設定";
+  }
+
   public roomList_action(): string {
     return "アクション";
   }
@@ -165,6 +171,29 @@ export class JapaneseI18nService implements I18nService {
 
   public roomList_noRoom(): string {
     return "現在、利用可能なルームはありません。";
+  }
+
+  public ruleConfig(config: RuleConfig): string {
+    const ret: String[] = [];
+    if (config.yagiri) {
+      ret.push("8切り");
+    }
+    if (config.jBack) {
+      ret.push("11バック");
+    }
+    if (config.kakumei) {
+      ret.push("革命");
+    }
+    if (config.reverse) {
+      ret.push("9リバース");
+    }
+    if (config.skip === SkipConfig.SINGLE) {
+      ret.push("シングルスキップ");
+    }
+    if (config.skip === SkipConfig.MULTI) {
+      ret.push("マルチスキップ");
+    }
+    return ret.join("、");
   }
 
   public leaveRoomButton_leaveRoom(): string {
@@ -403,6 +432,14 @@ export class JapaneseI18nService implements I18nService {
 
   public game_kakumei(): string {
     return "革命！";
+  }
+
+  public game_reversed(): string {
+    return "ターンの回り方が逆になりました。";
+  }
+
+  public game_skipped(playerName: string): string {
+    return `${playerName}のターンが飛ばされました。`;
   }
 
   public game_ranked(playerName: string, rankType: RankType): string {

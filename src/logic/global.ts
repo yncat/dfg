@@ -172,6 +172,7 @@ export class GlobalLogicImple implements GlobalLogic {
           md.owner,
           room.clients,
           md.roomState,
+          md.ruleConfig,
           room.roomId
         );
       });
