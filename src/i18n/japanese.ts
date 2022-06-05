@@ -124,11 +124,11 @@ export class JapaneseI18nService implements I18nService {
   }
 
   public roomSettings_skip_single(): string {
-    return "次のプレイヤーを飛ばす";
+    return "次のプレイヤーを飛ばす(シングルスキップ)";
   }
 
   public roomSettings_skip_multiple(): string {
-    return "出した枚数分のプレイヤーを飛ばす";
+    return "出した枚数分のプレイヤーを飛ばす(マルチスキップ)";
   }
 
   public roomList_creator(): string {
