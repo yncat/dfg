@@ -1,7 +1,7 @@
 import { ArraySchema } from "@colyseus/schema";
 import { GameState } from "./schema-def/GameState";
 import { Result } from "./schema-def/Result";
-import { CardMark } from "dfg-messages";
+import { CardMark, RuleConfig, SkipConfig } from "dfg-messages";
 
 function extract(target: ArraySchema<string>) {
   return target.map((v) => {
@@ -60,6 +60,7 @@ export class GameStateDTO {
   currentGameResult: GameResultDTO;
   discardStack: DiscardPairDTO[];
   removedCardList: RemovedCardEntryDTO[];
+  ruleConfig: RuleConfig;
   constructor(gameState: GameState) {
     this.playerCount = gameState.playerCount;
     this.playerNameList = extract(gameState.playerNameList);
@@ -77,5 +78,12 @@ export class GameStateDTO {
     this.removedCardList = gameState.removedCardList.map((v) => {
       return new RemovedCardEntryDTO(v.mark as CardMark, v.cardNumber, v.count);
     });
+    this.ruleConfig = {
+      yagiri: gameState.ruleConfig.yagiri,
+      jBack: gameState.ruleConfig.jBack,
+      kakumei: gameState.ruleConfig.kakumei,
+      reverse: gameState.ruleConfig.reverse,
+      skip: gameState.ruleConfig.skip as SkipConfig,
+    };
   }
 }
