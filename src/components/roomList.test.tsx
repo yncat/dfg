@@ -32,7 +32,13 @@ test("renders no room message when no rooms are available", () => {
 test("renders room list table", () => {
   const gl = createGlobalLogicForTest();
   const rll = createSubLogicListForTest().roomListLogic;
-  const ent = createRoomListEntry("cat", 2, RoomState.WAITING, createRuleConfig(), "abcdabcd");
+  const ent = createRoomListEntry(
+    "cat",
+    2,
+    RoomState.WAITING,
+    createRuleConfig(),
+    "abcdabcd"
+  );
   jest.spyOn(rll, "fetchLatest").mockImplementation(() => {
     return [ent];
   });
@@ -44,7 +50,13 @@ test("renders room list table", () => {
 test("renders waiting status", () => {
   const gl = createGlobalLogicForTest();
   const rll = createSubLogicListForTest().roomListLogic;
-  const ent = createRoomListEntry("cat", 2, RoomState.WAITING, createRuleConfig(), "abcdabcd");
+  const ent = createRoomListEntry(
+    "cat",
+    2,
+    RoomState.WAITING,
+    createRuleConfig(),
+    "abcdabcd"
+  );
   jest.spyOn(rll, "fetchLatest").mockImplementation(() => {
     return [ent];
   });
@@ -58,7 +70,13 @@ test("renders waiting status", () => {
 test("renders playing status", () => {
   const gl = createGlobalLogicForTest();
   const rll = createSubLogicListForTest().roomListLogic;
-  const ent = createRoomListEntry("cat", 2, RoomState.PLAYING, createRuleConfig(), "abcdabcd");
+  const ent = createRoomListEntry(
+    "cat",
+    2,
+    RoomState.PLAYING,
+    createRuleConfig(),
+    "abcdabcd"
+  );
   jest.spyOn(rll, "fetchLatest").mockImplementation(() => {
     return [ent];
   });
@@ -72,7 +90,13 @@ test("renders playing status", () => {
 test("renders rule configuration status", () => {
   const gl = createGlobalLogicForTest();
   const rll = createSubLogicListForTest().roomListLogic;
-  const ent = createRoomListEntry("cat", 2, RoomState.PLAYING, createRuleConfig(), "abcdabcd");
+  const ent = createRoomListEntry(
+    "cat",
+    2,
+    RoomState.PLAYING,
+    createRuleConfig(),
+    "abcdabcd"
+  );
   jest.spyOn(rll, "fetchLatest").mockImplementation(() => {
     return [ent];
   });
@@ -85,8 +109,20 @@ test("changes button label and disabled status when joining", () => {
   const gl = createGlobalLogicForTest();
   const rll = createSubLogicListForTest().roomListLogic;
   const ents = [
-    createRoomListEntry("cat", 2, RoomState.WAITING, createRuleConfig(), "abcdabcd"),
-    createRoomListEntry("dog", 2, RoomState.PLAYING, createRuleConfig(), "abcdabcd"),
+    createRoomListEntry(
+      "cat",
+      2,
+      RoomState.WAITING,
+      createRuleConfig(),
+      "abcdabcd"
+    ),
+    createRoomListEntry(
+      "dog",
+      2,
+      RoomState.PLAYING,
+      createRuleConfig(),
+      "abcdabcd"
+    ),
   ];
   jest.spyOn(rll, "fetchLatest").mockImplementation(() => {
     return ents;

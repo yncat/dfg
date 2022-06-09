@@ -5,7 +5,7 @@ export type RoomListEntry = {
   creator: string;
   currentPlayerCount: number;
   state: RoomState;
-  ruleConfig:RuleConfig;
+  ruleConfig: RuleConfig;
   roomID: string;
 };
 
@@ -13,7 +13,7 @@ export function createRoomListEntry(
   creator: string,
   currentPlayerCount: number,
   state: RoomState,
-  ruleConfig:RuleConfig,
+  ruleConfig: RuleConfig,
   roomID: string
 ): RoomListEntry {
   return { creator, currentPlayerCount, state, ruleConfig, roomID };

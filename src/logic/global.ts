@@ -187,7 +187,10 @@ export class GlobalLogicImple implements GlobalLogic {
     }
   }
 
-  public async createGameRoom(ruleConfig:RuleConfig, onFinish: (success: boolean) => void) {
+  public async createGameRoom(
+    ruleConfig: RuleConfig,
+    onFinish: (success: boolean) => void
+  ) {
     try {
       this.gameRoom = await this.client.create("game_room", {
         playerName: this.registeredPlayerName,
