@@ -5,6 +5,7 @@ import { GameState } from "./schema-def/GameState";
 import { Card } from "./schema-def/Card";
 import { DiscardPair } from "./schema-def/DiscardPair";
 import { RemovedCardEntry } from "./schema-def/RemovedCardEntry";
+import { SkipConfig } from "dfg-messages";
 
 function createResult() {
   const res = new Result();
@@ -89,6 +90,11 @@ describe("GameStateDTO", () => {
     gs.isInGame = true;
     gs.discardStack = ds;
     gs.removedCardList = es;
+    gs.ruleConfig.yagiri = true;
+    gs.ruleConfig.jBack = true;
+    gs.ruleConfig.kakumei = true;
+    gs.ruleConfig.reverse = true;
+    gs.ruleConfig.skip = SkipConfig.MULTI;
     const gi = new dto.GameStateDTO(gs);
     expect(gi.playerCount).toBe(2);
     expect(gi.playerNameList).toStrictEqual(["cat", "dog"]);
@@ -103,5 +109,12 @@ describe("GameStateDTO", () => {
     expect(gi.removedCardList[0]).toStrictEqual(
       new dto.RemovedCardEntryDTO(1, 2, 3)
     );
+    expect(gi.ruleConfig).toStrictEqual({
+      yagiri: true,
+      jBack: true,
+      kakumei: true,
+      reverse: true,
+      skip: SkipConfig.MULTI,
+    });
   });
 });

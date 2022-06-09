@@ -5,6 +5,8 @@ import {
   CardMark,
   CardMessage,
   DiscardPairMessage,
+  RuleConfig,
+  SkipConfig,
   WebSocketErrorCode,
 } from "dfg-messages";
 
@@ -83,12 +85,64 @@ export class JapaneseI18nService implements I18nService {
     return "作成中...";
   }
 
+  public roomSettings_title(): string {
+    return "ルームの設定";
+  }
+
+  public roomSettings_create(): string {
+    return "作成";
+  }
+
+  public roomSettings_cancel(): string {
+    return "キャンセル";
+  }
+
+  public roomSettings_ruleSettingsHeading(): string {
+    return "ルール設定";
+  }
+
+  public roomSettings_yagiri(): string {
+    return "8で場のカードを流す(8切り)";
+  }
+
+  public roomSettings_jBack(): string {
+    return "11でカードの強さを逆にする(11バック、Jバック)";
+  }
+
+  public roomSettings_kakumei(): string {
+    return "4枚同時だしで、返されるまでカードの強さを逆にする(革命/革命返し)";
+  }
+
+  public roomSettings_reverse(): string {
+    return "9でターンの順番を逆にする(9リバース)";
+  }
+
+  public roomSettings_skip(): string {
+    return "5で次のプレイヤーの順番を飛ばす(5飛ばし、5スキップ)";
+  }
+
+  public roomSettings_skip_off(): string {
+    return "飛ばさない";
+  }
+
+  public roomSettings_skip_single(): string {
+    return "次のプレイヤーを飛ばす(シングルスキップ)";
+  }
+
+  public roomSettings_skip_multiple(): string {
+    return "出した枚数分のプレイヤーを飛ばす(マルチスキップ)";
+  }
+
   public roomList_creator(): string {
     return "作成者";
   }
 
   public roomList_currentPlayerCount(): string {
     return "現在の人数";
+  }
+
+  public roomList_ruleConfig(): string {
+    return "ルール設定";
   }
 
   public roomList_action(): string {
@@ -119,6 +173,29 @@ export class JapaneseI18nService implements I18nService {
     return "現在、利用可能なルームはありません。";
   }
 
+  public ruleConfig(config: RuleConfig): string {
+    const ret: String[] = [];
+    if (config.yagiri) {
+      ret.push("8切り");
+    }
+    if (config.jBack) {
+      ret.push("11バック");
+    }
+    if (config.kakumei) {
+      ret.push("革命");
+    }
+    if (config.reverse) {
+      ret.push("9リバース");
+    }
+    if (config.skip === SkipConfig.SINGLE) {
+      ret.push("シングルスキップ");
+    }
+    if (config.skip === SkipConfig.MULTI) {
+      ret.push("マルチスキップ");
+    }
+    return ret.join("、");
+  }
+
   public leaveRoomButton_leaveRoom(): string {
     return "ルームを退室";
   }
@@ -137,6 +214,10 @@ export class JapaneseI18nService implements I18nService {
 
   public currentRoom_playerCount(playerCount: number): string {
     return "(" + playerCount + "人)";
+  }
+
+  public currentRoom_ruleConfigLabel(): string {
+    return "ルール設定: ";
   }
 
   public currentRoom_memberListLabel(): string {
@@ -355,6 +436,14 @@ export class JapaneseI18nService implements I18nService {
 
   public game_kakumei(): string {
     return "革命！";
+  }
+
+  public game_reversed(): string {
+    return "ターンの回り方が逆になりました。";
+  }
+
+  public game_skipped(playerName: string): string {
+    return `${playerName}のターンが飛ばされました。`;
   }
 
   public game_ranked(playerName: string, rankType: RankType): string {

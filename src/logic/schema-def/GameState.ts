@@ -16,6 +16,7 @@ import {
 import { Result } from "./Result";
 import { DiscardPair } from "./DiscardPair";
 import { RemovedCardEntry } from "./RemovedCardEntry";
+import { RuleConfig } from "./RuleConfig";
 
 export class GameState extends Schema {
   @type("number") public playerCount!: number;
@@ -29,4 +30,5 @@ export class GameState extends Schema {
     new ArraySchema<DiscardPair>();
   @type([RemovedCardEntry])
   public removedCardList: ArraySchema<RemovedCardEntry> = new ArraySchema<RemovedCardEntry>();
+  @type(RuleConfig) public ruleConfig: RuleConfig = new RuleConfig();
 }

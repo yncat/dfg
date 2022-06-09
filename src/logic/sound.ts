@@ -25,6 +25,8 @@ export const SoundEvent = {
   HINMIN: 19,
   DAIHINMIN: 20,
   FORBIDDEN: 21,
+  SKIP: 22,
+  REVERSE: 23,
 } as const;
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export type SoundEvent = typeof SoundEvent[keyof typeof SoundEvent];
@@ -68,6 +70,8 @@ const soundEventDefinitionMap: Map<SoundEvent, SoundEventDefinition> = new Map<
   [SoundEvent.HINMIN, { soundWithoutExt: "hinmin", waitTime: 700 }],
   [SoundEvent.DAIHINMIN, { soundWithoutExt: "daihinmin", waitTime: 3500 }],
   [SoundEvent.FORBIDDEN, { soundWithoutExt: "forbidden", waitTime: 1200 }],
+  [SoundEvent.SKIP, { soundWithoutExt: "skip", waitTime: 300 }],
+  [SoundEvent.REVERSE, { soundWithoutExt: "reverse", waitTime: 1000 }],
 ]);
 
 export class SoundLogicImple implements SoundLogic {

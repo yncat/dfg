@@ -29,3 +29,7 @@ export function createSubLogicListForTest(): SubLogicList {
     gameLogic: createGameLogic(),
   };
 }
+
+export function createClickEvent(): MouseEvent {
+  return new MouseEvent("click", { bubbles: true, cancelable: true });
+}

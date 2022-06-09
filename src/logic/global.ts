@@ -7,6 +7,7 @@ import {
   RoomCreatedMessageDecoder,
   GameRoomMetadataDecoder,
   decodePayload,
+  RuleConfig,
 } from "dfg-messages";
 import { I18nService } from "../i18n/interface";
 import { SoundLogic } from "./sound";
@@ -39,7 +40,10 @@ export interface GlobalLogic {
   startRoomListUpdatePolling: () => void;
   stopRoomListUpdatePolling: () => void;
   requestRoomListUpdate: () => void;
-  createGameRoom: (onFinish: (success: boolean) => void) => void;
+  createGameRoom: (
+    ruleConfig: RuleConfig,
+    onFinish: (success: boolean) => void
+  ) => void;
   joinGameRoomByID: (
     roomID: string,
     onFinish: (success: boolean) => void
@@ -168,6 +172,7 @@ export class GlobalLogicImple implements GlobalLogic {
           md.owner,
           room.clients,
           md.roomState,
+          md.ruleConfig,
           room.roomId
         );
       });
@@ -182,10 +187,14 @@ export class GlobalLogicImple implements GlobalLogic {
     }
   }
 
-  public async createGameRoom(onFinish: (success: boolean) => void) {
+  public async createGameRoom(
+    ruleConfig: RuleConfig,
+    onFinish: (success: boolean) => void
+  ) {
     try {
       this.gameRoom = await this.client.create("game_room", {
         playerName: this.registeredPlayerName,
+        ruleConfig: ruleConfig,
       });
       onFinish(true);
     } catch (e) {

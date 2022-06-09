@@ -35,6 +35,8 @@ type RankChangedFunc = (
 ) => void;
 type AgariFunc = (playerName: string) => void;
 type ForbiddenAgariFunc = (playerName: string) => void;
+type ReverseFunc = () => void;
+type SkipFunc = (playerName: string) => void;
 
 export interface Pipelines {
   initialInfo: Pipeline<InitialInfoFunc>;
@@ -49,6 +51,8 @@ export interface Pipelines {
   rankChanged: Pipeline<RankChangedFunc>;
   agari: Pipeline<AgariFunc>;
   forbiddenAgari: Pipeline<ForbiddenAgariFunc>;
+  reverse: Pipeline<ReverseFunc>;
+  skip: Pipeline<SkipFunc>;
 }
 
 export interface GameLogic {
@@ -89,6 +93,8 @@ class GameLogicImple implements GameLogic {
       rankChanged: new Pipeline<RankChangedFunc>(),
       agari: new Pipeline<AgariFunc>(),
       forbiddenAgari: new Pipeline<ForbiddenAgariFunc>(),
+      reverse: new Pipeline<ReverseFunc>(),
+      skip: new Pipeline<SkipFunc>(),
     };
   }
 
@@ -263,6 +269,21 @@ class GameLogicImple implements GameLogic {
         return;
       }
       this.pipelines.forbiddenAgari.call(msg.playerName);
+    });
+
+    room.onMessage("ReverseMessage", (payload: any) => {
+      this.pipelines.reverse.call();
+    });
+
+    room.onMessage("TurnSkippedMessage", (payload: any) => {
+      const msg = dfgmsg.decodePayload<dfgmsg.TurnSkippedMessage>(
+        payload,
+        dfgmsg.TurnSkippedMessageDecoder
+      );
+      if (!isDecodeSuccess<dfgmsg.TurnSkippedMessage>(msg)) {
+        return;
+      }
+      this.pipelines.skip.call(msg.playerName);
     });
 
     this.room = room;

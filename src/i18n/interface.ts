@@ -4,6 +4,7 @@ import {
   CardMark,
   CardMessage,
   DiscardPairMessage,
+  RuleConfig,
   WebSocketErrorCode,
 } from "dfg-messages";
 
@@ -34,20 +35,35 @@ export interface I18nService {
   chat_send: () => string;
   createRoomButton_createRoom: () => string;
   createRoomButton_creating: () => string;
+  roomSettings_title: () => string;
+  roomSettings_create: () => string;
+  roomSettings_cancel: () => string;
+  roomSettings_ruleSettingsHeading: () => string;
+  roomSettings_yagiri: () => string;
+  roomSettings_jBack: () => string;
+  roomSettings_kakumei: () => string;
+  roomSettings_reverse: () => string;
+  roomSettings_skip: () => string;
+  roomSettings_skip_off: () => string;
+  roomSettings_skip_single: () => string;
+  roomSettings_skip_multiple: () => string;
   roomList_creator: () => string;
   roomList_currentPlayerCount: () => string;
   roomList_state: () => string;
+  roomList_ruleConfig: () => string;
   roomList_action: () => string;
   roomList_join: () => string;
   roomList_watch: () => string;
   roomList_joining: () => string;
   roomList_stateValue: (state: RoomState) => string;
   roomList_noRoom: () => string;
+  ruleConfig: (config: RuleConfig) => string;
   leaveRoomButton_leaveRoom: () => string;
   leaveRoomButton_cancel: () => string;
   leaveRoomButton_confirmLeaving: () => string;
   currentRoom_roomName: (playerName: string) => string;
   currentRoom_playerCount: (playerCount: number) => string;
+  currentRoom_ruleConfigLabel: () => string;
   currentRoom_memberListLabel: () => string;
   currentRoom_memberList: (playerList: string[]) => string;
   currentRoom_currentStatusLabel: () => string;
@@ -83,6 +99,8 @@ export interface I18nService {
   game_nagare: () => string;
   game_strengthInverted: (inverted: boolean) => string;
   game_kakumei: () => string;
+  game_reversed: () => string;
+  game_skipped: (playerName: string) => string;
   game_ranked: (playerName: string, rankType: RankType) => string;
   game_rankChanged: (
     playerName: string,
