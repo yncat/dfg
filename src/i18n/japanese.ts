@@ -216,6 +216,10 @@ export class JapaneseI18nService implements I18nService {
     return "(" + playerCount + "人)";
   }
 
+  public currentRoom_ruleConfigLabel(): string {
+    return "ルール設定: ";
+  }
+
   public currentRoom_memberListLabel(): string {
     return "メンバー: ";
   }

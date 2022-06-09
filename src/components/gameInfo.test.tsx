@@ -27,6 +27,7 @@ test("render currentRoomInfo for waiting status", () => {
   lr.hinminPlayerList = new ArraySchema<string>("dog");
   lr.daihinminPlayerList = new ArraySchema<string>("monkey");
   state.lastGameResult = lr;
+  state.ruleConfig.yagiri = true;
   const gsdto = new dto.GameStateDTO(state);
   render(
     <CurrentRoomInfo globalLogic={gl} gameState={gsdto} isOwner={false} />
@@ -35,6 +36,7 @@ test("render currentRoomInfo for waiting status", () => {
   const memberList = screen.getByText(
     "メンバー: cat、dog、rabbit、lion、tiger、monkey"
   );
+  const rc = screen.getByText("ルール設定: 8切り");
   const stat = screen.getByText(
     "現在の状況: catさんがゲームを開始するまで待機しています。"
   );
@@ -43,6 +45,7 @@ test("render currentRoomInfo for waiting status", () => {
   );
   expect(heading).toBeInTheDocument();
   expect(memberList).toBeInTheDocument();
+  expect(rc).toBeInTheDocument();
   expect(stat).toBeInTheDocument();
   expect(lastRes).toBeInTheDocument();
 });

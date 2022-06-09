@@ -30,6 +30,10 @@ export default function GameInfo(props: Props) {
         {i18n.currentRoom_memberListLabel() +
           i18n.currentRoom_memberList(props.gameState.playerNameList)}
       </p>
+      <p>
+        {i18n.currentRoom_ruleConfigLabel() +
+          i18n.ruleConfig(props.gameState.ruleConfig)}
+      </p>
       <p>{i18n.currentRoom_currentStatusLabel() + stat}</p>
       <p>
         {i18n.currentRoom_lastResultHeader() +
