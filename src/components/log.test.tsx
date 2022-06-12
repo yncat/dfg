@@ -1,7 +1,7 @@
 import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import Log from "./log";
-import { createGlobalLogicForTest } from "../testHelper";
+import { createGlobalLogicForTest, createClickEvent } from "../testHelper";
 import { act } from "react-dom/test-utils";
 
 test("renders list contents", () => {
@@ -37,7 +37,7 @@ test("increase button is disabled when reached to 100 entries", () => {
     for (let i = 0; i < 9; i++) {
       fireEvent(
         inc,
-        new MouseEvent("click", { bubbles: true, cancelable: true })
+        createClickEvent()
       );
     }
   });
@@ -58,7 +58,7 @@ test("renders list contents when increased", () => {
   const over1 = screen.queryByText("10");
   expect(over1).toBeNull();
   const inc = screen.getByText("表示を増やす");
-  fireEvent(inc, new MouseEvent("click", { bubbles: true, cancelable: true }));
+  fireEvent(inc, createClickEvent());
   for (let i = 0; i < 20; i++) {
     const e = screen.getByText(i.toString());
     expect(e).toBeInTheDocument();

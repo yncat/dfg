@@ -4,6 +4,7 @@ import RoomList from "./roomList";
 import {
   createGlobalLogicForTest,
   createSubLogicListForTest,
+  createClickEvent,
 } from "../testHelper";
 import { createRoomListEntry } from "../logic/roomList";
 import { RoomState, SkipConfig, RuleConfig } from "dfg-messages";
@@ -135,7 +136,7 @@ test("changes button label and disabled status when joining", () => {
   render(<RoomList globalLogic={gl} roomListLogic={rll} />);
   const e1 = screen.getByText("参加");
   const e2 = screen.getByText("観戦");
-  fireEvent(e1, new MouseEvent("click", { bubbles: true, cancelable: true }));
+  fireEvent(e1, createClickEvent());
 
   expect(e1).toHaveTextContent("参加中...");
   expect(e1).toBeDisabled();
