@@ -114,6 +114,13 @@ export class GlobalLogicImple implements GlobalLogic {
       this.connectionErrorPubsub.publish(e);
     }
 
+    this.lobbyRoom?.onError((code, message) => {
+      const castedMessage = message === undefined ? "not provided" : message;
+      alert(
+        `ロビー接続でエラーが発生しました。このあと、ゲームが正常に動作しない可能性があります。\nError code: ${code}\nmessage: ${castedMessage}`
+      );
+    });
+
     // start watching for room list updates
     this.startRoomListUpdatePolling();
 
@@ -235,6 +242,13 @@ export class GlobalLogicImple implements GlobalLogic {
       console.log(e);
       onFinish(false);
     }
+
+    this.gameRoom?.onError((code, message) => {
+      const castedMessage = message === undefined ? "not provided" : message;
+      alert(
+        `ルーム接続でエラーが発生しました。このあと、ゲームが正常に動作しない可能性があります。\nError code: ${code}\nmessage: ${castedMessage}`
+      );
+    });
 
     this.isInRoomPubsub.publish(true);
     // Receive chat
