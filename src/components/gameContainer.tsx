@@ -20,6 +20,7 @@ import LeaveRoomButton from "./leaveRoomButton";
 interface Props {
   globalLogic: GlobalLogic;
   gameLogic: GameLogic;
+  onLeave: () => void;
 }
 
 export default function GameContainer(props: Props) {
@@ -257,6 +258,7 @@ export default function GameContainer(props: Props) {
         onLeave={() => {
           props.gameLogic.unregisterRoom();
           props.globalLogic.leaveGameRoom();
+          props.onLeave();
         }}
       />
       <GameInfo

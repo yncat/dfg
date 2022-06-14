@@ -26,6 +26,10 @@ export class ChatMessageListImple implements ChatMessageListLogic {
     // React state must be immutable
     this.pubsub.publish(Array.from(latest));
   }
+
+  public clear() {
+    this.pubsub.clearLatest();
+  }
 }
 
 export function createChatMessageListLogic(): ChatMessageListLogic {

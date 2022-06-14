@@ -15,7 +15,8 @@ test("show game start button when the user is the game owner", () => {
   const state = new GameState();
   state.playerCount = 2;
   gml.pubsubs.stateUpdate.publish(new GameStateDTO(state));
-  render(<GameContainer globalLogic={gl} gameLogic={gml} />);
+  const onLeave = () => {};
+  render(<GameContainer globalLogic={gl} gameLogic={gml} onLeave={onLeave} />);
   const btn = screen.getByText("ゲーム開始");
   expect(btn).toBeInTheDocument();
 });

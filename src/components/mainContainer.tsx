@@ -24,12 +24,16 @@ interface Props {
 }
 
 export default function MainContainer(props: Props) {
+  const handleRoomChatClear = () => {
+    props.subLogicList.roomChatMessageListLogic.clear();
+  };
   return (
     <div>
       {props.isInRoom ? (
         <GameContainer
           globalLogic={props.globalLogic}
           gameLogic={props.subLogicList.gameLogic}
+          onLeave={handleRoomChatClear}
         />
       ) : (
         <LobbyContainer

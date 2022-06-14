@@ -35,10 +35,7 @@ test("increase button is disabled when reached to 100 entries", () => {
   // press increase 9 times so that rowsCount reaches 100
   act(() => {
     for (let i = 0; i < 9; i++) {
-      fireEvent(
-        inc,
-        createClickEvent()
-      );
+      fireEvent(inc, createClickEvent());
     }
   });
   expect(inc).toBeDisabled();
