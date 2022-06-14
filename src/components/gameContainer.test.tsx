@@ -28,7 +28,8 @@ test("button is disabled when only one player is in the room", () => {
   const state = new GameState();
   state.playerCount = 1;
   gml.pubsubs.stateUpdate.publish(new GameStateDTO(state));
-  render(<GameContainer globalLogic={gl} gameLogic={gml} />);
+  const onLeave = () => {};
+  render(<GameContainer globalLogic={gl} gameLogic={gml} onLeave={onLeave} />);
   const btn = screen.getByText("一人ではゲームを開始できません");
   expect(btn).toBeInTheDocument();
   expect(btn).toBeDisabled();
