@@ -6,7 +6,7 @@ export interface ChatMessageListLogic {
   pubsub: Pubsub<ChatMessage[]>;
   fetchLatest: () => ChatMessage[];
   push: (chatMessage: ChatMessage) => void;
-  clear:()=>void;
+  clear: () => void;
 }
 
 export class ChatMessageListImple implements ChatMessageListLogic {

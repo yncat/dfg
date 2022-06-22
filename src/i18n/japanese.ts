@@ -55,6 +55,10 @@ export class JapaneseI18nService implements I18nService {
     return "接続済み(現在オンライン: " + playerCount + ")";
   }
 
+  public playerNameList(playerNameList: string[]): string {
+    return playerNameList.join("、");
+  }
+
   public chat_chatHeading(): string {
     return "チャット";
   }
@@ -137,8 +141,8 @@ export class JapaneseI18nService implements I18nService {
     return "作成者";
   }
 
-  public roomList_currentPlayerCount(): string {
-    return "現在の人数";
+  public roomList_playerNameList(): string {
+    return "プレイヤー";
   }
 
   public roomList_ruleConfig(): string {
@@ -222,10 +226,6 @@ export class JapaneseI18nService implements I18nService {
 
   public currentRoom_memberListLabel(): string {
     return "メンバー: ";
-  }
-
-  public currentRoom_memberList(playerList: string[]): string {
-    return playerList.join("、");
   }
 
   public currentRoom_currentStatusLabel(): string {

@@ -44,7 +44,7 @@ export default function RoomList(props: Props) {
       <thead>
         <tr>
           <th>{i18n.roomList_creator()}</th>
-          <th>{i18n.roomList_currentPlayerCount()}</th>
+          <th>{i18n.roomList_playerNameList()}</th>
           <th>{i18n.roomList_ruleConfig()}</th>
           <th>{i18n.roomList_state()}</th>
           <th>{i18n.roomList_action()}</th>
@@ -55,7 +55,7 @@ export default function RoomList(props: Props) {
           return (
             <tr key={i}>
               <td>{v.creator}</td>
-              <td>{v.currentPlayerCount}</td>
+              <td>{i18n.playerNameList(v.playerNameList)}</td>
               <td>{i18n.ruleConfig(v.ruleConfig)}</td>
               <td>{i18n.roomList_stateValue(v.state)}</td>
               <td>

@@ -175,11 +175,16 @@ export class GlobalLogicImple implements GlobalLogic {
           room.metadata,
           GameRoomMetadataDecoder
         ) as GameRoomMetadata;
+        const md2 = decodePayload<GameRoomMetadata>(
+          room.metadata,
+          GameRoomMetadataDecoder
+        );
         return createRoomListEntry(
           md.owner,
           room.clients,
           md.roomState,
           md.ruleConfig,
+          md.playerNameList,
           room.roomId
         );
       });

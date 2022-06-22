@@ -28,6 +28,7 @@ export interface I18nService {
   connectionStatus_notConnected: () => string;
   connectionStatus_connecting: () => string;
   connectionStatus_connected: (playerCount: number) => string;
+  playerNameList: (playerNameList: string[]) => string;
   chat_chatHeading: () => string;
   chat_lobby: () => string;
   chat_room: () => string;
@@ -48,7 +49,7 @@ export interface I18nService {
   roomSettings_skip_single: () => string;
   roomSettings_skip_multiple: () => string;
   roomList_creator: () => string;
-  roomList_currentPlayerCount: () => string;
+  roomList_playerNameList: () => string;
   roomList_state: () => string;
   roomList_ruleConfig: () => string;
   roomList_action: () => string;
@@ -65,7 +66,6 @@ export interface I18nService {
   currentRoom_playerCount: (playerCount: number) => string;
   currentRoom_ruleConfigLabel: () => string;
   currentRoom_memberListLabel: () => string;
-  currentRoom_memberList: (playerList: string[]) => string;
   currentRoom_currentStatusLabel: () => string;
   currentRoom_currentStatusWaiting: (
     playerName: string,

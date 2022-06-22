@@ -38,6 +38,7 @@ test("renders room list table", () => {
     2,
     RoomState.WAITING,
     createRuleConfig(),
+    ["cat"],
     "abcdabcd"
   );
   jest.spyOn(rll, "fetchLatest").mockImplementation(() => {
@@ -56,6 +57,7 @@ test("renders waiting status", () => {
     2,
     RoomState.WAITING,
     createRuleConfig(),
+    ["cat"],
     "abcdabcd"
   );
   jest.spyOn(rll, "fetchLatest").mockImplementation(() => {
@@ -76,6 +78,7 @@ test("renders playing status", () => {
     2,
     RoomState.PLAYING,
     createRuleConfig(),
+    ["cat"],
     "abcdabcd"
   );
   jest.spyOn(rll, "fetchLatest").mockImplementation(() => {
@@ -96,6 +99,7 @@ test("renders rule configuration status", () => {
     2,
     RoomState.PLAYING,
     createRuleConfig(),
+    ["cat"],
     "abcdabcd"
   );
   jest.spyOn(rll, "fetchLatest").mockImplementation(() => {
@@ -115,6 +119,7 @@ test("changes button label and disabled status when joining", () => {
       2,
       RoomState.WAITING,
       createRuleConfig(),
+      ["cat"],
       "abcdabcd"
     ),
     createRoomListEntry(
@@ -122,6 +127,7 @@ test("changes button label and disabled status when joining", () => {
       2,
       RoomState.PLAYING,
       createRuleConfig(),
+      ["dog"],
       "abcdabcd"
     ),
   ];

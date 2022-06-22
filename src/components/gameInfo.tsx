@@ -28,7 +28,7 @@ export default function GameInfo(props: Props) {
       </h2>
       <p>
         {i18n.currentRoom_memberListLabel() +
-          i18n.currentRoom_memberList(props.gameState.playerNameList)}
+          i18n.playerNameList(props.gameState.playerNameList)}
       </p>
       <p>
         {i18n.currentRoom_ruleConfigLabel() +

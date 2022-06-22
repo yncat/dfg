@@ -6,6 +6,7 @@ export type RoomListEntry = {
   currentPlayerCount: number;
   state: RoomState;
   ruleConfig: RuleConfig;
+  playerNameList: string[];
   roomID: string;
 };
 
@@ -14,9 +15,17 @@ export function createRoomListEntry(
   currentPlayerCount: number,
   state: RoomState,
   ruleConfig: RuleConfig,
+  playerNameList: string[],
   roomID: string
 ): RoomListEntry {
-  return { creator, currentPlayerCount, state, ruleConfig, roomID };
+  return {
+    creator,
+    currentPlayerCount,
+    state,
+    ruleConfig,
+    playerNameList,
+    roomID,
+  };
 }
 
 export type RoomListUpdatePipelineFunc = (roomList: RoomListEntry[]) => void;
