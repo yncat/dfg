@@ -520,7 +520,7 @@ export class JapaneseI18nService implements I18nService {
   }
 
   public reconnection_explanation(): string {
-    return "前回の接続情報が残っています。再接続することで、ゲームに復帰できます。ただし、ルームが削除されている場合は、復帰できず通常の画面になります。";
+    return "前回の接続情報が残っています。再接続することで、ゲームに復帰できます。ただし、ルームが削除されている場合は、復帰できず通常の画面になります。別タブで1つずつ接続して遊びたい場合は、「接続情報を削除」ボタンを押してください。";
   }
 
   public reconnection_reconnectAs(playerName: string): string {

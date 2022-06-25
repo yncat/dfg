@@ -59,6 +59,7 @@ export interface GlobalLogic {
   // TODO: delete after switching to session-based.
   registeredPlayerName: string;
   getReconnectionInfo: () => reconnection.ReconnectionInfo;
+  discardReconnectionInfo:()=>void;
 }
 
 export class GlobalLogicImple implements GlobalLogic {
@@ -297,6 +298,10 @@ export class GlobalLogicImple implements GlobalLogic {
 
   public getReconnectionInfo(): reconnection.ReconnectionInfo {
     return reconnection.getReconnectionInfo();
+  }
+
+  public discardReconnectionInfo():void{
+    reconnection.leaveRoom();
   }
 }
 

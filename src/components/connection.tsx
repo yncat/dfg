@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "react-bootstrap";
 import { GlobalLogic } from "../logic/global";
+import { ReconnectionInfo } from "../logic/reconnection";
 
 interface Props {
   globalLogic: GlobalLogic;
@@ -8,7 +9,8 @@ interface Props {
 
 export default function Connection(props: Props) {
   const i18n = props.globalLogic.i18n;
-  const reconnectionInfo = props.globalLogic.getReconnectionInfo();
+  const [reconnectionInfo, setReconnectionInfo] =
+    React.useState<ReconnectionInfo>(props.globalLogic.getReconnectionInfo());
   // TODO: delete after switched to session-based
   const [pname, setPname] = React.useState<string>(
     props.globalLogic.registeredPlayerName
@@ -20,13 +22,22 @@ export default function Connection(props: Props) {
       <Button variant="primary">
         {i18n.reconnection_reconnectAs(reconnectionInfo.playerName)}
       </Button>
-      <Button variant="warning">{i18n.reconnection_discard()}</Button>
+      <Button
+        variant="warning"
+        onClick={() => {
+          props.globalLogic.discardReconnectionInfo();
+          setReconnectionInfo(props.globalLogic.getReconnectionInfo());
+        }}
+      >
+        {i18n.reconnection_discard()}
+      </Button>
     </React.Fragment>
   ) : (
     <React.Fragment>
       <label>
         名前{" "}
         <input
+          autoFocus={true}
           type="text"
           maxLength={20}
           value={pname}
