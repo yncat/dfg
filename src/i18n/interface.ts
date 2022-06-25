@@ -123,6 +123,9 @@ export interface I18nService {
     count: number
   ) => string;
   removedCards_description: () => string;
+  reconnection_explanation:()=>string;
+  reconnection_reconnectAs:(playerName:string)=>string;
+  reconnection_discard:()=>string;
   settings_heading: () => string;
   settings_soundToggle: () => string;
   settings_musicToggle: () => string;

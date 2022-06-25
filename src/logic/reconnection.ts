@@ -55,7 +55,7 @@ export function getReconnectionInfo(): ReconnectionInfo {
     };
   }
   const cookieObj = JSON.parse(cookie);
-  if (isValidReconnectionCookie(cookieObj)) {
+  if (!isValidReconnectionCookie(cookieObj)) {
     return {
       isReconnectionAvailable: false,
       playerName: "",

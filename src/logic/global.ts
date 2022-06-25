@@ -58,6 +58,7 @@ export interface GlobalLogic {
   roomRegistrationPipeline: Pipeline<RoomRegistrationPipelineFunc>;
   // TODO: delete after switching to session-based.
   registeredPlayerName: string;
+  getReconnectionInfo: () => reconnection.ReconnectionInfo;
 }
 
 export class GlobalLogicImple implements GlobalLogic {
@@ -209,7 +210,10 @@ export class GlobalLogicImple implements GlobalLogic {
         playerName: this.registeredPlayerName,
         ruleConfig: ruleConfig,
       });
-      reconnection.enterRoom(this.registeredPlayerName, this.gameRoom.sessionId);
+      reconnection.enterRoom(
+        this.registeredPlayerName,
+        this.gameRoom.sessionId
+      );
       onFinish(true);
     } catch (e) {
       console.log(e);
@@ -289,6 +293,10 @@ export class GlobalLogicImple implements GlobalLogic {
 
   public updateAutoRead(updateString: string): void {
     this.autoReadPubsub.publish(updateString);
+  }
+
+  public getReconnectionInfo(): reconnection.ReconnectionInfo {
+    return reconnection.getReconnectionInfo();
   }
 }
 

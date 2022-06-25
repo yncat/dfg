@@ -519,6 +519,18 @@ export class JapaneseI18nService implements I18nService {
     return "途中でゲームから抜けたプレイヤーのカードは、このゲーム中では使用されなくなり、ここに表示されます。";
   }
 
+  public reconnection_explanation(): string {
+    return "前回の接続情報が残っています。再接続することで、ゲームに復帰できます。ただし、ルームが削除されている場合は、復帰できず通常の画面になります。";
+  }
+
+  public reconnection_reconnectAs(playerName: string): string {
+    return `${playerName}として再接続`;
+  }
+
+  public reconnection_discard(): string {
+    return "接続情報を破棄";
+  }
+
   public settings_heading(): string {
     return "環境設定";
   }
