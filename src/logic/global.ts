@@ -19,6 +19,7 @@ import { Pipeline } from "./pipeline";
 import { GlobalState } from "./schema-def/GlobalState";
 import { Config } from "./config";
 import { protocolVersion } from "./protocolVersion";
+import * as reconnection from "./reconnection";
 
 export type ConnectionStatusString =
   | "not_connected"
@@ -208,6 +209,7 @@ export class GlobalLogicImple implements GlobalLogic {
         playerName: this.registeredPlayerName,
         ruleConfig: ruleConfig,
       });
+      reconnection.enterRoom(this.registeredPlayerName, this.gameRoom.sessionId);
       onFinish(true);
     } catch (e) {
       console.log(e);
@@ -277,6 +279,7 @@ export class GlobalLogicImple implements GlobalLogic {
     }
 
     this.gameRoom.leave();
+    reconnection.leaveRoom();
     this.isInRoomPubsub.publish(false);
   }
 
