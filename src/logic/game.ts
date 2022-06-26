@@ -5,6 +5,7 @@ import { GameStateDTO } from "./gameState";
 import { Pubsub } from "./pubsub";
 import { Pipeline } from "./pipeline";
 import { isDecodeSuccess } from "./decodeValidator";
+import * as reconnection from "./reconnection";
 
 export interface Pubsubs {
   stateUpdate: Pubsub<GameStateDTO>;
@@ -58,7 +59,7 @@ export interface Pipelines {
 export interface GameLogic {
   pubsubs: Pubsubs;
   pipelines: Pipelines;
-  registerRoom: (room: Colyseus.Room) => void;
+  registerRoom: (room: Colyseus.Room, playerNameMemo: string) => void;
   unregisterRoom: () => void;
   startGame: () => void;
   selectCard: (index: number) => void;
@@ -70,8 +71,10 @@ class GameLogicImple implements GameLogic {
   pubsubs: Pubsubs;
   pipelines: Pipelines;
   private room: Colyseus.Room | null;
+  private playerNameMemo: string;
   constructor() {
     this.room = null;
+    this.playerNameMemo = "";
     this.pubsubs = {
       stateUpdate: new Pubsub<GameStateDTO>(),
       gameOwnerStatus: new Pubsub<boolean>(),
@@ -98,7 +101,8 @@ class GameLogicImple implements GameLogic {
     };
   }
 
-  public registerRoom(room: Colyseus.Room): void {
+  public registerRoom(room: Colyseus.Room, playerNameMemo: string): void {
+    this.playerNameMemo = playerNameMemo;
     room.onStateChange((state: GameState) => {
       // 昔はstateをそのまま使っていた。が、どうやら colyseus はインスタンスの再生成をしないらしいので、 react でうまく後進を拾ってくれなかった。
       // そのへんのライフサイクルをいい感じにコントロールできるように、毎回DTOに詰め替える。
@@ -107,6 +111,10 @@ class GameLogicImple implements GameLogic {
 
     room.onMessage("RoomOwnerMessage", () => {
       this.pubsubs.gameOwnerStatus.publish(true);
+    });
+
+    room.onMessage("GameEndMessage", (message: any) => {
+      reconnection.endSession();
     });
 
     room.onMessage("PlayerJoinedMessage", (payload: any) => {
@@ -140,6 +148,9 @@ class GameLogicImple implements GameLogic {
         return;
       }
       this.pipelines.initialInfo.call(msg.playerCount, msg.deckCount);
+      if (this.room) {
+        reconnection.startSession(this.playerNameMemo, this.room.sessionId);
+      }
     });
 
     room.onMessage("CardsProvidedMessage", (payload: any) => {

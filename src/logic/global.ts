@@ -26,7 +26,10 @@ export type ConnectionStatusString =
   | "connecting"
   | "connected";
 
-type RoomRegistrationPipelineFunc = (room: Colyseus.Room) => void;
+type RoomRegistrationPipelineFunc = (
+  room: Colyseus.Room,
+  playerNameMemo: string
+) => void;
 
 export interface GlobalLogic {
   i18n: I18nService;
@@ -59,7 +62,7 @@ export interface GlobalLogic {
   // TODO: delete after switching to session-based.
   registeredPlayerName: string;
   getReconnectionInfo: () => reconnection.ReconnectionInfo;
-  discardReconnectionInfo:()=>void;
+  discardReconnectionInfo: () => void;
 }
 
 export class GlobalLogicImple implements GlobalLogic {
@@ -211,10 +214,6 @@ export class GlobalLogicImple implements GlobalLogic {
         playerName: this.registeredPlayerName,
         ruleConfig: ruleConfig,
       });
-      reconnection.enterRoom(
-        this.registeredPlayerName,
-        this.gameRoom.sessionId
-      );
       onFinish(true);
     } catch (e) {
       console.log(e);
@@ -237,7 +236,7 @@ export class GlobalLogicImple implements GlobalLogic {
 
     // game specific actions are handled by GameLogic.
     // Register the room using the pipeline.
-    this.roomRegistrationPipeline.call(grm);
+    this.roomRegistrationPipeline.call(grm, this.registeredPlayerName);
   }
 
   public async joinGameRoomByID(
@@ -275,7 +274,7 @@ export class GlobalLogicImple implements GlobalLogic {
 
     // game specific actions are handled by GameLogic.
     // Register the room using the pipeline.
-    this.roomRegistrationPipeline.call(grm);
+    this.roomRegistrationPipeline.call(grm, this.registeredPlayerName);
   }
 
   public leaveGameRoom() {
@@ -284,7 +283,7 @@ export class GlobalLogicImple implements GlobalLogic {
     }
 
     this.gameRoom.leave();
-    reconnection.leaveRoom();
+    reconnection.endSession();
     this.isInRoomPubsub.publish(false);
   }
 
@@ -300,8 +299,8 @@ export class GlobalLogicImple implements GlobalLogic {
     return reconnection.getReconnectionInfo();
   }
 
-  public discardReconnectionInfo():void{
-    reconnection.leaveRoom();
+  public discardReconnectionInfo(): void {
+    reconnection.endSession();
   }
 }
 

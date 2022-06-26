@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 const maxReconnectionMinute = 5;
 const cookieName = "dfg_last_room_info";
 
-export function enterRoom(playerName: string, sessionID: string): void {
+export function startSession(playerName: string, sessionID: string): void {
   const v = { playerName, sessionID };
   const expiresAt = new Date(
     new Date().getTime() + maxReconnectionMinute * 60 * 1000
@@ -11,7 +11,7 @@ export function enterRoom(playerName: string, sessionID: string): void {
   Cookies.set(cookieName, JSON.stringify(v), { expires: expiresAt, path: "" });
 }
 
-export function leaveRoom() {
+export function endSession() {
   Cookies.remove(cookieName, { path: "" });
 }
 
