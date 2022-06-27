@@ -40,7 +40,9 @@ export interface GlobalLogic {
   autoReadPubsub: Pubsub<string>;
   roomCreatedPubsub: Pubsub<string>;
   isInRoomPubsub: Pubsub<boolean>;
+  setPlayerName: (playerName: string) => void;
   connect: () => void;
+  reconnect: (onFinish: (success: boolean) => void) => Promise<void>;
   startRoomListUpdatePolling: () => void;
   stopRoomListUpdatePolling: () => void;
   requestRoomListUpdate: () => void;
@@ -61,7 +63,7 @@ export interface GlobalLogic {
   roomRegistrationPipeline: Pipeline<RoomRegistrationPipelineFunc>;
   // TODO: delete after switching to session-based.
   registeredPlayerName: string;
-  getReconnectionInfo: () => reconnection.ReconnectionInfo;
+  getAndCacheReconnectionInfo: () => reconnection.ReconnectionInfo;
   discardReconnectionInfo: () => void;
 }
 
@@ -84,8 +86,17 @@ export class GlobalLogicImple implements GlobalLogic {
   roomListUpdatePipeline: Pipeline<RoomListUpdatePipelineFunc>;
   roomRegistrationPipeline: Pipeline<RoomRegistrationPipelineFunc>;
   private roomListUpdatePollingID: NodeJS.Timer | null;
+  private isReconnecting: boolean;
+  private cachedReconnectionInfo: reconnection.ReconnectionInfo;
 
   constructor(i18n: I18nService, sound: SoundLogic, config: Config) {
+    this.isReconnecting = false;
+    this.cachedReconnectionInfo = {
+      isReconnectionAvailable: false,
+      playerName: "",
+      roomID: "",
+      sessionID: "",
+    };
     this.connectionStatusPubsub = new Pubsub<ConnectionStatusString>();
     this.connectionErrorPubsub = new Pubsub<unknown>();
     this.playerCountPubsub = new Pubsub<number>();
@@ -108,7 +119,13 @@ export class GlobalLogicImple implements GlobalLogic {
     this.roomListUpdatePollingID = null;
   }
 
+  public setPlayerName(playerName: string): void {
+    alert("updated: to " + playerName);
+    this.registeredPlayerName = playerName;
+  }
+
   public async connect() {
+    alert(this.registeredPlayerName);
     this.connectionStatusPubsub.publish("connecting");
     try {
       this.lobbyRoom = await this.client.joinOrCreate("global_room", {
@@ -163,6 +180,51 @@ export class GlobalLogicImple implements GlobalLogic {
     this.connectionStatusPubsub.publish("connected");
   }
 
+  public async reconnect(onFinish: (success: boolean) => void): Promise<void> {
+    try {
+      await this.connect();
+    } catch {
+      return;
+    }
+    this.isReconnecting = true;
+    try {
+      this.gameRoom = await this.client.reconnect(
+        this.cachedReconnectionInfo.roomID,
+        this.cachedReconnectionInfo.sessionID
+      );
+      onFinish(true);
+    } catch (e) {
+      console.log(e);
+      onFinish(false);
+    }
+    this.isReconnecting = false;
+    this.handleGameRoomJoin();
+  }
+
+  private handleGameRoomJoin() {
+    this.gameRoom?.onError((code, message) => {
+      const castedMessage = message === undefined ? "not provided" : message;
+      alert(
+        `ルーム接続でエラーが発生しました。このあと、ゲームが正常に動作しない可能性があります。\nError code: ${code}\nmessage: ${castedMessage}`
+      );
+    });
+
+    this.isInRoomPubsub.publish(true);
+    // Receive chat
+    const grm = this.gameRoom as Colyseus.Room;
+    grm.onMessage("ChatMessage", (payload) => {
+      const message = decodePayload<ChatMessage>(payload, ChatMessageDecoder);
+      if (!isDecodeSuccess<ChatMessage>(message)) {
+        return;
+      }
+      this.roomChatMessagePipeline.call(message);
+    });
+
+    // game specific actions are handled by GameLogic.
+    // Register the room using the pipeline.
+    this.roomRegistrationPipeline.call(grm, this.registeredPlayerName);
+  }
+
   public startRoomListUpdatePolling() {
     if (this.roomListUpdatePollingID) {
       return;
@@ -181,10 +243,6 @@ export class GlobalLogicImple implements GlobalLogic {
           room.metadata,
           GameRoomMetadataDecoder
         ) as GameRoomMetadata;
-        const md2 = decodePayload<GameRoomMetadata>(
-          room.metadata,
-          GameRoomMetadataDecoder
-        );
         return createRoomListEntry(
           md.owner,
           room.clients,
@@ -253,28 +311,7 @@ export class GlobalLogicImple implements GlobalLogic {
       console.log(e);
       onFinish(false);
     }
-
-    this.gameRoom?.onError((code, message) => {
-      const castedMessage = message === undefined ? "not provided" : message;
-      alert(
-        `ルーム接続でエラーが発生しました。このあと、ゲームが正常に動作しない可能性があります。\nError code: ${code}\nmessage: ${castedMessage}`
-      );
-    });
-
-    this.isInRoomPubsub.publish(true);
-    // Receive chat
-    const grm = this.gameRoom as Colyseus.Room;
-    grm.onMessage("ChatMessage", (payload) => {
-      const message = decodePayload<ChatMessage>(payload, ChatMessageDecoder);
-      if (!isDecodeSuccess<ChatMessage>(message)) {
-        return;
-      }
-      this.roomChatMessagePipeline.call(message);
-    });
-
-    // game specific actions are handled by GameLogic.
-    // Register the room using the pipeline.
-    this.roomRegistrationPipeline.call(grm, this.registeredPlayerName);
+    this.handleGameRoomJoin();
   }
 
   public leaveGameRoom() {
@@ -295,8 +332,13 @@ export class GlobalLogicImple implements GlobalLogic {
     this.autoReadPubsub.publish(updateString);
   }
 
-  public getReconnectionInfo(): reconnection.ReconnectionInfo {
-    return reconnection.getReconnectionInfo();
+  public getAndCacheReconnectionInfo(): reconnection.ReconnectionInfo {
+    const ret = reconnection.getReconnectionInfo();
+    if (ret.isReconnectionAvailable) {
+      this.setPlayerName(ret.playerName);
+    }
+    this.cachedReconnectionInfo = ret;
+    return ret;
   }
 
   public discardReconnectionInfo(): void {

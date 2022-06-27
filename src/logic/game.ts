@@ -149,7 +149,7 @@ class GameLogicImple implements GameLogic {
       }
       this.pipelines.initialInfo.call(msg.playerCount, msg.deckCount);
       if (this.room) {
-        reconnection.startSession(this.playerNameMemo, this.room.sessionId);
+        reconnection.startSession(this.playerNameMemo, this.room.id, this.room.sessionId);
       }
     });
 

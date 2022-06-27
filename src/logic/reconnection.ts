@@ -3,8 +3,12 @@ import Cookies from "js-cookie";
 const maxReconnectionMinute = 5;
 const cookieName = "dfg_last_room_info";
 
-export function startSession(playerName: string, sessionID: string): void {
-  const v = { playerName, sessionID };
+export function startSession(
+  playerName: string,
+  roomID: string,
+  sessionID: string
+): void {
+  const v = { playerName, roomID, sessionID };
   const expiresAt = new Date(
     new Date().getTime() + maxReconnectionMinute * 60 * 1000
   );
@@ -18,11 +22,13 @@ export function endSession() {
 export type ReconnectionInfo = {
   isReconnectionAvailable: boolean;
   playerName: string;
+  roomID: string;
   sessionID: string;
 };
 
 type ReconnectionCookie = {
   playerName: string;
+  roomID: string;
   sessionID: string;
 };
 
@@ -39,6 +45,9 @@ function isValidReconnectionCookie(
   if (typeof castedCookie.playerName !== "string") {
     return false;
   }
+  if (typeof castedCookie.roomID !== "string") {
+    return false;
+  }
   if (typeof castedCookie.sessionID !== "string") {
     return false;
   }
@@ -51,6 +60,7 @@ export function getReconnectionInfo(): ReconnectionInfo {
     return {
       isReconnectionAvailable: false,
       playerName: "",
+      roomID: "",
       sessionID: "",
     };
   }
@@ -59,12 +69,14 @@ export function getReconnectionInfo(): ReconnectionInfo {
     return {
       isReconnectionAvailable: false,
       playerName: "",
+      roomID: "",
       sessionID: "",
     };
   }
   return {
     isReconnectionAvailable: true,
     playerName: cookieObj.playerName,
+    roomID: cookieObj.roomID,
     sessionID: cookieObj.sessionID,
   };
 }
