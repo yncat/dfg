@@ -38,6 +38,8 @@ type AgariFunc = (playerName: string) => void;
 type ForbiddenAgariFunc = (playerName: string) => void;
 type ReverseFunc = () => void;
 type SkipFunc = (playerName: string) => void;
+type LostFunc = (playerName: string) => void;
+type ReconnectedFunc = (playerName: string) => void;
 
 export interface Pipelines {
   initialInfo: Pipeline<InitialInfoFunc>;
@@ -54,6 +56,8 @@ export interface Pipelines {
   forbiddenAgari: Pipeline<ForbiddenAgariFunc>;
   reverse: Pipeline<ReverseFunc>;
   skip: Pipeline<SkipFunc>;
+  lost: Pipeline<LostFunc>;
+  reconnected: Pipeline<ReconnectedFunc>;
 }
 
 export interface GameLogic {
@@ -98,6 +102,8 @@ class GameLogicImple implements GameLogic {
       forbiddenAgari: new Pipeline<ForbiddenAgariFunc>(),
       reverse: new Pipeline<ReverseFunc>(),
       skip: new Pipeline<SkipFunc>(),
+      lost: new Pipeline<LostFunc>(),
+      reconnected: new Pipeline<ReconnectedFunc>(),
     };
   }
 
@@ -149,7 +155,11 @@ class GameLogicImple implements GameLogic {
       }
       this.pipelines.initialInfo.call(msg.playerCount, msg.deckCount);
       if (this.room) {
-        reconnection.startSession(this.playerNameMemo, this.room.id, this.room.sessionId);
+        reconnection.startSession(
+          this.playerNameMemo,
+          this.room.id,
+          this.room.sessionId
+        );
       }
     });
 
@@ -295,6 +305,28 @@ class GameLogicImple implements GameLogic {
         return;
       }
       this.pipelines.skip.call(msg.playerName);
+    });
+
+    room.onMessage("PlayerLostMessage", (payload: any) => {
+      const msg = dfgmsg.decodePayload<dfgmsg.PlayerLostMessage>(
+        payload,
+        dfgmsg.PlayerLostMessageDecoder
+      );
+      if (!isDecodeSuccess<dfgmsg.PlayerLostMessage>(msg)) {
+        return;
+      }
+      this.pipelines.lost.call(msg.playerName);
+    });
+
+    room.onMessage("PlayerReconnectedMessage", (payload: any) => {
+      const msg = dfgmsg.decodePayload<dfgmsg.PlayerReconnectedMessage>(
+        payload,
+        dfgmsg.PlayerReconnectedMessageDecoder
+      );
+      if (!isDecodeSuccess<dfgmsg.PlayerReconnectedMessage>(msg)) {
+        return;
+      }
+      this.pipelines.reconnected.call(msg.playerName);
     });
 
     this.room = room;

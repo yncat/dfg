@@ -8,6 +8,7 @@ import {
   RuleConfig,
   SkipConfig,
   WebSocketErrorCode,
+  maxReconnectionMinute,
 } from "dfg-messages";
 
 export class JapaneseI18nService implements I18nService {
@@ -473,6 +474,14 @@ export class JapaneseI18nService implements I18nService {
 
   public game_forbiddenAgari(playerName: string): string {
     return playerName + "は禁止上がり！";
+  }
+
+  public game_playerLost(playerName: string): string {
+    return `${playerName}さんの接続が切れました。${maxReconnectionMinute}分経っても再接続がない場合、自動的にゲームから除外されます。`;
+  }
+
+  public game_playerReconnected(playerName: string): string {
+    return `${playerName}さんが再接続しました。`;
   }
 
   public playingInfo_heading(): string {

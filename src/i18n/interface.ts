@@ -109,6 +109,8 @@ export interface I18nService {
   ) => string;
   game_agari: (playerName: string) => string;
   game_forbiddenAgari: (playerName: string) => string;
+  game_playerLost:(playerName:string)=>string;
+  game_playerReconnected:(playerName:string)=>string;
   playingInfo_heading: () => string;
   playingInfo_log: () => string;
   playingInfo_discardStack: () => string;

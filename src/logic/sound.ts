@@ -27,6 +27,8 @@ export const SoundEvent = {
   FORBIDDEN: 21,
   SKIP: 22,
   REVERSE: 23,
+  LOST: 24,
+  RECONNECTED: 25,
 } as const;
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export type SoundEvent = typeof SoundEvent[keyof typeof SoundEvent];
@@ -42,6 +44,7 @@ export interface SoundLogic {
 interface SoundEventDefinition {
   soundWithoutExt: string;
   waitTime: number;
+  volume?: number;
 }
 
 const soundEventDefinitionMap: Map<SoundEvent, SoundEventDefinition> = new Map<
@@ -72,6 +75,11 @@ const soundEventDefinitionMap: Map<SoundEvent, SoundEventDefinition> = new Map<
   [SoundEvent.FORBIDDEN, { soundWithoutExt: "forbidden", waitTime: 1200 }],
   [SoundEvent.SKIP, { soundWithoutExt: "skip", waitTime: 300 }],
   [SoundEvent.REVERSE, { soundWithoutExt: "reverse", waitTime: 1000 }],
+  [SoundEvent.LOST, { soundWithoutExt: "lost", waitTime: 600, volume: 0.3 }],
+  [
+    SoundEvent.RECONNECTED,
+    { soundWithoutExt: "reconnected", waitTime: 600, volume: 0.3 },
+  ],
 ]);
 
 export class SoundLogicImple implements SoundLogic {
@@ -188,6 +196,7 @@ export class SoundLogicImple implements SoundLogic {
       return;
     }
     if (this.soundOutput) {
+      howl.volume(def.volume === undefined ? 1 : def.volume);
       howl.play();
     }
   }

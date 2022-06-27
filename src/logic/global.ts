@@ -120,12 +120,10 @@ export class GlobalLogicImple implements GlobalLogic {
   }
 
   public setPlayerName(playerName: string): void {
-    alert("updated: to " + playerName);
     this.registeredPlayerName = playerName;
   }
 
   public async connect() {
-    alert(this.registeredPlayerName);
     this.connectionStatusPubsub.publish("connecting");
     try {
       this.lobbyRoom = await this.client.joinOrCreate("global_room", {
