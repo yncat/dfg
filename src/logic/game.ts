@@ -40,6 +40,7 @@ type ReverseFunc = () => void;
 type SkipFunc = (playerName: string) => void;
 type LostFunc = (playerName: string) => void;
 type ReconnectedFunc = (playerName: string) => void;
+type WaitFunc = (playerName: string, reason:dfgmsg.WaitReason) => void;
 
 export interface Pipelines {
   initialInfo: Pipeline<InitialInfoFunc>;
@@ -58,6 +59,7 @@ export interface Pipelines {
   skip: Pipeline<SkipFunc>;
   lost: Pipeline<LostFunc>;
   reconnected: Pipeline<ReconnectedFunc>;
+  wait: Pipeline<WaitFunc>;
 }
 
 export interface GameLogic {
@@ -104,6 +106,7 @@ class GameLogicImple implements GameLogic {
       skip: new Pipeline<SkipFunc>(),
       lost: new Pipeline<LostFunc>(),
       reconnected: new Pipeline<ReconnectedFunc>(),
+      wait: new Pipeline<WaitFunc>(),
     };
   }
 
@@ -327,6 +330,17 @@ class GameLogicImple implements GameLogic {
         return;
       }
       this.pipelines.reconnected.call(msg.playerName);
+    });
+
+    room.onMessage("PlayerWaitMessage", (payload: any) => {
+      const msg = dfgmsg.decodePayload<dfgmsg.PlayerWaitMessage>(
+        payload,
+        dfgmsg.PlayerWaitMessageDecoder
+      );
+      if (!isDecodeSuccess<dfgmsg.PlayerWaitMessage>(msg)) {
+        return;
+      }
+      this.pipelines.wait.call(msg.playerName, msg.reason);
     });
 
     this.room = room;

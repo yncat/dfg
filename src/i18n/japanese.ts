@@ -9,6 +9,7 @@ import {
   SkipConfig,
   WebSocketErrorCode,
   maxReconnectionMinute,
+  WaitReason,
 } from "dfg-messages";
 
 export class JapaneseI18nService implements I18nService {
@@ -482,6 +483,16 @@ export class JapaneseI18nService implements I18nService {
 
   public game_playerReconnected(playerName: string): string {
     return `${playerName}さんが再接続しました。`;
+  }
+
+  public game_playerWait(playerName: string, reason: WaitReason): string {
+    switch (reason) {
+      case WaitReason.RECONNECTION:
+        return `${playerName}の再接続を待っています。`;
+      case WaitReason.ACTION:
+        return `${playerName}の追加のアクションを待っています。`;
+    }
+    return `${playerName}を待っています。`;
   }
 
   public playingInfo_heading(): string {
