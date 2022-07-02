@@ -10,11 +10,11 @@ interface Props {
 export default function Connection(props: Props) {
   const i18n = props.globalLogic.i18n;
   const [reconnectionInfo, setReconnectionInfo] =
-    React.useState<ReconnectionInfo>(props.globalLogic.getAndCacheReconnectionInfo());
+    React.useState<ReconnectionInfo>(
+      props.globalLogic.getAndCacheReconnectionInfo()
+    );
   // TODO: delete after switched to session-based
-  const [pname, setPname] = React.useState<string>(
-    props.globalLogic.registeredPlayerName
-  );
+  const [pname, setPname] = React.useState<string>("");
 
   return reconnectionInfo.isReconnectionAvailable ? (
     <React.Fragment>

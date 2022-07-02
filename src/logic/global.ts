@@ -194,6 +194,7 @@ export class GlobalLogicImple implements GlobalLogic {
     } catch (e) {
       console.log(e);
       onFinish(false);
+      return;
     }
     this.isReconnecting = false;
     this.handleGameRoomJoin();
