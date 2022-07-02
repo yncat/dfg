@@ -40,7 +40,7 @@ type ReverseFunc = () => void;
 type SkipFunc = (playerName: string) => void;
 type LostFunc = (playerName: string) => void;
 type ReconnectedFunc = (playerName: string) => void;
-type WaitFunc = (playerName: string, reason:dfgmsg.WaitReason) => void;
+type WaitFunc = (playerName: string, reason: dfgmsg.WaitReason) => void;
 
 export interface Pipelines {
   initialInfo: Pipeline<InitialInfoFunc>;
