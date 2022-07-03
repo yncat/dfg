@@ -8,6 +8,8 @@ import {
   RuleConfig,
   SkipConfig,
   WebSocketErrorCode,
+  maxReconnectionMinute,
+  WaitReason,
 } from "dfg-messages";
 
 export class JapaneseI18nService implements I18nService {
@@ -475,6 +477,24 @@ export class JapaneseI18nService implements I18nService {
     return playerName + "は禁止上がり！";
   }
 
+  public game_playerLost(playerName: string): string {
+    return `${playerName}さんの接続が切れました。${maxReconnectionMinute}分経っても再接続がない場合、自動的にゲームから除外されます。`;
+  }
+
+  public game_playerReconnected(playerName: string): string {
+    return `${playerName}さんが再接続しました。`;
+  }
+
+  public game_playerWait(playerName: string, reason: WaitReason): string {
+    switch (reason) {
+      case WaitReason.RECONNECTION:
+        return `${playerName}の再接続を待っています。`;
+      case WaitReason.ACTION:
+        return `${playerName}の追加のアクションを待っています。`;
+    }
+    return `${playerName}を待っています。`;
+  }
+
   public playingInfo_heading(): string {
     return "ゲームの状況";
   }
@@ -517,6 +537,18 @@ export class JapaneseI18nService implements I18nService {
 
   public removedCards_description(): string {
     return "途中でゲームから抜けたプレイヤーのカードは、このゲーム中では使用されなくなり、ここに表示されます。";
+  }
+
+  public reconnection_explanation(): string {
+    return "前回の接続情報が残っています。再接続することで、ゲームに復帰できます。ただし、ルームが削除されている場合は、復帰できず通常の画面になります。別タブで1つずつ接続して遊びたい場合は、「接続情報を削除」ボタンを押してください。";
+  }
+
+  public reconnection_reconnectAs(playerName: string): string {
+    return `${playerName}として再接続`;
+  }
+
+  public reconnection_discard(): string {
+    return "接続情報を破棄";
   }
 
   public settings_heading(): string {

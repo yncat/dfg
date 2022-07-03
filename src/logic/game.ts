@@ -5,6 +5,7 @@ import { GameStateDTO } from "./gameState";
 import { Pubsub } from "./pubsub";
 import { Pipeline } from "./pipeline";
 import { isDecodeSuccess } from "./decodeValidator";
+import { createReconnection } from "./reconnection";
 
 export interface Pubsubs {
   stateUpdate: Pubsub<GameStateDTO>;
@@ -37,6 +38,9 @@ type AgariFunc = (playerName: string) => void;
 type ForbiddenAgariFunc = (playerName: string) => void;
 type ReverseFunc = () => void;
 type SkipFunc = (playerName: string) => void;
+type LostFunc = (playerName: string) => void;
+type ReconnectedFunc = (playerName: string) => void;
+type WaitFunc = (playerName: string, reason: dfgmsg.WaitReason) => void;
 
 export interface Pipelines {
   initialInfo: Pipeline<InitialInfoFunc>;
@@ -53,12 +57,15 @@ export interface Pipelines {
   forbiddenAgari: Pipeline<ForbiddenAgariFunc>;
   reverse: Pipeline<ReverseFunc>;
   skip: Pipeline<SkipFunc>;
+  lost: Pipeline<LostFunc>;
+  reconnected: Pipeline<ReconnectedFunc>;
+  wait: Pipeline<WaitFunc>;
 }
 
 export interface GameLogic {
   pubsubs: Pubsubs;
   pipelines: Pipelines;
-  registerRoom: (room: Colyseus.Room) => void;
+  registerRoom: (room: Colyseus.Room, playerNameMemo: string) => void;
   unregisterRoom: () => void;
   startGame: () => void;
   selectCard: (index: number) => void;
@@ -70,8 +77,10 @@ class GameLogicImple implements GameLogic {
   pubsubs: Pubsubs;
   pipelines: Pipelines;
   private room: Colyseus.Room | null;
+  private playerNameMemo: string;
   constructor() {
     this.room = null;
+    this.playerNameMemo = "";
     this.pubsubs = {
       stateUpdate: new Pubsub<GameStateDTO>(),
       gameOwnerStatus: new Pubsub<boolean>(),
@@ -95,10 +104,14 @@ class GameLogicImple implements GameLogic {
       forbiddenAgari: new Pipeline<ForbiddenAgariFunc>(),
       reverse: new Pipeline<ReverseFunc>(),
       skip: new Pipeline<SkipFunc>(),
+      lost: new Pipeline<LostFunc>(),
+      reconnected: new Pipeline<ReconnectedFunc>(),
+      wait: new Pipeline<WaitFunc>(),
     };
   }
 
-  public registerRoom(room: Colyseus.Room): void {
+  public registerRoom(room: Colyseus.Room, playerNameMemo: string): void {
+    this.playerNameMemo = playerNameMemo;
     room.onStateChange((state: GameState) => {
       // 昔はstateをそのまま使っていた。が、どうやら colyseus はインスタンスの再生成をしないらしいので、 react でうまく後進を拾ってくれなかった。
       // そのへんのライフサイクルをいい感じにコントロールできるように、毎回DTOに詰め替える。
@@ -107,6 +120,10 @@ class GameLogicImple implements GameLogic {
 
     room.onMessage("RoomOwnerMessage", () => {
       this.pubsubs.gameOwnerStatus.publish(true);
+    });
+
+    room.onMessage("GameEndMessage", (message: any) => {
+      createReconnection().endSession();
     });
 
     room.onMessage("PlayerJoinedMessage", (payload: any) => {
@@ -140,6 +157,13 @@ class GameLogicImple implements GameLogic {
         return;
       }
       this.pipelines.initialInfo.call(msg.playerCount, msg.deckCount);
+      if (this.room) {
+        createReconnection().startSession(
+          this.playerNameMemo,
+          this.room.id,
+          this.room.sessionId
+        );
+      }
     });
 
     room.onMessage("CardsProvidedMessage", (payload: any) => {
@@ -284,6 +308,39 @@ class GameLogicImple implements GameLogic {
         return;
       }
       this.pipelines.skip.call(msg.playerName);
+    });
+
+    room.onMessage("PlayerLostMessage", (payload: any) => {
+      const msg = dfgmsg.decodePayload<dfgmsg.PlayerLostMessage>(
+        payload,
+        dfgmsg.PlayerLostMessageDecoder
+      );
+      if (!isDecodeSuccess<dfgmsg.PlayerLostMessage>(msg)) {
+        return;
+      }
+      this.pipelines.lost.call(msg.playerName);
+    });
+
+    room.onMessage("PlayerReconnectedMessage", (payload: any) => {
+      const msg = dfgmsg.decodePayload<dfgmsg.PlayerReconnectedMessage>(
+        payload,
+        dfgmsg.PlayerReconnectedMessageDecoder
+      );
+      if (!isDecodeSuccess<dfgmsg.PlayerReconnectedMessage>(msg)) {
+        return;
+      }
+      this.pipelines.reconnected.call(msg.playerName);
+    });
+
+    room.onMessage("PlayerWaitMessage", (payload: any) => {
+      const msg = dfgmsg.decodePayload<dfgmsg.PlayerWaitMessage>(
+        payload,
+        dfgmsg.PlayerWaitMessageDecoder
+      );
+      if (!isDecodeSuccess<dfgmsg.PlayerWaitMessage>(msg)) {
+        return;
+      }
+      this.pipelines.wait.call(msg.playerName, msg.reason);
     });
 
     this.room = room;

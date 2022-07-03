@@ -14,6 +14,7 @@ import {
   encodeDiscardPairListMessage,
   DiscardPairMessage,
   RankType,
+  WaitReason,
 } from "dfg-messages";
 import LeaveRoomButton from "./leaveRoomButton";
 
@@ -191,6 +192,26 @@ export default function GameContainer(props: Props) {
     updateLog(msg);
   };
 
+  const handleLost = (playerName: string) => {
+    props.globalLogic.sound.enqueueEvent(SoundEvent.LOST);
+    const msg = i18n.game_playerLost(playerName);
+    props.globalLogic.updateAutoRead(msg);
+    updateLog(msg);
+  };
+
+  const handleReconnected = (playerName: string) => {
+    props.globalLogic.sound.enqueueEvent(SoundEvent.RECONNECTED);
+    const msg = i18n.game_playerReconnected(playerName);
+    props.globalLogic.updateAutoRead(msg);
+    updateLog(msg);
+  };
+
+  const handlePlayerWait = (playerName: string, reason: WaitReason) => {
+    const msg = i18n.game_playerWait(playerName, reason);
+    props.globalLogic.updateAutoRead(msg);
+    updateLog(msg);
+  };
+
   React.useEffect(() => {
     const id1 = props.gameLogic.pubsubs.stateUpdate.subscribe(setGameState);
     const latest = props.gameLogic.pubsubs.stateUpdate.fetchLatest();
@@ -228,6 +249,9 @@ export default function GameContainer(props: Props) {
     props.gameLogic.pipelines.rankChanged.register(handleRankChanged);
     props.gameLogic.pipelines.agari.register(handleAgari);
     props.gameLogic.pipelines.forbiddenAgari.register(handleForbiddenAgari);
+    props.gameLogic.pipelines.lost.register(handleLost);
+    props.gameLogic.pipelines.reconnected.register(handleReconnected);
+    props.gameLogic.pipelines.wait.register(handlePlayerWait);
     return () => {
       props.gameLogic.pubsubs.stateUpdate.unsubscribe(id1);
       props.gameLogic.pubsubs.gameOwnerStatus.unsubscribe(id2);
@@ -247,6 +271,9 @@ export default function GameContainer(props: Props) {
       props.gameLogic.pipelines.rankChanged.unregister();
       props.gameLogic.pipelines.agari.unregister();
       props.gameLogic.pipelines.forbiddenAgari.unregister();
+      props.gameLogic.pipelines.lost.unregister();
+      props.gameLogic.pipelines.reconnected.unregister();
+      props.gameLogic.pipelines.wait.unregister();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

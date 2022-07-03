@@ -6,6 +6,7 @@ import {
   DiscardPairMessage,
   RuleConfig,
   WebSocketErrorCode,
+  WaitReason,
 } from "dfg-messages";
 
 export interface Result {
@@ -109,6 +110,9 @@ export interface I18nService {
   ) => string;
   game_agari: (playerName: string) => string;
   game_forbiddenAgari: (playerName: string) => string;
+  game_playerLost: (playerName: string) => string;
+  game_playerReconnected: (playerName: string) => string;
+  game_playerWait: (playerName: string, reason: WaitReason) => string;
   playingInfo_heading: () => string;
   playingInfo_log: () => string;
   playingInfo_discardStack: () => string;
@@ -123,6 +127,9 @@ export interface I18nService {
     count: number
   ) => string;
   removedCards_description: () => string;
+  reconnection_explanation: () => string;
+  reconnection_reconnectAs: (playerName: string) => string;
+  reconnection_discard: () => string;
   settings_heading: () => string;
   settings_soundToggle: () => string;
   settings_musicToggle: () => string;
