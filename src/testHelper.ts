@@ -7,14 +7,23 @@ import { createAutoReadLogic } from "./logic/autoRead";
 import { createGameLogic } from "./logic/game";
 import { createI18nService } from "./i18n/i18n";
 import { SoundLogic } from "./logic/sound";
+import { Reconnection } from "./logic/reconnection";
 import { SubLogicList } from "./logic/sub";
 import { mock } from "jest-mock-extended";
 
 export function createGlobalLogicForTest() {
+  const rmock = mock<Reconnection>();
+  rmock.getReconnectionInfo.mockReturnValue({
+    isReconnectionAvailable: false,
+    playerName: "",
+    roomID: "",
+    sessionID: "",
+  });
   return createGlobalLogic(
     createI18nService("Japanese"),
     mock<SoundLogic>(),
-    new Config(undefined)
+    new Config(undefined),
+    rmock
   );
 }
 

@@ -38,7 +38,7 @@ test("renders room list table", () => {
     2,
     RoomState.WAITING,
     createRuleConfig(),
-    ["cat"],
+    ["cat", "dog"],
     "abcdabcd"
   );
   jest.spyOn(rll, "fetchLatest").mockImplementation(() => {

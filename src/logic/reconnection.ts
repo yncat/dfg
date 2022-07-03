@@ -3,22 +3,6 @@ import Cookies from "js-cookie";
 const maxReconnectionMinute = 5;
 const cookieName = "dfg_last_room_info";
 
-export function startSession(
-  playerName: string,
-  roomID: string,
-  sessionID: string
-): void {
-  const v = { playerName, roomID, sessionID };
-  const expiresAt = new Date(
-    new Date().getTime() + maxReconnectionMinute * 60 * 1000
-  );
-  Cookies.set(cookieName, JSON.stringify(v), { expires: expiresAt, path: "" });
-}
-
-export function endSession() {
-  Cookies.remove(cookieName, { path: "" });
-}
-
 export type ReconnectionInfo = {
   isReconnectionAvailable: boolean;
   playerName: string;
@@ -54,29 +38,60 @@ function isValidReconnectionCookie(
   return true;
 }
 
-export function getReconnectionInfo(): ReconnectionInfo {
-  const cookie = Cookies.get(cookieName);
-  if (cookie === undefined) {
+export interface Reconnection {
+  startSession: (playerName: string, roomID: string, sessionID: string) => void;
+  endSession: () => void;
+  getReconnectionInfo: () => ReconnectionInfo;
+}
+
+class ReconnectionImple implements Reconnection {
+  public startSession(
+    playerName: string,
+    roomID: string,
+    sessionID: string
+  ): void {
+    const v = { playerName, roomID, sessionID };
+    const expiresAt = new Date(
+      new Date().getTime() + maxReconnectionMinute * 60 * 1000
+    );
+    Cookies.set(cookieName, JSON.stringify(v), {
+      expires: expiresAt,
+      path: "",
+    });
+  }
+
+  public endSession() {
+    Cookies.remove(cookieName, { path: "" });
+  }
+
+  public getReconnectionInfo(): ReconnectionInfo {
+    const cookie = Cookies.get(cookieName);
+    if (cookie === undefined) {
+      return {
+        isReconnectionAvailable: false,
+        playerName: "",
+        roomID: "",
+        sessionID: "",
+      };
+    }
+    const cookieObj = JSON.parse(cookie);
+    if (!isValidReconnectionCookie(cookieObj)) {
+      return {
+        isReconnectionAvailable: false,
+        playerName: "",
+        roomID: "",
+        sessionID: "",
+      };
+    }
     return {
-      isReconnectionAvailable: false,
-      playerName: "",
-      roomID: "",
-      sessionID: "",
+      isReconnectionAvailable: true,
+      playerName: cookieObj.playerName,
+      roomID: cookieObj.roomID,
+      sessionID: cookieObj.sessionID,
     };
   }
-  const cookieObj = JSON.parse(cookie);
-  if (!isValidReconnectionCookie(cookieObj)) {
-    return {
-      isReconnectionAvailable: false,
-      playerName: "",
-      roomID: "",
-      sessionID: "",
-    };
-  }
-  return {
-    isReconnectionAvailable: true,
-    playerName: cookieObj.playerName,
-    roomID: cookieObj.roomID,
-    sessionID: cookieObj.sessionID,
-  };
+}
+
+export function createReconnection(): Reconnection {
+  return new ReconnectionImple();
 }

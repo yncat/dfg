@@ -19,7 +19,7 @@ import { Pipeline } from "./pipeline";
 import { GlobalState } from "./schema-def/GlobalState";
 import { Config } from "./config";
 import { protocolVersion } from "./protocolVersion";
-import * as reconnection from "./reconnection";
+import { Reconnection, ReconnectionInfo } from "./reconnection";
 
 export type ConnectionStatusString =
   | "not_connected"
@@ -63,7 +63,7 @@ export interface GlobalLogic {
   roomRegistrationPipeline: Pipeline<RoomRegistrationPipelineFunc>;
   // TODO: delete after switching to session-based.
   registeredPlayerName: string;
-  getAndCacheReconnectionInfo: () => reconnection.ReconnectionInfo;
+  getAndCacheReconnectionInfo: () => ReconnectionInfo;
   discardReconnectionInfo: () => void;
 }
 
@@ -80,6 +80,7 @@ export class GlobalLogicImple implements GlobalLogic {
   i18n: I18nService;
   config: Config;
   sound: SoundLogic;
+  reconnection: Reconnection;
   registeredPlayerName: string;
   lobbyChatMessagePipeline: Pipeline<ChatMessagePipelineFunc>;
   roomChatMessagePipeline: Pipeline<ChatMessagePipelineFunc>;
@@ -87,9 +88,14 @@ export class GlobalLogicImple implements GlobalLogic {
   roomRegistrationPipeline: Pipeline<RoomRegistrationPipelineFunc>;
   private roomListUpdatePollingID: NodeJS.Timer | null;
   private isReconnecting: boolean;
-  private cachedReconnectionInfo: reconnection.ReconnectionInfo;
+  private cachedReconnectionInfo: ReconnectionInfo;
 
-  constructor(i18n: I18nService, sound: SoundLogic, config: Config) {
+  constructor(
+    i18n: I18nService,
+    sound: SoundLogic,
+    config: Config,
+    reconnection: Reconnection
+  ) {
     this.isReconnecting = false;
     this.cachedReconnectionInfo = {
       isReconnectionAvailable: false,
@@ -97,6 +103,7 @@ export class GlobalLogicImple implements GlobalLogic {
       roomID: "",
       sessionID: "",
     };
+    this.reconnection = reconnection;
     this.connectionStatusPubsub = new Pubsub<ConnectionStatusString>();
     this.connectionErrorPubsub = new Pubsub<unknown>();
     this.playerCountPubsub = new Pubsub<number>();
@@ -184,7 +191,6 @@ export class GlobalLogicImple implements GlobalLogic {
     } catch {
       return;
     }
-    this.isReconnecting = true;
     try {
       this.gameRoom = await this.client.reconnect(
         this.cachedReconnectionInfo.roomID,
@@ -319,7 +325,7 @@ export class GlobalLogicImple implements GlobalLogic {
     }
 
     this.gameRoom.leave();
-    reconnection.endSession();
+    this.reconnection.endSession();
     this.isInRoomPubsub.publish(false);
   }
 
@@ -331,8 +337,8 @@ export class GlobalLogicImple implements GlobalLogic {
     this.autoReadPubsub.publish(updateString);
   }
 
-  public getAndCacheReconnectionInfo(): reconnection.ReconnectionInfo {
-    const ret = reconnection.getReconnectionInfo();
+  public getAndCacheReconnectionInfo(): ReconnectionInfo {
+    const ret = this.reconnection.getReconnectionInfo();
     if (ret.isReconnectionAvailable) {
       this.setPlayerName(ret.playerName);
     }
@@ -341,14 +347,15 @@ export class GlobalLogicImple implements GlobalLogic {
   }
 
   public discardReconnectionInfo(): void {
-    reconnection.endSession();
+    this.reconnection.endSession();
   }
 }
 
 export function createGlobalLogic(
   i18n: I18nService,
   sound: SoundLogic,
-  config: Config
+  config: Config,
+  reconnection: Reconnection
 ): GlobalLogic {
-  return new GlobalLogicImple(i18n, sound, config);
+  return new GlobalLogicImple(i18n, sound, config, reconnection);
 }
