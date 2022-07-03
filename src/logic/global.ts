@@ -145,7 +145,7 @@ export class GlobalLogicImple implements GlobalLogic {
     this.lobbyRoom?.onError((code, message) => {
       const castedMessage = message === undefined ? "not provided" : message;
       alert(
-        `ロビー接続でエラーが発生しました。このあと、ゲームが正常に動作しない可能性があります。\nError code: ${code}\nmessage: ${castedMessage}`
+        `ロビー接続でエラーが発生しました。ページを再読み込みしてください。\nError code: ${code}\nmessage: ${castedMessage}`
       );
     });
 
@@ -210,7 +210,7 @@ export class GlobalLogicImple implements GlobalLogic {
     this.gameRoom?.onError((code, message) => {
       const castedMessage = message === undefined ? "not provided" : message;
       alert(
-        `ルーム接続でエラーが発生しました。このあと、ゲームが正常に動作しない可能性があります。\nError code: ${code}\nmessage: ${castedMessage}`
+        `ルーム接続でエラーが発生しました。ページを再読み込みしてください。\nError code: ${code}\nmessage: ${castedMessage}`
       );
     });
 
