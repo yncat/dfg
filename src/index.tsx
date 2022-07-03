@@ -13,11 +13,18 @@ import { createChatPanelLogic } from "./logic/chatPanel";
 import { createI18nService } from "./i18n/i18n";
 import { createAutoReadLogic } from "./logic/autoRead";
 import { createGameLogic } from "./logic/game";
+import { createReconnection } from "./logic/reconnection";
 
 const config = new Config(process.env.REACT_APP_SERVER_ADDRESS);
 const defaultI18nService = createI18nService("Japanese");
 const soundLogic = createSoundLogic();
-const globalLogic = createGlobalLogic(defaultI18nService, soundLogic, config);
+const reconnection = createReconnection();
+const globalLogic = createGlobalLogic(
+  defaultI18nService,
+  soundLogic,
+  config,
+  reconnection
+);
 globalLogic.registeredPlayerName = "";
 const roomListLogic = createRoomListLogic();
 const lobbyChatMessageListLogic = createChatMessageListLogic();

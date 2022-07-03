@@ -5,7 +5,7 @@ import { GameStateDTO } from "./gameState";
 import { Pubsub } from "./pubsub";
 import { Pipeline } from "./pipeline";
 import { isDecodeSuccess } from "./decodeValidator";
-import * as reconnection from "./reconnection";
+import { createReconnection } from "./reconnection";
 
 export interface Pubsubs {
   stateUpdate: Pubsub<GameStateDTO>;
@@ -123,7 +123,7 @@ class GameLogicImple implements GameLogic {
     });
 
     room.onMessage("GameEndMessage", (message: any) => {
-      reconnection.endSession();
+      createReconnection().endSession();
     });
 
     room.onMessage("PlayerJoinedMessage", (payload: any) => {
@@ -158,7 +158,7 @@ class GameLogicImple implements GameLogic {
       }
       this.pipelines.initialInfo.call(msg.playerCount, msg.deckCount);
       if (this.room) {
-        reconnection.startSession(
+        createReconnection().startSession(
           this.playerNameMemo,
           this.room.id,
           this.room.sessionId
