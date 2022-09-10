@@ -168,9 +168,7 @@ export class GlobalLogicImple implements GlobalLogic {
 
     // Receive pong
     rm.onMessage("PingMessage", (payload) => {
-      this.pingReceivedMs = Math.round(
-        performance.now() - this.pingSentTime
-      );
+      this.pingReceivedMs = Math.round(performance.now() - this.pingSentTime);
     });
 
     // Receive chat
