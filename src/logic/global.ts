@@ -21,6 +21,8 @@ import { Config } from "./config";
 import { protocolVersion } from "./protocolVersion";
 import { Reconnection, ReconnectionInfo } from "./reconnection";
 
+const PING_INTERVAL_MS = 2500;
+
 export type ConnectionStatusString =
   | "not_connected"
   | "connecting"
@@ -89,6 +91,9 @@ export class GlobalLogicImple implements GlobalLogic {
   private roomListUpdatePollingID: NodeJS.Timer | null;
   private isReconnecting: boolean;
   private cachedReconnectionInfo: ReconnectionInfo;
+  private pingIntervalID: number;
+  private pingSentTime: number;
+  private pingReceivedMs: number;
 
   constructor(
     i18n: I18nService,
@@ -124,6 +129,9 @@ export class GlobalLogicImple implements GlobalLogic {
     this.sound = sound;
     this.registeredPlayerName = "";
     this.roomListUpdatePollingID = null;
+    this.pingIntervalID = 0;
+    this.pingReceivedMs = -1;
+    this.pingSentTime = 0;
   }
 
   public setPlayerName(playerName: string): void {
@@ -149,10 +157,21 @@ export class GlobalLogicImple implements GlobalLogic {
       );
     });
 
+    // Set ping from the client side
+    this.setupPing();
+
     // start watching for room list updates
     this.startRoomListUpdatePolling();
 
     const rm = this.lobbyRoom as Colyseus.Room;
+
+    // Receive pong
+    rm.onMessage("PingMessage", (payload) => {
+      this.pingReceivedMs = Math.round(
+        performance.now() - this.pingSentTime
+      );
+    });
+
     // Receive chat
     rm.onMessage("ChatMessage", (payload) => {
       const message = decodePayload<ChatMessage>(payload, ChatMessageDecoder);
@@ -183,6 +202,21 @@ export class GlobalLogicImple implements GlobalLogic {
     });
 
     this.connectionStatusPubsub.publish("connected");
+  }
+
+  private setupPing() {
+    this.pingReceivedMs = -1;
+    this.pingSentTime = 0;
+    this.pingIntervalID = window.setInterval(() => {
+      if (this.pingSentTime > 0 && this.pingReceivedMs === -1) {
+        alert("サーバーとの接続が切れました。ページを再読み込みしてください。");
+        window.clearInterval(this.pingIntervalID);
+        return;
+      }
+      this.pingReceivedMs = -1;
+      this.lobbyRoom?.send("PingRequest", "");
+      this.pingSentTime = performance.now();
+    }, PING_INTERVAL_MS);
   }
 
   public async reconnect(onFinish: (success: boolean) => void): Promise<void> {
