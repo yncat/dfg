@@ -148,6 +148,7 @@ export class GlobalLogicImple implements GlobalLogic {
     } catch (e) {
       this.connectionStatusPubsub.publish("not_connected");
       this.connectionErrorPubsub.publish(e);
+      return;
     }
 
     this.lobbyRoom?.onError((code, message) => {
