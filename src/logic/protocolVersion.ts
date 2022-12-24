@@ -1,1 +1,1 @@
-export const protocolVersion = 5;
+export const protocolVersion = 6;
