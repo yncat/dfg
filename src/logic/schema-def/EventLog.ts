@@ -8,7 +8,7 @@
 import { Schema, type, ArraySchema, MapSchema, SetSchema, DataChange } from '@colyseus/schema';
 
 
-export class Card extends Schema {
-    @type("number") public mark!: number;
-    @type("number") public cardNumber!: number;
+export class EventLog extends Schema {
+    @type("string") public type!: string;
+    @type("string") public body!: string;
 }
