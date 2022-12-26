@@ -1,6 +1,6 @@
 import React from "react";
 import { GlobalLogic } from "../logic/global";
-import { GameLogic } from "../logic/game";
+import { NotifiedEvent, GameLogic } from "../logic/game";
 import { GameStateDTO } from "../logic/gameState";
 import GameInfo from "./gameInfo";
 import CardSelector from "./cardSelector";
@@ -41,6 +41,20 @@ export default function GameContainer(props: Props) {
     setLog((prev: Array<string>) => {
       let newlog = [content, ...prev];
       return newlog;
+    });
+  };
+
+  const handleEventLog = (evt: NotifiedEvent) => {
+    evt.event.soundEvents.forEach((e) => {
+      if (!evt.shouldSkipEffects) {
+        props.globalLogic.sound.enqueueEvent(e);
+      }
+    });
+    evt.event.messages.forEach((m) => {
+      updateLog(m);
+      if (!evt.shouldSkipEffects) {
+        props.globalLogic.updateAutoRead(m);
+      }
     });
   };
 
@@ -235,6 +249,9 @@ export default function GameContainer(props: Props) {
       props.gameLogic.pubsubs.discardPairListUpdated.subscribe(
         setDiscardPairList
       );
+    const id7 =
+      props.gameLogic.pubsubs.eventLogUpdate.subscribe(handleEventLog);
+
     props.gameLogic.pipelines.initialInfo.register(handleInitialInfo);
     props.gameLogic.pipelines.cardsProvided.register(handleCardsProvided);
     props.gameLogic.pipelines.yourTurn.register(handleMyTurn);
@@ -259,6 +276,7 @@ export default function GameContainer(props: Props) {
       props.gameLogic.pubsubs.playerLeft.unsubscribe(id4);
       props.gameLogic.pubsubs.cardListUpdated.unsubscribe(id5);
       props.gameLogic.pubsubs.discardPairListUpdated.unsubscribe(id6);
+      props.gameLogic.pubsubs.eventLogUpdate.unsubscribe(id7);
       props.gameLogic.pipelines.initialInfo.unregister();
       props.gameLogic.pipelines.cardsProvided.unregister();
       props.gameLogic.pipelines.yourTurn.unregister();

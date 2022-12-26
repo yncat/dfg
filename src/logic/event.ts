@@ -59,7 +59,7 @@ export class EventProcessor {
       return this.emptyEvent();
     }
     return {
-      soundEvents: [],
+      soundEvents: [SoundEvent.START, SoundEvent.SHUFFLE, SoundEvent.GIVE],
       messages: [this.i18n.game_initialInfo(evt.playerCount, evt.deckCount)],
     };
   }

@@ -2,13 +2,21 @@ import * as Colyseus from "colyseus.js";
 import * as dfgmsg from "dfg-messages";
 import { GameState } from "./schema-def/GameState";
 import { GameStateDTO } from "./gameState";
+import { EventProcessor, ProcessedEvent } from "./event";
 import { Pubsub } from "./pubsub";
 import { Pipeline } from "./pipeline";
-import { isDecodeSuccess } from "./decodeValidator";
+  import { isDecodeSuccess } from "./decodeValidator";
 import { createReconnection } from "./reconnection";
+import { I18nService } from "../i18n/interface";
+
+export type NotifiedEvent = {
+  event:ProcessedEvent;
+  shouldSkipEffects:boolean;
+};
 
 export interface Pubsubs {
   stateUpdate: Pubsub<GameStateDTO>;
+  eventLogUpdate: Pubsub<NotifiedEvent>;
   gameOwnerStatus: Pubsub<boolean>;
   playerJoined: Pubsub<string>;
   playerLeft: Pubsub<string>;
@@ -78,11 +86,18 @@ class GameLogicImple implements GameLogic {
   pipelines: Pipelines;
   private room: Colyseus.Room | null;
   private playerNameMemo: string;
-  constructor() {
+  private eventLogLengthMemo:number;
+  private firstSynced:boolean;
+  private eventProcessor: EventProcessor;
+  constructor(i18n:I18nService) {
     this.room = null;
     this.playerNameMemo = "";
+    this.eventLogLengthMemo = 0;
+    this.firstSynced=false;
+    this.eventProcessor = new EventProcessor(i18n);
     this.pubsubs = {
       stateUpdate: new Pubsub<GameStateDTO>(),
+      eventLogUpdate: new Pubsub<NotifiedEvent>(),
       gameOwnerStatus: new Pubsub<boolean>(),
       playerJoined: new Pubsub<string>(),
       playerLeft: new Pubsub<string>(),
@@ -112,10 +127,22 @@ class GameLogicImple implements GameLogic {
 
   public registerRoom(room: Colyseus.Room, playerNameMemo: string): void {
     this.playerNameMemo = playerNameMemo;
+    this.eventLogLengthMemo = 0;
+    this.firstSynced=false;
     room.onStateChange((state: GameState) => {
       // 昔はstateをそのまま使っていた。が、どうやら colyseus はインスタンスの再生成をしないらしいので、 react でうまく後進を拾ってくれなかった。
       // そのへんのライフサイクルをいい感じにコントロールできるように、毎回DTOに詰め替える。
       this.pubsubs.stateUpdate.publish(new GameStateDTO(state));
+      // イベントログの処理
+      // colyseus がもともと持っている onAdd という便利コールバックがあるが、これはあえて使っていない。
+      // イベントログが追加されたら音や音声を出すが、途中から観戦に入った場合、それまでのログはエフェクトを出さず、ログバッファに貯めるようにしたい
+      // stateの初期同期かどうかを判定するロジックを自前で入れている
+      if(!this.firstSynced){
+        this.syncFirstEventLogs(state);
+      }else{
+        this.syncEventLogs(state);
+      }
+      this.firstSynced = true;
     });
 
     room.onMessage("RoomOwnerMessage", () => {
@@ -379,8 +406,29 @@ class GameLogicImple implements GameLogic {
     }
     this.room.send("PassRequest", "");
   }
+
+  private syncFirstEventLogs(state:GameState){
+    // stateの初期同期時は、効果音と読み上げを鳴らさないため、 skipEffects = true で pubsub に送る
+    state.eventLogList.forEach((item)=>{
+      const pevt = this.eventProcessor.processEvent(item.type, item.body);
+      this.pubsubs.eventLogUpdate.publish({event: pevt, shouldSkipEffects: true});
+    });
+    this.eventLogLengthMemo = state.eventLogList.length;
+  }
+
+  private syncEventLogs(state:GameState){
+    if(state.eventLogList.length === this.eventLogLengthMemo){
+      return;
+    }
+    for(let i=this.eventLogLengthMemo; i < state.eventLogList.length;i++){
+      const item = state.eventLogList[i];
+      const pevt = this.eventProcessor.processEvent(item.type, item.body);
+      this.pubsubs.eventLogUpdate.publish({event: pevt, shouldSkipEffects: false});
+    }
+    this.eventLogLengthMemo = state.eventLogList.length;
+  }
 }
 
-export function createGameLogic(): GameLogic {
-  return new GameLogicImple();
+export function createGameLogic(i18n:I18nService): GameLogic {
+  return new GameLogicImple(i18n);
 }

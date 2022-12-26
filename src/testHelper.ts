@@ -35,7 +35,7 @@ export function createSubLogicListForTest(): SubLogicList {
     roomChatMessageListLogic: createChatMessageListLogic(),
     roomChatPanelLogic: createChatPanelLogic(),
     autoReadLogic: createAutoReadLogic(),
-    gameLogic: createGameLogic(),
+    gameLogic: createGameLogic(createI18nService("Japanese")),
   };
 }
 
