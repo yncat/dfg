@@ -218,11 +218,13 @@ export class EventProcessor {
     if (se === null) {
       return this.emptyEvent();
     }
+    const msg =
+      evt.before === dfgmsg.RankType.UNDETERMINED
+        ? this.i18n.game_ranked(evt.playerName, evt.after)
+        : this.i18n.game_rankChanged(evt.playerName, evt.before, evt.after);
     return {
       soundEvents: [se],
-      messages: [
-        this.i18n.game_rankChanged(evt.playerName, evt.before, evt.after),
-      ],
+      messages: [msg],
     };
   }
 

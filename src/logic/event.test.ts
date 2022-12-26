@@ -180,9 +180,8 @@ describe("EventProcessor", () => {
       );
       expect(ret.soundEvents).toStrictEqual([SoundEvent.DAIFUGO]);
       expect(ret.messages).toStrictEqual([
-        i18n.game_rankChanged(
+        i18n.game_ranked(
           "cat",
-          dfgmsg.RankType.UNDETERMINED,
           dfgmsg.RankType.DAIFUGO
         ),
       ]);
@@ -203,9 +202,8 @@ describe("EventProcessor", () => {
       );
       expect(ret.soundEvents).toStrictEqual([SoundEvent.FUGO]);
       expect(ret.messages).toStrictEqual([
-        i18n.game_rankChanged(
+        i18n.game_ranked(
           "cat",
-          dfgmsg.RankType.UNDETERMINED,
           dfgmsg.RankType.FUGO
         ),
       ]);
@@ -226,9 +224,8 @@ describe("EventProcessor", () => {
       );
       expect(ret.soundEvents).toStrictEqual([SoundEvent.HEIMIN]);
       expect(ret.messages).toStrictEqual([
-        i18n.game_rankChanged(
+        i18n.game_ranked(
           "cat",
-          dfgmsg.RankType.UNDETERMINED,
           dfgmsg.RankType.HEIMIN
         ),
       ]);
@@ -249,9 +246,8 @@ describe("EventProcessor", () => {
       );
       expect(ret.soundEvents).toStrictEqual([SoundEvent.HINMIN]);
       expect(ret.messages).toStrictEqual([
-        i18n.game_rankChanged(
+        i18n.game_ranked(
           "cat",
-          dfgmsg.RankType.UNDETERMINED,
           dfgmsg.RankType.HINMIN
         ),
       ]);
@@ -272,9 +268,8 @@ describe("EventProcessor", () => {
       );
       expect(ret.soundEvents).toStrictEqual([SoundEvent.DAIHINMIN]);
       expect(ret.messages).toStrictEqual([
-        i18n.game_rankChanged(
+        i18n.game_ranked(
           "cat",
-          dfgmsg.RankType.UNDETERMINED,
           dfgmsg.RankType.DAIHINMIN
         ),
       ]);
