@@ -70,11 +70,15 @@ export default function GameContainer(props: Props) {
     updateLog(msg);
   };
 
-  const handleMyTurn = () => {
-    const msg = i18n.game_yourTurn();
-    props.globalLogic.updateAutoRead(msg);
-    props.globalLogic.sound.enqueueEvent(SoundEvent.TURN);
-    setIsMyTurn(true);
+  const handleMyTurn = (myTurn: boolean) => {
+    if (myTurn) {
+      const msg = i18n.game_yourTurn();
+      props.globalLogic.updateAutoRead(msg);
+      props.globalLogic.sound.enqueueEvent(SoundEvent.TURN);
+      setIsMyTurn(true);
+    } else {
+      setIsMyTurn(false);
+    }
   };
 
   const handleLost = (playerName: string) => {
