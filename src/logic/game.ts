@@ -24,47 +24,13 @@ export interface Pubsubs {
   discardPairListUpdated: Pubsub<dfgmsg.DiscardPairListMessage>;
 }
 
-type InitialInfoFunc = (playerCount: number, deckCount: number) => void;
-type CardsProvidedFunc = (playerName: string, cardCount: number) => void;
 type YourTurnFunc = () => void;
-type TurnFunc = (playerName: string) => void;
-type DiscardFunc = (
-  playerName: string,
-  discardPair: dfgmsg.DiscardPairMessage,
-  remainingHandCount: number
-) => void;
-type NagareFunc = () => void;
-type PassFunc = (playerName: string, remainingHandCount: number) => void;
-type InvertFunc = (inverted: boolean) => void;
-type KakumeiFunc = () => void;
-type RankChangedFunc = (
-  playerName: string,
-  before: dfgmsg.RankType,
-  after: dfgmsg.RankType
-) => void;
-type AgariFunc = (playerName: string) => void;
-type ForbiddenAgariFunc = (playerName: string) => void;
-type ReverseFunc = () => void;
-type SkipFunc = (playerName: string) => void;
 type LostFunc = (playerName: string) => void;
 type ReconnectedFunc = (playerName: string) => void;
 type WaitFunc = (playerName: string, reason: dfgmsg.WaitReason) => void;
 
 export interface Pipelines {
-  initialInfo: Pipeline<InitialInfoFunc>;
-  cardsProvided: Pipeline<CardsProvidedFunc>;
   yourTurn: Pipeline<YourTurnFunc>;
-  turn: Pipeline<TurnFunc>;
-  discard: Pipeline<DiscardFunc>;
-  nagare: Pipeline<NagareFunc>;
-  pass: Pipeline<PassFunc>;
-  invert: Pipeline<InvertFunc>;
-  kakumei: Pipeline<KakumeiFunc>;
-  rankChanged: Pipeline<RankChangedFunc>;
-  agari: Pipeline<AgariFunc>;
-  forbiddenAgari: Pipeline<ForbiddenAgariFunc>;
-  reverse: Pipeline<ReverseFunc>;
-  skip: Pipeline<SkipFunc>;
   lost: Pipeline<LostFunc>;
   reconnected: Pipeline<ReconnectedFunc>;
   wait: Pipeline<WaitFunc>;
@@ -105,20 +71,7 @@ class GameLogicImple implements GameLogic {
       discardPairListUpdated: new Pubsub<dfgmsg.DiscardPairListMessage>(),
     };
     this.pipelines = {
-      initialInfo: new Pipeline<InitialInfoFunc>(),
-      cardsProvided: new Pipeline<CardsProvidedFunc>(),
       yourTurn: new Pipeline<YourTurnFunc>(),
-      turn: new Pipeline<TurnFunc>(),
-      discard: new Pipeline<DiscardFunc>(),
-      nagare: new Pipeline<NagareFunc>(),
-      pass: new Pipeline<PassFunc>(),
-      invert: new Pipeline<InvertFunc>(),
-      kakumei: new Pipeline<KakumeiFunc>(),
-      rankChanged: new Pipeline<RankChangedFunc>(),
-      agari: new Pipeline<AgariFunc>(),
-      forbiddenAgari: new Pipeline<ForbiddenAgariFunc>(),
-      reverse: new Pipeline<ReverseFunc>(),
-      skip: new Pipeline<SkipFunc>(),
       lost: new Pipeline<LostFunc>(),
       reconnected: new Pipeline<ReconnectedFunc>(),
       wait: new Pipeline<WaitFunc>(),
@@ -183,7 +136,6 @@ class GameLogicImple implements GameLogic {
       if (!isDecodeSuccess<dfgmsg.InitialInfoMessage>(msg)) {
         return;
       }
-      this.pipelines.initialInfo.call(msg.playerCount, msg.deckCount);
       if (this.room) {
         createReconnection().startSession(
           this.playerNameMemo,
@@ -193,30 +145,8 @@ class GameLogicImple implements GameLogic {
       }
     });
 
-    room.onMessage("CardsProvidedMessage", (payload: any) => {
-      const msg = dfgmsg.decodePayload<dfgmsg.CardsProvidedMessage>(
-        payload,
-        dfgmsg.CardsProvidedMessageDecoder
-      );
-      if (!isDecodeSuccess<dfgmsg.CardsProvidedMessage>(msg)) {
-        return;
-      }
-      this.pipelines.cardsProvided.call(msg.playerName, msg.cardCount);
-    });
-
     room.onMessage("YourTurnMessage", (payload: any) => {
       this.pipelines.yourTurn.call();
-    });
-
-    room.onMessage("TurnMessage", (payload: any) => {
-      const msg = dfgmsg.decodePayload<dfgmsg.TurnMessage>(
-        payload,
-        dfgmsg.TurnMessageDecoder
-      );
-      if (!isDecodeSuccess<dfgmsg.TurnMessage>(msg)) {
-        return;
-      }
-      this.pipelines.turn.call(msg.playerName);
     });
 
     room.onMessage("CardListMessage", (payload: any) => {
@@ -239,102 +169,6 @@ class GameLogicImple implements GameLogic {
         return;
       }
       this.pubsubs.discardPairListUpdated.publish(msg);
-    });
-
-    room.onMessage("DiscardMessage", (payload: any) => {
-      const msg = dfgmsg.decodePayload<dfgmsg.DiscardMessage>(
-        payload,
-        dfgmsg.DiscardMessageDecoder
-      );
-      if (!isDecodeSuccess<dfgmsg.DiscardMessage>(msg)) {
-        return;
-      }
-      this.pipelines.discard.call(
-        msg.playerName,
-        msg.discardPair,
-        msg.remainingHandCount
-      );
-    });
-
-    room.onMessage("NagareMessage", (payload: any) => {
-      this.pipelines.nagare.call();
-    });
-
-    room.onMessage("PassMessage", (payload: any) => {
-      const msg = dfgmsg.decodePayload<dfgmsg.PassMessage>(
-        payload,
-        dfgmsg.PassMessageDecoder
-      );
-      if (!isDecodeSuccess<dfgmsg.PassMessage>(msg)) {
-        return;
-      }
-
-      this.pipelines.pass.call(msg.playerName, msg.remainingHandCount);
-    });
-
-    room.onMessage("StrengthInversionMessage", (payload: any) => {
-      const msg = dfgmsg.decodePayload<dfgmsg.StrengthInversionMessage>(
-        payload,
-        dfgmsg.StrengthInversionMessageDecoder
-      );
-      if (!isDecodeSuccess<dfgmsg.StrengthInversionMessage>(msg)) {
-        return;
-      }
-
-      this.pipelines.invert.call(msg.isStrengthInverted);
-    });
-
-    room.onMessage("KakumeiMessage", (payload: any) => {
-      this.pipelines.kakumei.call();
-    });
-
-    room.onMessage("PlayerRankChangedMessage", (payload: any) => {
-      const msg = dfgmsg.decodePayload<dfgmsg.PlayerRankChangedMessage>(
-        payload,
-        dfgmsg.PlayerRankChangedMessageDecoder
-      );
-      if (!isDecodeSuccess<dfgmsg.PlayerRankChangedMessage>(msg)) {
-        return;
-      }
-
-      this.pipelines.rankChanged.call(msg.playerName, msg.before, msg.after);
-    });
-
-    room.onMessage("AgariMessage", (payload: any) => {
-      const msg = dfgmsg.decodePayload<dfgmsg.AgariMessage>(
-        payload,
-        dfgmsg.AgariMessageDecoder
-      );
-      if (!isDecodeSuccess<dfgmsg.AgariMessage>(msg)) {
-        return;
-      }
-      this.pipelines.agari.call(msg.playerName);
-    });
-
-    room.onMessage("ForbiddenAgariMessage", (payload: any) => {
-      const msg = dfgmsg.decodePayload<dfgmsg.ForbiddenAgariMessage>(
-        payload,
-        dfgmsg.ForbiddenAgariMessageDecoder
-      );
-      if (!isDecodeSuccess<dfgmsg.ForbiddenAgariMessage>(msg)) {
-        return;
-      }
-      this.pipelines.forbiddenAgari.call(msg.playerName);
-    });
-
-    room.onMessage("ReverseMessage", (payload: any) => {
-      this.pipelines.reverse.call();
-    });
-
-    room.onMessage("TurnSkippedMessage", (payload: any) => {
-      const msg = dfgmsg.decodePayload<dfgmsg.TurnSkippedMessage>(
-        payload,
-        dfgmsg.TurnSkippedMessageDecoder
-      );
-      if (!isDecodeSuccess<dfgmsg.TurnSkippedMessage>(msg)) {
-        return;
-      }
-      this.pipelines.skip.call(msg.playerName);
     });
 
     room.onMessage("PlayerLostMessage", (payload: any) => {
