@@ -102,10 +102,6 @@ class GameLogicImple implements GameLogic {
       this.pubsubs.gameOwnerStatus.publish(true);
     });
 
-    room.onMessage("GameEndMessage", (message: any) => {
-      createReconnection().endSession();
-    });
-
     room.onMessage("PlayerJoinedMessage", (payload: any) => {
       const msg = dfgmsg.decodePayload<dfgmsg.PlayerJoinedMessage>(
         payload,
@@ -128,20 +124,24 @@ class GameLogicImple implements GameLogic {
       this.pubsubs.playerLeft.publish(msg.playerName);
     });
 
-    room.onMessage("InitialInfoMessage", (payload: any) => {
-      const msg = dfgmsg.decodePayload<dfgmsg.InitialInfoMessage>(
+    room.onMessage("PreventCloseMessage", (payload: any) => {
+      const msg = dfgmsg.decodePayload<dfgmsg.PreventCloseMessage>(
         payload,
-        dfgmsg.InitialInfoMessageDecoder
+        dfgmsg.PreventCloseMessageDecoder
       );
-      if (!isDecodeSuccess<dfgmsg.InitialInfoMessage>(msg)) {
+      if (!isDecodeSuccess<dfgmsg.PreventCloseMessage>(msg)) {
         return;
       }
       if (this.room) {
-        createReconnection().startSession(
-          this.playerNameMemo,
-          this.room.id,
-          this.room.sessionId
-        );
+        if (msg.preventClose) {
+          createReconnection().startSession(
+            this.playerNameMemo,
+            this.room.id,
+            this.room.sessionId
+          );
+        } else {
+          createReconnection().endSession();
+        }
       }
     });
 
