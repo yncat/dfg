@@ -31,7 +31,7 @@ const lobbyChatMessageListLogic = createChatMessageListLogic();
 const lobbyChatPanelLogic = createChatPanelLogic();
 const roomChatMessageListLogic = createChatMessageListLogic();
 const roomChatPanelLogic = createChatPanelLogic();
-const gameLogic = createGameLogic();
+const gameLogic = createGameLogic(defaultI18nService);
 globalLogic.roomRegistrationPipeline.register(
   gameLogic.registerRoom.bind(gameLogic)
 );

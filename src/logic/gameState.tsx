@@ -9,6 +9,12 @@ function extract(target: ArraySchema<string>) {
   });
 }
 
+export type EventLogDTO = {
+  eventType: string;
+  eventBody: string;
+  skipEffects: boolean;
+};
+
 export class GameResultDTO {
   daifugoPlayerList: string[];
   fugoPlayerList: string[];

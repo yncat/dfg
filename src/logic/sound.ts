@@ -87,11 +87,15 @@ export class SoundLogicImple implements SoundLogic {
   musicOutput: boolean;
   howlMap: Map<string, Howl>;
   eventQueue: SoundEvent[];
+  private myTurnSoundQueued: boolean;
+  private playing: boolean;
   constructor() {
     this.soundOutput = true;
     this.musicOutput = false;
     this.howlMap = new Map<string, Howl>();
     this.eventQueue = [];
+    this.myTurnSoundQueued = false;
+    this.playing = false;
   }
 
   public initIfNeeded(): void {
@@ -104,10 +108,22 @@ export class SoundLogicImple implements SoundLogic {
   }
 
   public enqueueEvent(soundEvent: SoundEvent): void {
+    // ターンが回ってきた音だけ特殊処理
+    if (soundEvent === SoundEvent.TURN) {
+      this.enqueueMyTurnSound();
+      return;
+    }
     this.eventQueue.push(soundEvent);
     if (this.eventQueue.length === 1) {
       this.handleEventQueue();
     }
+  }
+
+  private enqueueMyTurnSound() {
+    // これまでは、ただただ送られてくる順番で音を鳴らせばよかった。
+    // ところが、イベントログをstate、ターンメッセージをsendでのメッセージに分けたところ、どっちが先に来るか補償されなくなってしまった。
+    // ターン開始の音は、ほかの音が流れた後に再生されて欲しいので、ここだけいい感じに吸収してあげる必要が出てきた。
+    this.myTurnSoundQueued = true;
   }
 
   public toggleSoundOutput(output: boolean): void {
@@ -171,6 +187,7 @@ export class SoundLogicImple implements SoundLogic {
       return;
     }
 
+    this.playing = true;
     this.handleEventDefinition(def);
 
     if (def.waitTime === 0) {
@@ -184,6 +201,14 @@ export class SoundLogicImple implements SoundLogic {
     // pop the previously played event first
     this.eventQueue.shift();
     if (this.eventQueue.length === 0) {
+      // 自分のターンが来た音が予約されていたらここで再生
+      if (this.myTurnSoundQueued) {
+        this.myTurnSoundQueued = false;
+        this.handleEventDefinition(
+          soundEventDefinitionMap.get(SoundEvent.TURN) as SoundEventDefinition
+        ); // ないわけないのでtype assertionしちゃう
+      }
+      this.playing = false;
       return;
     }
 
