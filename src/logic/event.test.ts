@@ -12,7 +12,11 @@ describe("EventProcessor", () => {
         "InitialInfoMessage",
         JSON.stringify(dfgmsg.encodeInitialInfoMessage(3, 1))
       );
-      expect(ret.soundEvents).toStrictEqual([SoundEvent.START, SoundEvent.SHUFFLE, SoundEvent.GIVE]);
+      expect(ret.soundEvents).toStrictEqual([
+        SoundEvent.START,
+        SoundEvent.SHUFFLE,
+        SoundEvent.GIVE,
+      ]);
       expect(ret.messages).toStrictEqual([i18n.game_initialInfo(3, 1)]);
     });
   });
@@ -180,10 +184,7 @@ describe("EventProcessor", () => {
       );
       expect(ret.soundEvents).toStrictEqual([SoundEvent.DAIFUGO]);
       expect(ret.messages).toStrictEqual([
-        i18n.game_ranked(
-          "cat",
-          dfgmsg.RankType.DAIFUGO
-        ),
+        i18n.game_ranked("cat", dfgmsg.RankType.DAIFUGO),
       ]);
     });
 
@@ -202,10 +203,7 @@ describe("EventProcessor", () => {
       );
       expect(ret.soundEvents).toStrictEqual([SoundEvent.FUGO]);
       expect(ret.messages).toStrictEqual([
-        i18n.game_ranked(
-          "cat",
-          dfgmsg.RankType.FUGO
-        ),
+        i18n.game_ranked("cat", dfgmsg.RankType.FUGO),
       ]);
     });
 
@@ -224,10 +222,7 @@ describe("EventProcessor", () => {
       );
       expect(ret.soundEvents).toStrictEqual([SoundEvent.HEIMIN]);
       expect(ret.messages).toStrictEqual([
-        i18n.game_ranked(
-          "cat",
-          dfgmsg.RankType.HEIMIN
-        ),
+        i18n.game_ranked("cat", dfgmsg.RankType.HEIMIN),
       ]);
     });
 
@@ -246,10 +241,7 @@ describe("EventProcessor", () => {
       );
       expect(ret.soundEvents).toStrictEqual([SoundEvent.HINMIN]);
       expect(ret.messages).toStrictEqual([
-        i18n.game_ranked(
-          "cat",
-          dfgmsg.RankType.HINMIN
-        ),
+        i18n.game_ranked("cat", dfgmsg.RankType.HINMIN),
       ]);
     });
 
@@ -268,10 +260,7 @@ describe("EventProcessor", () => {
       );
       expect(ret.soundEvents).toStrictEqual([SoundEvent.DAIHINMIN]);
       expect(ret.messages).toStrictEqual([
-        i18n.game_ranked(
-          "cat",
-          dfgmsg.RankType.DAIHINMIN
-        ),
+        i18n.game_ranked("cat", dfgmsg.RankType.DAIHINMIN),
       ]);
     });
   });

@@ -12,7 +12,7 @@ function extract(target: ArraySchema<string>) {
 export type EventLogDTO = {
   eventType: string;
   eventBody: string;
-  skipEffects:boolean;
+  skipEffects: boolean;
 };
 
 export class GameResultDTO {
