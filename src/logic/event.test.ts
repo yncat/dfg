@@ -12,7 +12,7 @@ describe("EventProcessor", () => {
         "InitialInfoMessage",
         JSON.stringify(dfgmsg.encodeInitialInfoMessage(3, 1))
       );
-      expect(ret.soundEvents).toStrictEqual([]);
+      expect(ret.soundEvents).toStrictEqual([SoundEvent.START, SoundEvent.SHUFFLE, SoundEvent.GIVE]);
       expect(ret.messages).toStrictEqual([i18n.game_initialInfo(3, 1)]);
     });
   });
