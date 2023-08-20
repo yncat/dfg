@@ -25,6 +25,8 @@ export class EventProcessor {
       ["KakumeiMessage", this.processKakumeiMessage.bind(this)],
       ["ReverseMessage", this.processReverseMessage.bind(this)],
       ["TurnSkippedMessage", this.processTurnSkippedMessage.bind(this)],
+      ["TransferMessage", this.processTransferMessage.bind(this)],
+      // ["ExileMessage", this.processExileMessage.bind(this)],
       [
         "StrengthInversionMessage",
         this.processStrengthInversionMessage.bind(this),
@@ -160,6 +162,20 @@ export class EventProcessor {
     return {
       soundEvents: [SoundEvent.SKIP],
       messages: [this.i18n.game_skipped(evt.playerName)],
+    };
+  }
+
+  private processTransferMessage(eventBody: string): ProcessedEvent {
+    const evt = dfgmsg.decodePayload<dfgmsg.TransferMessage>(
+      JSON.parse(eventBody),
+      dfgmsg.TransferMessageDecoder
+    );
+    if (!isDecodeSuccess<dfgmsg.TransferMessage>(evt)) {
+      return this.emptyEvent();
+    }
+    return {
+      soundEvents: [SoundEvent.TRANSFER],
+      messages: [this.i18n.game_transferred(evt.fromPlayerName, evt.toPlayerName, evt.cardList)],
     };
   }
 

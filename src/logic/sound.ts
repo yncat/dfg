@@ -29,6 +29,7 @@ export const SoundEvent = {
   REVERSE: 23,
   LOST: 24,
   RECONNECTED: 25,
+  TRANSFER: 26,
 } as const;
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export type SoundEvent = typeof SoundEvent[keyof typeof SoundEvent];
@@ -80,6 +81,7 @@ const soundEventDefinitionMap: Map<SoundEvent, SoundEventDefinition> = new Map<
     SoundEvent.RECONNECTED,
     { soundWithoutExt: "reconnected", waitTime: 600, volume: 0.3 },
   ],
+  [SoundEvent.TRANSFER, { soundWithoutExt: "transfer", waitTime: 700 }],
 ]);
 
 export class SoundLogicImple implements SoundLogic {
