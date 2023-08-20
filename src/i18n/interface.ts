@@ -102,6 +102,8 @@ export interface I18nService {
   game_kakumei: () => string;
   game_reversed: () => string;
   game_skipped: (playerName: string) => string;
+  game_transferred: (fromPlayerName: string, toPlayerName: string, cardList: CardMessage[]) => string;
+  game_exiled: (playerName: string, cardList: CardMessage[]) => string;
   game_ranked: (playerName: string, rankType: RankType) => string;
   game_rankChanged: (
     playerName: string,

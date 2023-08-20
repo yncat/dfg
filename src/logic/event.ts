@@ -26,7 +26,7 @@ export class EventProcessor {
       ["ReverseMessage", this.processReverseMessage.bind(this)],
       ["TurnSkippedMessage", this.processTurnSkippedMessage.bind(this)],
       ["TransferMessage", this.processTransferMessage.bind(this)],
-      // ["ExileMessage", this.processExileMessage.bind(this)],
+      ["ExileMessage", this.processExileMessage.bind(this)],
       [
         "StrengthInversionMessage",
         this.processStrengthInversionMessage.bind(this),
@@ -176,6 +176,20 @@ export class EventProcessor {
     return {
       soundEvents: [SoundEvent.TRANSFER],
       messages: [this.i18n.game_transferred(evt.fromPlayerName, evt.toPlayerName, evt.cardList)],
+    };
+  }
+
+  private processExileMessage(eventBody: string): ProcessedEvent {
+    const evt = dfgmsg.decodePayload<dfgmsg.ExileMessage>(
+      JSON.parse(eventBody),
+      dfgmsg.ExileMessageDecoder
+    );
+    if (!isDecodeSuccess<dfgmsg.ExileMessage>(evt)) {
+      return this.emptyEvent();
+    }
+    return {
+      soundEvents: [SoundEvent.DISCARD],
+      messages: [this.i18n.game_exiled(evt.playerName, evt.cardList)],
     };
   }
 

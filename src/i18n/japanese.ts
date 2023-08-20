@@ -452,6 +452,10 @@ export class JapaneseI18nService implements I18nService {
     return `${fromPlayerName}は、${this.game_cardList(cardList)}を${toPlayerName}に渡しました。`;
   }
 
+  public game_exiled(playerName: string, cardList: CardMessage[]): string {
+    return `${playerName}は、${this.game_cardList(cardList)}を捨てます。`;
+  }
+
   public game_ranked(playerName: string, rankType: RankType): string {
     return (
       playerName + "は、" + this.game_rankType(rankType) + "になりました！"
