@@ -139,6 +139,14 @@ export class JapaneseI18nService implements I18nService {
     return "出した枚数分のプレイヤーを飛ばす(マルチスキップ)";
   }
 
+  public roomSettings_transfer():string{
+    return "7で次のプレイヤーにカードを渡す(7渡し)";
+  }
+
+  public roomSettings_exile():string{
+    return "10でカードを捨てる(10捨て)";
+  }
+
   public roomList_creator(): string {
     return "作成者";
   }

@@ -11,11 +11,15 @@ test("renders settings with given parameters", () => {
   const kakumei = true;
   const reverse = false;
   const skip = SkipConfig.OFF;
+  const transfer = false;
+  const exile = false;
   const onYagiriChange = jest.fn((yagiri: boolean) => {});
   const onJBackChange = jest.fn((jBack: boolean) => {});
   const onKakumeiChange = jest.fn((kakumei: boolean) => {});
   const onReverseChange = jest.fn((reverse: boolean) => {});
   const onSkipChange = jest.fn((skip: SkipConfig) => {});
+  const onTransferChange = jest.fn((transfer: boolean) => {});
+  const onExileChange = jest.fn((exile: boolean) => {});
   render(
     <RoomSettingsModal
       globalLogic={gl}
@@ -24,11 +28,15 @@ test("renders settings with given parameters", () => {
       kakumei={kakumei}
       reverse={reverse}
       skip={skip}
+      transfer={transfer}
+      exile={exile}
       onYagiriChange={onYagiriChange}
       onJBackChange={onJBackChange}
       onKakumeiChange={onKakumeiChange}
       onReverseChange={onReverseChange}
       onSkipChange={onSkipChange}
+      onTransferChange={onTransferChange}
+      onExileChange={onExileChange}
     />
   );
   const yagiriCb = screen.getByLabelText(/8切り/);
@@ -45,6 +53,10 @@ test("renders settings with given parameters", () => {
   expect(skipOffRadio).toBeChecked();
   expect(skipSingleRadio).not.toBeChecked();
   expect(skipMultiRadio).not.toBeChecked();
+  const transferCb = screen.getByLabelText(/7渡し/);
+  expect(transferCb).not.toBeChecked();
+  const exileCb = screen.getByLabelText(/10捨て/);
+  expect(exileCb).not.toBeChecked();
 });
 
 test("can change settings", () => {
@@ -54,11 +66,15 @@ test("can change settings", () => {
   const kakumei = true;
   const reverse = false;
   const skip = SkipConfig.OFF;
+  const transfer = false;
+  const exile = false;
   const onYagiriChange = jest.fn((yagiri: boolean) => {});
   const onJBackChange = jest.fn((jBack: boolean) => {});
   const onKakumeiChange = jest.fn((kakumei: boolean) => {});
   const onReverseChange = jest.fn((reverse: boolean) => {});
   const onSkipChange = jest.fn((skip: SkipConfig) => {});
+  const onTransferChange = jest.fn((transfer: boolean) => {});
+  const onExileChange = jest.fn((exile: boolean) => {});
   render(
     <RoomSettingsModal
       globalLogic={gl}
@@ -67,11 +83,15 @@ test("can change settings", () => {
       kakumei={kakumei}
       reverse={reverse}
       skip={skip}
+      transfer={transfer}
+      exile={exile}
       onYagiriChange={onYagiriChange}
       onJBackChange={onJBackChange}
       onKakumeiChange={onKakumeiChange}
       onReverseChange={onReverseChange}
       onSkipChange={onSkipChange}
+      onTransferChange={onTransferChange}
+      onExileChange={onExileChange}
     />
   );
   const yagiriCb = screen.getByLabelText(/8切り/);
@@ -93,4 +113,10 @@ test("can change settings", () => {
   const skipMultiRadio = screen.getByLabelText(/マルチスキップ/);
   fireEvent(skipMultiRadio, createClickEvent());
   expect(onSkipChange).toHaveBeenCalledWith(SkipConfig.MULTI);
+  const transferCb = screen.getByLabelText(/7渡し/);
+  fireEvent(transferCb, createClickEvent());
+  expect(onTransferChange).toHaveBeenCalledWith(!transfer);
+  const exileCb = screen.getByLabelText(/10捨て/);
+  fireEvent(exileCb, createClickEvent());
+  expect(onExileChange).toHaveBeenCalledWith(!exile);
 });

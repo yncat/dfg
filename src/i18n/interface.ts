@@ -49,6 +49,8 @@ export interface I18nService {
   roomSettings_skip_off: () => string;
   roomSettings_skip_single: () => string;
   roomSettings_skip_multiple: () => string;
+  roomSettings_transfer: () => string;
+  roomSettings_exile: () => string;
   roomList_creator: () => string;
   roomList_playerNameList: () => string;
   roomList_state: () => string;
