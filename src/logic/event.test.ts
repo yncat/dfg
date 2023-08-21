@@ -118,6 +118,40 @@ describe("EventProcessor", () => {
     });
   });
 
+  describe("TransferMessage", () => {
+    it("processes event", () => {
+      const i18n = createI18nService("Japanese");
+      const ep = new EventProcessor(i18n);
+      const cardList = [
+        dfgmsg.encodeCardMessage(dfgmsg.CardMark.DIAMONDS, 3),
+        dfgmsg.encodeCardMessage(dfgmsg.CardMark.DIAMONDS, 4),
+      ];
+      const ret = ep.processEvent(
+        "TransferMessage",
+        JSON.stringify(dfgmsg.encodeTransferMessage("cat", "dog", cardList))
+      );
+      expect(ret.soundEvents).toStrictEqual([SoundEvent.TRANSFER]);
+      expect(ret.messages).toStrictEqual([i18n.game_transferred("cat", "dog", cardList)]);
+    });
+  });
+
+  describe("ExileMessage", () => {
+    it("processes event", () => {
+      const i18n = createI18nService("Japanese");
+      const ep = new EventProcessor(i18n);
+      const cardList = [
+        dfgmsg.encodeCardMessage(dfgmsg.CardMark.DIAMONDS, 3),
+        dfgmsg.encodeCardMessage(dfgmsg.CardMark.DIAMONDS, 4),
+      ];
+      const ret = ep.processEvent(
+        "ExileMessage",
+        JSON.stringify(dfgmsg.encodeExileMessage("cat", cardList))
+      );
+      expect(ret.soundEvents).toStrictEqual([SoundEvent.DISCARD]);
+      expect(ret.messages).toStrictEqual([i18n.game_exiled("cat", cardList)]);
+    });
+  });
+
   describe("StrengthInversionMessage", () => {
     it("processes inverted event", () => {
       const i18n = createI18nService("Japanese");

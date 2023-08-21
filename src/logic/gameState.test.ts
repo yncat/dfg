@@ -95,6 +95,8 @@ describe("GameStateDTO", () => {
     gs.ruleConfig.kakumei = true;
     gs.ruleConfig.reverse = true;
     gs.ruleConfig.skip = SkipConfig.MULTI;
+    gs.ruleConfig.transfer = true;
+    gs.ruleConfig.exile = true;
     const gi = new dto.GameStateDTO(gs);
     expect(gi.playerCount).toBe(2);
     expect(gi.playerNameList).toStrictEqual(["cat", "dog"]);
@@ -115,6 +117,8 @@ describe("GameStateDTO", () => {
       kakumei: true,
       reverse: true,
       skip: SkipConfig.MULTI,
+      transfer: true,
+      exile: true,
     });
   });
 });

@@ -10,11 +10,15 @@ interface Props {
   kakumei: boolean;
   reverse: boolean;
   skip: SkipConfig;
+  transfer: boolean;
+  exile: boolean;
   onYagiriChange: (yagiri: boolean) => void;
   onJBackChange: (jBack: boolean) => void;
   onKakumeiChange: (kakumei: boolean) => void;
   onReverseChange: (reverse: boolean) => void;
   onSkipChange: (skip: SkipConfig) => void;
+  onTransferChange: (transfer: boolean) => void;
+  onExileChange: (exile: boolean) => void;
 }
 
 export default function RoomSettingsModal(props: Props) {
@@ -107,6 +111,26 @@ export default function RoomSettingsModal(props: Props) {
               onChange={handleSkipRadio}
             />
           </div>
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="roomSettings_transfer">
+          <Form.Check
+            type="checkbox"
+            label={i18n.roomSettings_transfer()}
+            checked={props.transfer}
+            onChange={() => {
+              props.onTransferChange(!props.transfer);
+            }}
+          />
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="roomSettings_exile">
+          <Form.Check
+            type="checkbox"
+            label={i18n.roomSettings_exile()}
+            checked={props.exile}
+            onChange={() => {
+              props.onExileChange(!props.exile);
+            }}
+          />
         </Form.Group>
       </Form>
     </React.Fragment>

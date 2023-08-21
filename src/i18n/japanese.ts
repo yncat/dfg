@@ -10,6 +10,7 @@ import {
   WebSocketErrorCode,
   maxReconnectionMinute,
   WaitReason,
+  YourTurnContext,
 } from "dfg-messages";
 
 export class JapaneseI18nService implements I18nService {
@@ -139,6 +140,14 @@ export class JapaneseI18nService implements I18nService {
     return "出した枚数分のプレイヤーを飛ばす(マルチスキップ)";
   }
 
+  public roomSettings_transfer(): string {
+    return "7で次のプレイヤーにカードを渡す(7渡し)";
+  }
+
+  public roomSettings_exile(): string {
+    return "10でカードを捨てる(10捨て)";
+  }
+
   public roomList_creator(): string {
     return "作成者";
   }
@@ -199,6 +208,12 @@ export class JapaneseI18nService implements I18nService {
     if (config.skip === SkipConfig.MULTI) {
       ret.push("マルチスキップ");
     }
+    if (config.transfer) {
+      ret.push("7渡し");
+    }
+    if (config.exile) {
+      ret.push("10捨て");
+    }
     return ret.join("、");
   }
 
@@ -256,41 +271,41 @@ export class JapaneseI18nService implements I18nService {
     if (result.daifugoPlayerList.length > 0) {
       ret.push(
         result.daifugoPlayerList.join("、") +
-          "が" +
-          this.game_rankType(RankType.DAIFUGO) +
-          "。"
+        "が" +
+        this.game_rankType(RankType.DAIFUGO) +
+        "。"
       );
     }
     if (result.fugoPlayerList.length > 0) {
       ret.push(
         result.fugoPlayerList.join("、") +
-          "が" +
-          this.game_rankType(RankType.FUGO) +
-          "。"
+        "が" +
+        this.game_rankType(RankType.FUGO) +
+        "。"
       );
     }
     if (result.heiminPlayerList.length > 0) {
       ret.push(
         result.heiminPlayerList.join("、") +
-          "が" +
-          this.game_rankType(RankType.HEIMIN) +
-          "。"
+        "が" +
+        this.game_rankType(RankType.HEIMIN) +
+        "。"
       );
     }
     if (result.hinminPlayerList.length > 0) {
       ret.push(
         result.hinminPlayerList.join("、") +
-          "が" +
-          this.game_rankType(RankType.HINMIN) +
-          "。"
+        "が" +
+        this.game_rankType(RankType.HINMIN) +
+        "。"
       );
     }
     if (result.daihinminPlayerList.length > 0) {
       ret.push(
         result.daihinminPlayerList.join("、") +
-          "が" +
-          this.game_rankType(RankType.DAIHINMIN) +
-          "。"
+        "が" +
+        this.game_rankType(RankType.DAIHINMIN) +
+        "。"
       );
     }
 
@@ -403,8 +418,15 @@ export class JapaneseI18nService implements I18nService {
     return "" + playerName + "に、" + cardCount + "枚のカードが配られました。";
   }
 
-  public game_yourTurn(): string {
-    return "アクションを選択してください。";
+  public game_yourTurn(context: YourTurnContext): string {
+    switch (context) {
+      case YourTurnContext.TRANSFER:
+        return "次のプレイヤーに渡すカードを選択してください。"
+      case YourTurnContext.EXILE:
+        return "捨てるカードを選択してください。"
+      default:
+        return "アクションを選択してください。";
+    }
   }
 
   public game_turn(playerName: string): string {
@@ -448,6 +470,14 @@ export class JapaneseI18nService implements I18nService {
     return `${playerName}のターンが飛ばされました。`;
   }
 
+  public game_transferred(fromPlayerName: string, toPlayerName: string, cardList: CardMessage[]): string {
+    return `${fromPlayerName}は、${this.game_cardList(cardList)}を${toPlayerName}に渡します。`;
+  }
+
+  public game_exiled(playerName: string, cardList: CardMessage[]): string {
+    return `${playerName}は、${this.game_cardList(cardList)}を捨てます。`;
+  }
+
   public game_ranked(playerName: string, rankType: RankType): string {
     return (
       playerName + "は、" + this.game_rankType(rankType) + "になりました！"
@@ -489,8 +519,10 @@ export class JapaneseI18nService implements I18nService {
     switch (reason) {
       case WaitReason.RECONNECTION:
         return `${playerName}の再接続を待っています。`;
-      case WaitReason.ACTION:
-        return `${playerName}の追加のアクションを待っています。`;
+      case WaitReason.TRANSFER:
+        return `${playerName}は、次のプレイヤーに渡すカードを選びます。`;
+      case WaitReason.EXILE:
+        return `${playerName}は、捨てるカードを選びます。`;
     }
     return `${playerName}を待っています。`;
   }
