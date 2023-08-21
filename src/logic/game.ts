@@ -24,7 +24,7 @@ export interface Pubsubs {
   discardPairListUpdated: Pubsub<dfgmsg.DiscardPairListMessage>;
 }
 
-type YourTurnFunc = (yourTurn: boolean) => void;
+type YourTurnFunc = (context: dfgmsg.YourTurnContext, passable:boolean) => void;
 type LostFunc = (playerName: string) => void;
 type ReconnectedFunc = (playerName: string) => void;
 type WaitFunc = (playerName: string, reason: dfgmsg.WaitReason) => void;
@@ -154,7 +154,7 @@ class GameLogicImple implements GameLogic {
         return;
       }
 
-      this.pipelines.yourTurn.call(msg.yourTurn);
+      this.pipelines.yourTurn.call(msg.context, msg.passable);
     });
 
     room.onMessage("CardListMessage", (payload: any) => {

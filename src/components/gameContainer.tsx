@@ -13,6 +13,7 @@ import {
   DiscardPairListMessage,
   encodeDiscardPairListMessage,
   WaitReason,
+  YourTurnContext,
 } from "dfg-messages";
 import LeaveRoomButton from "./leaveRoomButton";
 
@@ -29,6 +30,7 @@ export default function GameContainer(props: Props) {
   );
   const [ownerStatus, setOwnerStatus] = React.useState<boolean>(false);
   const [isMyTurn, setIsMyTurn] = React.useState<boolean>(false);
+  const [isPassable, setIsPassable] = React.useState<boolean>(false);
   const [cardList, setCardList] = React.useState<CardListMessage>(
     encodeCardListMessage([])
   );
@@ -70,14 +72,17 @@ export default function GameContainer(props: Props) {
     updateLog(msg);
   };
 
-  const handleMyTurn = (myTurn: boolean) => {
+  const handleMyTurn = (context:YourTurnContext, passable:boolean) => {
+    const myTurn = context !== YourTurnContext.INACTIVE;
     if (myTurn) {
-      const msg = i18n.game_yourTurn();
+      const msg = i18n.game_yourTurn(context);
       props.globalLogic.updateAutoRead(msg);
       props.globalLogic.sound.enqueueEvent(SoundEvent.TURN);
       setIsMyTurn(true);
+      setIsPassable(passable);
     } else {
       setIsMyTurn(false);
+      setIsPassable(false);
     }
   };
 
@@ -182,7 +187,7 @@ export default function GameContainer(props: Props) {
         onCardSelectionChange={props.gameLogic.selectCard.bind(props.gameLogic)}
         onDiscard={props.gameLogic.discard.bind(props.gameLogic)}
         onPass={props.gameLogic.pass.bind(props.gameLogic)}
-        isPassable={isMyTurn}
+        isPassable={isPassable}
       />
       <PlayingInfoPanel
         globalLogic={props.globalLogic}

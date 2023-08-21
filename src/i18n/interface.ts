@@ -7,6 +7,7 @@ import {
   RuleConfig,
   WebSocketErrorCode,
   WaitReason,
+  YourTurnContext,
 } from "dfg-messages";
 
 export interface Result {
@@ -92,7 +93,7 @@ export interface I18nService {
   game_passMessage: (playerName: string, remainingHandCount: number) => string;
   game_initialInfo: (playerCount: number, deckCount: number) => string;
   game_cardsProvided: (playerName: string, cardCount: number) => string;
-  game_yourTurn: () => string;
+  game_yourTurn: (context:YourTurnContext) => string;
   game_turn: (playerName: string) => string;
   game_discard: (
     playerName: string,

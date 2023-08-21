@@ -10,6 +10,7 @@ import {
   WebSocketErrorCode,
   maxReconnectionMinute,
   WaitReason,
+  YourTurnContext,
 } from "dfg-messages";
 
 export class JapaneseI18nService implements I18nService {
@@ -139,11 +140,11 @@ export class JapaneseI18nService implements I18nService {
     return "出した枚数分のプレイヤーを飛ばす(マルチスキップ)";
   }
 
-  public roomSettings_transfer():string{
+  public roomSettings_transfer(): string {
     return "7で次のプレイヤーにカードを渡す(7渡し)";
   }
 
-  public roomSettings_exile():string{
+  public roomSettings_exile(): string {
     return "10でカードを捨てる(10捨て)";
   }
 
@@ -207,10 +208,10 @@ export class JapaneseI18nService implements I18nService {
     if (config.skip === SkipConfig.MULTI) {
       ret.push("マルチスキップ");
     }
-    if(config.transfer){
+    if (config.transfer) {
       ret.push("7渡し");
     }
-    if(config.exile){
+    if (config.exile) {
       ret.push("10捨て");
     }
     return ret.join("、");
@@ -417,8 +418,15 @@ export class JapaneseI18nService implements I18nService {
     return "" + playerName + "に、" + cardCount + "枚のカードが配られました。";
   }
 
-  public game_yourTurn(): string {
-    return "アクションを選択してください。";
+  public game_yourTurn(context: YourTurnContext): string {
+    switch (context) {
+      case YourTurnContext.TRANSFER:
+        return "次のプレイヤーに渡すカードを選択してください。"
+      case YourTurnContext.EXILE:
+        return "捨てるカードを選択してください。"
+      default:
+        return "アクションを選択してください。";
+    }
   }
 
   public game_turn(playerName: string): string {
@@ -463,7 +471,7 @@ export class JapaneseI18nService implements I18nService {
   }
 
   public game_transferred(fromPlayerName: string, toPlayerName: string, cardList: CardMessage[]): string {
-    return `${fromPlayerName}は、${this.game_cardList(cardList)}を${toPlayerName}に渡しました。`;
+    return `${fromPlayerName}は、${this.game_cardList(cardList)}を${toPlayerName}に渡します。`;
   }
 
   public game_exiled(playerName: string, cardList: CardMessage[]): string {
