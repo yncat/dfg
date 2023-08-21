@@ -16,6 +16,8 @@ function createRuleConfig(): RuleConfig {
     kakumei: true,
     reverse: false,
     skip: SkipConfig.OFF,
+    transfer: false,
+    exile: false,
   };
 }
 
