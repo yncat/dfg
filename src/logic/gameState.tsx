@@ -90,6 +90,8 @@ export class GameStateDTO {
       kakumei: gameState.ruleConfig.kakumei,
       reverse: gameState.ruleConfig.reverse,
       skip: gameState.ruleConfig.skip as SkipConfig,
+      transfer: gameState.ruleConfig.transfer,
+      exile: gameState.ruleConfig.exile,
     };
   }
 }

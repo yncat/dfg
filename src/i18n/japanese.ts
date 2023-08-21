@@ -207,6 +207,12 @@ export class JapaneseI18nService implements I18nService {
     if (config.skip === SkipConfig.MULTI) {
       ret.push("マルチスキップ");
     }
+    if(config.transfer){
+      ret.push("7渡し");
+    }
+    if(config.exile){
+      ret.push("10捨て");
+    }
     return ret.join("、");
   }
 
