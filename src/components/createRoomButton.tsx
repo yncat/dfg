@@ -18,6 +18,8 @@ export default function CreateRoomButton(props: Props) {
   const [kakumei, setKakumei] = React.useState<boolean>(true);
   const [reverse, setReverse] = React.useState<boolean>(false);
   const [skip, setSkip] = React.useState<SkipConfig>(SkipConfig.OFF);
+  const [transfer, setTransfer] = React.useState<boolean>(false);
+  const [exile, setExile] = React.useState<boolean>(false);
 
   const handleCreateRoom = () => {
     setIsCreating(true);
@@ -27,6 +29,8 @@ export default function CreateRoomButton(props: Props) {
       kakumei: kakumei,
       reverse: reverse,
       skip: skip,
+      transfer: transfer,
+      exile: exile,
     };
     props.globalLogic.createGameRoom(rc, (success: boolean) => {
       setIsCreating(false);
@@ -66,11 +70,15 @@ export default function CreateRoomButton(props: Props) {
             kakumei={kakumei}
             reverse={reverse}
             skip={skip}
+            transfer={transfer}
+            exile={exile}
             onYagiriChange={setYagiri}
             onJBackChange={setJBack}
             onKakumeiChange={setKakumei}
             onReverseChange={setReverse}
             onSkipChange={setSkip}
+            onTransferChange={setTransfer}
+            onExileChange={setExile}
           />
         </Modal.Body>
         <Modal.Footer>
