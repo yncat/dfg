@@ -29,7 +29,6 @@ export default function GameContainer(props: Props) {
     new GameStateDTO(new GameState())
   );
   const [ownerStatus, setOwnerStatus] = React.useState<boolean>(false);
-  const [isMyTurn, setIsMyTurn] = React.useState<boolean>(false);
   const [isPassable, setIsPassable] = React.useState<boolean>(false);
   const [cardList, setCardList] = React.useState<CardListMessage>(
     encodeCardListMessage([])
@@ -78,10 +77,8 @@ export default function GameContainer(props: Props) {
       const msg = i18n.game_yourTurn(context);
       props.globalLogic.updateAutoRead(msg);
       props.globalLogic.sound.enqueueEvent(SoundEvent.TURN);
-      setIsMyTurn(true);
       setIsPassable(passable);
     } else {
-      setIsMyTurn(false);
       setIsPassable(false);
     }
   };
