@@ -131,7 +131,9 @@ describe("EventProcessor", () => {
         JSON.stringify(dfgmsg.encodeTransferMessage("cat", "dog", cardList))
       );
       expect(ret.soundEvents).toStrictEqual([SoundEvent.TRANSFER]);
-      expect(ret.messages).toStrictEqual([i18n.game_transferred("cat", "dog", cardList)]);
+      expect(ret.messages).toStrictEqual([
+        i18n.game_transferred("cat", "dog", cardList),
+      ]);
     });
   });
 

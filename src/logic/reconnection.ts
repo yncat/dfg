@@ -6,14 +6,12 @@ const cookieName = "dfg_last_room_info";
 export type ReconnectionInfo = {
   isReconnectionAvailable: boolean;
   playerName: string;
-  roomID: string;
-  sessionID: string;
+  reconnectionToken: string;
 };
 
 type ReconnectionCookie = {
   playerName: string;
-  roomID: string;
-  sessionID: string;
+  reconnectionToken: string;
 };
 
 function isValidReconnectionCookie(
@@ -29,28 +27,21 @@ function isValidReconnectionCookie(
   if (typeof castedCookie.playerName !== "string") {
     return false;
   }
-  if (typeof castedCookie.roomID !== "string") {
-    return false;
-  }
-  if (typeof castedCookie.sessionID !== "string") {
+  if (typeof castedCookie.reconnectionToken !== "string") {
     return false;
   }
   return true;
 }
 
 export interface Reconnection {
-  startSession: (playerName: string, roomID: string, sessionID: string) => void;
+  startSession: (playerName: string, reconnectionToken: string) => void;
   endSession: () => void;
   getReconnectionInfo: () => ReconnectionInfo;
 }
 
 class ReconnectionImple implements Reconnection {
-  public startSession(
-    playerName: string,
-    roomID: string,
-    sessionID: string
-  ): void {
-    const v = { playerName, roomID, sessionID };
+  public startSession(playerName: string, reconnectionToken: string): void {
+    const v = { playerName, reconnectionToken };
     const expiresAt = new Date(
       new Date().getTime() + maxReconnectionMinute * 60 * 1000
     );
@@ -70,8 +61,7 @@ class ReconnectionImple implements Reconnection {
       return {
         isReconnectionAvailable: false,
         playerName: "",
-        roomID: "",
-        sessionID: "",
+        reconnectionToken: "",
       };
     }
     const cookieObj = JSON.parse(cookie);
@@ -79,15 +69,13 @@ class ReconnectionImple implements Reconnection {
       return {
         isReconnectionAvailable: false,
         playerName: "",
-        roomID: "",
-        sessionID: "",
+        reconnectionToken: "",
       };
     }
     return {
       isReconnectionAvailable: true,
       playerName: cookieObj.playerName,
-      roomID: cookieObj.roomID,
-      sessionID: cookieObj.sessionID,
+      reconnectionToken: cookieObj.reconnectionToken,
     };
   }
 }

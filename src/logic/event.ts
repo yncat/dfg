@@ -175,7 +175,13 @@ export class EventProcessor {
     }
     return {
       soundEvents: [SoundEvent.TRANSFER],
-      messages: [this.i18n.game_transferred(evt.fromPlayerName, evt.toPlayerName, evt.cardList)],
+      messages: [
+        this.i18n.game_transferred(
+          evt.fromPlayerName,
+          evt.toPlayerName,
+          evt.cardList
+        ),
+      ],
     };
   }
 
