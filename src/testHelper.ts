@@ -16,8 +16,7 @@ export function createGlobalLogicForTest() {
   rmock.getReconnectionInfo.mockReturnValue({
     isReconnectionAvailable: false,
     playerName: "",
-    roomID: "",
-    sessionID: "",
+    reconnectionToken: "",
   });
   return createGlobalLogic(
     createI18nService("Japanese"),

@@ -71,7 +71,7 @@ export default function GameContainer(props: Props) {
     updateLog(msg);
   };
 
-  const handleMyTurn = (context:YourTurnContext, passable:boolean) => {
+  const handleMyTurn = (context: YourTurnContext, passable: boolean) => {
     const myTurn = context !== YourTurnContext.INACTIVE;
     if (myTurn) {
       const msg = i18n.game_yourTurn(context);

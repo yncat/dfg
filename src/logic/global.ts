@@ -105,8 +105,7 @@ export class GlobalLogicImple implements GlobalLogic {
     this.cachedReconnectionInfo = {
       isReconnectionAvailable: false,
       playerName: "",
-      roomID: "",
-      sessionID: "",
+      reconnectionToken: "",
     };
     this.reconnection = reconnection;
     this.connectionStatusPubsub = new Pubsub<ConnectionStatusString>();
@@ -226,8 +225,7 @@ export class GlobalLogicImple implements GlobalLogic {
     }
     try {
       this.gameRoom = await this.client.reconnect(
-        this.cachedReconnectionInfo.roomID,
-        this.cachedReconnectionInfo.sessionID
+        this.cachedReconnectionInfo.reconnectionToken
       );
       onFinish(true);
     } catch (e) {

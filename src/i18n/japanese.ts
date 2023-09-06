@@ -271,41 +271,41 @@ export class JapaneseI18nService implements I18nService {
     if (result.daifugoPlayerList.length > 0) {
       ret.push(
         result.daifugoPlayerList.join("、") +
-        "が" +
-        this.game_rankType(RankType.DAIFUGO) +
-        "。"
+          "が" +
+          this.game_rankType(RankType.DAIFUGO) +
+          "。"
       );
     }
     if (result.fugoPlayerList.length > 0) {
       ret.push(
         result.fugoPlayerList.join("、") +
-        "が" +
-        this.game_rankType(RankType.FUGO) +
-        "。"
+          "が" +
+          this.game_rankType(RankType.FUGO) +
+          "。"
       );
     }
     if (result.heiminPlayerList.length > 0) {
       ret.push(
         result.heiminPlayerList.join("、") +
-        "が" +
-        this.game_rankType(RankType.HEIMIN) +
-        "。"
+          "が" +
+          this.game_rankType(RankType.HEIMIN) +
+          "。"
       );
     }
     if (result.hinminPlayerList.length > 0) {
       ret.push(
         result.hinminPlayerList.join("、") +
-        "が" +
-        this.game_rankType(RankType.HINMIN) +
-        "。"
+          "が" +
+          this.game_rankType(RankType.HINMIN) +
+          "。"
       );
     }
     if (result.daihinminPlayerList.length > 0) {
       ret.push(
         result.daihinminPlayerList.join("、") +
-        "が" +
-        this.game_rankType(RankType.DAIHINMIN) +
-        "。"
+          "が" +
+          this.game_rankType(RankType.DAIHINMIN) +
+          "。"
       );
     }
 
@@ -421,9 +421,9 @@ export class JapaneseI18nService implements I18nService {
   public game_yourTurn(context: YourTurnContext): string {
     switch (context) {
       case YourTurnContext.TRANSFER:
-        return "次のプレイヤーに渡すカードを選択してください。"
+        return "次のプレイヤーに渡すカードを選択してください。";
       case YourTurnContext.EXILE:
-        return "捨てるカードを選択してください。"
+        return "捨てるカードを選択してください。";
       default:
         return "アクションを選択してください。";
     }
@@ -470,8 +470,14 @@ export class JapaneseI18nService implements I18nService {
     return `${playerName}のターンが飛ばされました。`;
   }
 
-  public game_transferred(fromPlayerName: string, toPlayerName: string, cardList: CardMessage[]): string {
-    return `${fromPlayerName}は、${this.game_cardList(cardList)}を${toPlayerName}に渡します。`;
+  public game_transferred(
+    fromPlayerName: string,
+    toPlayerName: string,
+    cardList: CardMessage[]
+  ): string {
+    return `${fromPlayerName}は、${this.game_cardList(
+      cardList
+    )}を${toPlayerName}に渡します。`;
   }
 
   public game_exiled(playerName: string, cardList: CardMessage[]): string {

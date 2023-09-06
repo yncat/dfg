@@ -14,8 +14,7 @@ test("renders normal login", () => {
   rmock.getReconnectionInfo.mockReturnValue({
     isReconnectionAvailable: false,
     playerName: "",
-    roomID: "",
-    sessionID: "",
+    reconnectionToken: "",
   });
   const gl = createGlobalLogic(
     createI18nService("Japanese"),
@@ -33,8 +32,7 @@ test("renders reconnection login", () => {
   rmock.getReconnectionInfo.mockReturnValue({
     isReconnectionAvailable: true,
     playerName: "cat",
-    roomID: "aabb",
-    sessionID: "ccdd",
+    reconnectionToken: "aabb",
   });
   const gl = createGlobalLogic(
     createI18nService("Japanese"),
@@ -54,15 +52,13 @@ test("renders normal login after pressing dismiss", () => {
   rmock.getReconnectionInfo.mockReturnValue({
     isReconnectionAvailable: true,
     playerName: "cat",
-    roomID: "aabb",
-    sessionID: "ccdd",
+    reconnectionToken: "aabb",
   });
   rmock.endSession.mockImplementation(() => {
     rmock.getReconnectionInfo.mockReturnValue({
       isReconnectionAvailable: false,
       playerName: "",
-      roomID: "",
-      sessionID: "",
+      reconnectionToken: "",
     });
   });
   const gl = createGlobalLogic(

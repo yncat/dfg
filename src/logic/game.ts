@@ -24,7 +24,10 @@ export interface Pubsubs {
   discardPairListUpdated: Pubsub<dfgmsg.DiscardPairListMessage>;
 }
 
-type YourTurnFunc = (context: dfgmsg.YourTurnContext, passable:boolean) => void;
+type YourTurnFunc = (
+  context: dfgmsg.YourTurnContext,
+  passable: boolean
+) => void;
 type LostFunc = (playerName: string) => void;
 type ReconnectedFunc = (playerName: string) => void;
 type WaitFunc = (playerName: string, reason: dfgmsg.WaitReason) => void;
@@ -136,8 +139,7 @@ class GameLogicImple implements GameLogic {
         if (msg.preventClose) {
           createReconnection().startSession(
             this.playerNameMemo,
-            this.room.id,
-            this.room.sessionId
+            this.room.reconnectionToken
           );
         } else {
           createReconnection().endSession();
