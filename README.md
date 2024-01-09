@@ -4,7 +4,7 @@ This is a text-based [Daifugo](https://en.wikipedia.org/wiki/Daifug%C5%8D) game.
 
 ## Setup development environment
 
-I'm currently using Node.JS v15. 16 or later will work, but I haven't tested.
+The current CI pipeline uses Node 19.x and 20.x. These versions are guaranteed to work.
 
 You need [the server-side program](https://github.com/yncat/dfg-server) .
 
@@ -20,7 +20,7 @@ Run `npm run test` to run tests.
 
 ## Building
 
-Run `npm run build` to make a optimized production build. If you're trying to host the game somewhere, you need to modify package.json since the homepage field now points to my website domain.
+Run `npm run build` to make an optimized production build. If you're trying to host the game somewhere, you need to modify package.json since the homepage field now points to my website domain.
 
 If you build the app with default setting, it will try to connect to localhost. In order to change endpoint for production, create `.env.production.local` inside the project root directory, and specify like this.
 
