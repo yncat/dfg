@@ -4,11 +4,7 @@
   "homepage": "https://www.nyanchangames.com/softs/dfg/game",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.14.1",
-    "@testing-library/react": "^11.2.7",
-    "@testing-library/user-event": "^12.8.3",
     "@types/howler": "^2.2.3",
-    "@types/jest": "^26.0.24",
     "@types/js-cookie": "^3.0.2",
     "@types/node": "^12.20.20",
     "@types/react": "^17.0.19",
@@ -18,16 +14,22 @@
     "colyseus.js": "^0.15.13",
     "dfg-messages": "github:yncat/dfg-messages#master",
     "howler": "^2.2.3",
-    "jest-mock-extended": "^2.0.2-beta2",
     "js-cookie": "^3.0.1",
-    "prettier": "^2.3.2",
     "react": "^17.0.2",
     "react-bootstrap": "^2.3.1",
     "react-dom": "^17.0.2",
-    "react-scripts": "^5.0.1",
     "react-tabs": "^3.2.2",
     "typescript": "^4.3.5",
     "web-vitals": "^1.1.2"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^11.2.7",
+    "@testing-library/user-event": "^12.8.3",
+    "@types/jest": "^26.0.24",
+    "jest-mock-extended": "^2.0.2-beta2",
+    "prettier": "^2.3.2",
+    "react-scripts": "^5.0.1"
   },
   "scripts": {
     "start": "node dev/tools/gen_version.js && react-scripts start",
