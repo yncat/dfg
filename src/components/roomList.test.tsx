@@ -8,6 +8,7 @@ import {
 } from "../testHelper";
 import { createRoomListEntry } from "../logic/roomList";
 import { RoomState, SkipConfig, RuleConfig } from "dfg-messages";
+import { vi } from "vitest";
 
 function createRuleConfig(): RuleConfig {
   return {
@@ -24,7 +25,7 @@ function createRuleConfig(): RuleConfig {
 test("renders no room message when no rooms are available", () => {
   const gl = createGlobalLogicForTest();
   const rll = createSubLogicListForTest().roomListLogic;
-  jest.spyOn(rll, "fetchLatest").mockImplementation(() => {
+  vi.spyOn(rll, "fetchLatest").mockImplementation(() => {
     return [];
   });
   render(<RoomList globalLogic={gl} roomListLogic={rll} />);
@@ -43,7 +44,7 @@ test("renders room list table", () => {
     ["cat", "dog"],
     "abcdabcd"
   );
-  jest.spyOn(rll, "fetchLatest").mockImplementation(() => {
+  vi.spyOn(rll, "fetchLatest").mockImplementation(() => {
     return [ent];
   });
   render(<RoomList globalLogic={gl} roomListLogic={rll} />);
@@ -62,7 +63,7 @@ test("renders waiting status", () => {
     ["cat"],
     "abcdabcd"
   );
-  jest.spyOn(rll, "fetchLatest").mockImplementation(() => {
+  vi.spyOn(rll, "fetchLatest").mockImplementation(() => {
     return [ent];
   });
   render(<RoomList globalLogic={gl} roomListLogic={rll} />);
@@ -83,7 +84,7 @@ test("renders playing status", () => {
     ["cat"],
     "abcdabcd"
   );
-  jest.spyOn(rll, "fetchLatest").mockImplementation(() => {
+  vi.spyOn(rll, "fetchLatest").mockImplementation(() => {
     return [ent];
   });
   render(<RoomList globalLogic={gl} roomListLogic={rll} />);
@@ -104,7 +105,7 @@ test("renders rule configuration status", () => {
     ["cat"],
     "abcdabcd"
   );
-  jest.spyOn(rll, "fetchLatest").mockImplementation(() => {
+  vi.spyOn(rll, "fetchLatest").mockImplementation(() => {
     return [ent];
   });
   render(<RoomList globalLogic={gl} roomListLogic={rll} />);
@@ -133,10 +134,10 @@ test("changes button label and disabled status when joining", () => {
       "abcdabcd"
     ),
   ];
-  jest.spyOn(rll, "fetchLatest").mockImplementation(() => {
+  vi.spyOn(rll, "fetchLatest").mockImplementation(() => {
     return ents;
   });
-  jest
+  vi
     .spyOn(gl, "joinGameRoomByID")
     .mockImplementation(
       (roomID: string, onFinish: (success: boolean) => void) => {}

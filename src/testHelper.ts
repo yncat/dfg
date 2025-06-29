@@ -9,7 +9,7 @@ import { createI18nService } from "./i18n/i18n";
 import { SoundLogic } from "./logic/sound";
 import { Reconnection } from "./logic/reconnection";
 import { SubLogicList } from "./logic/sub";
-import { mock } from "jest-mock-extended";
+import { mock } from "vitest-mock-extended";
 
 export function createGlobalLogicForTest() {
   const rmock = mock<Reconnection>();

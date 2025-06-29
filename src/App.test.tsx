@@ -6,6 +6,7 @@ import {
   createSubLogicListForTest,
 } from "./testHelper";
 import { act } from "react-dom/test-utils";
+import { vi } from "vitest";
 
 test("renders version and connection info when not connected", () => {
   const globalLogic = createGlobalLogicForTest();
@@ -20,7 +21,7 @@ test("renders version and connection info when not connected", () => {
 test("renders properly when connected", () => {
   const globalLogic = createGlobalLogicForTest();
   const subLogicList = createSubLogicListForTest();
-  jest.spyOn(globalLogic, "connect").mockImplementation(() => {});
+  vi.spyOn(globalLogic, "connect").mockImplementation(() => {});
   render(<App globalLogic={globalLogic} subLogicList={subLogicList} />);
   act(() => {
     globalLogic.connectionStatusPubsub.publish("connected");

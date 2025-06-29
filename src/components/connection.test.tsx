@@ -6,7 +6,7 @@ import { createGlobalLogic } from "../logic/global";
 import { createI18nService } from "../i18n/i18n";
 import { SoundLogic } from "../logic/sound";
 import { Reconnection } from "../logic/reconnection";
-import { mock } from "jest-mock-extended";
+import { mock } from "vitest-mock-extended";
 import { createClickEvent } from "../testHelper";
 
 test("renders normal login", () => {
