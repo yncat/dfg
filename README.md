@@ -10,7 +10,7 @@ You need [the server-side program](https://github.com/yncat/dfg-server) .
 
 First, clone the server-side program. Run `npm ci` to install dependencies, then run `npm start` to start serving. It starts waiting for connections at `localhost:2567` .
 
-Next, clone this repository, run `npm run ci` then `npm start` . It launches browser for the first time. While the development server is running, the game can be accessed by requesting to `localhost:3000` .
+Next, clone this repository, run `npm run ci` then `npm start` . While the development server is running, the game can be accessed by requesting to `http://localhost:5173/softs/dfg/game/` .
 
 The development server supports hot-reloading. When you make changes to the source, it will be automatically applied. When you have compilation errors, your browser window will display it for you.
 
@@ -25,13 +25,13 @@ Run `npm run build` to make an optimized production build. If you're trying to h
 If you build the app with default setting, it will try to connect to localhost. In order to change endpoint for production, create `.env.production.local` inside the project root directory, and specify like this.
 
 ```
-REACT_APP_SERVER_ADDRESS=wss://example.com
+VITE_SERVER_ADDRESS=wss://example.com
 ```
 
 If you want to specify port number,
 
 ```
-REACT_APP_SERVER_ADDRESS=wss://example.com:portnum
+VITE_SERVER_ADDRESS=wss://example.com:portnum
 ```
 
 ## Adding sounds
