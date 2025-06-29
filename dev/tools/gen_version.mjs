@@ -1,7 +1,6 @@
-const child_process = require("child_process");
-const fs = require("fs");
-const versionHash = child_process
-  .execSync("git rev-parse --short HEAD")
+import { execSync } from "child_process";
+import fs from "fs";
+const versionHash = execSync("git rev-parse --short HEAD")
   .toString()
   .trim();
 const builtAt = new Date().toLocaleString();

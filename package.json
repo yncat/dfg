@@ -36,12 +36,12 @@
     "vitest-mock-extended": "^3.1.0"
   },
   "scripts": {
-    "start": "node dev/tools/gen_version.js && vite",
-    "build": "node dev/tools/gen_version.js && vite build",
+    "start": "node dev/tools/gen_version.mjs && vite",
+    "build": "node dev/tools/gen_version.mjs && vite build",
     "preview": "vite preview",
-    "test": "node dev/tools/gen_version.js && vitest",
+    "test": "node dev/tools/gen_version.mjs && vitest",
     "fmt": "prettier --write ./src/**/*.{ts,tsx}",
-    "sounds:build": "node dev/tools/sounds_build.js"
+    "sounds:build": "node dev/tools/sounds_build.mjs"
   },
   "eslintConfig": {
     "extends": [

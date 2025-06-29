@@ -1,6 +1,6 @@
-const { exec, execSync } = require("child_process");
-const fs = require("fs");
-const path = require("path");
+import { exec, execSync } from "child_process";
+import fs from "fs";
+import path from "path";
 
 const waveBaseDir = "dev/sounds_wave";
 
