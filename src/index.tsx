@@ -15,7 +15,7 @@ import { createAutoReadLogic } from "./logic/autoRead";
 import { createGameLogic } from "./logic/game";
 import { createReconnection } from "./logic/reconnection";
 
-const config = new Config(process.env.REACT_APP_SERVER_ADDRESS);
+const config = new Config(import.meta.env.VITE_SERVER_ADDRESS);
 const defaultI18nService = createI18nService("Japanese");
 const soundLogic = createSoundLogic();
 const reconnection = createReconnection();
