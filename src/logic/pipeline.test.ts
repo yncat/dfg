@@ -1,9 +1,10 @@
 import { Pipeline } from "./pipeline";
+import { vi } from "vitest";
 
 type TestPipelineFunc = (num: number) => void;
 
 function makeFuncs() {
-  return jest.fn((num: number) => {});
+  return vi.fn((num: number) => {});
 }
 
 describe("pipeline", () => {

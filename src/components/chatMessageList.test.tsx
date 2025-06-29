@@ -3,11 +3,12 @@ import { render, screen } from "@testing-library/react";
 import ChatMessageList from "./chatMessageList";
 import { createGlobalLogicForTest } from "../testHelper";
 import { createChatMessageListLogic } from "../logic/chatMessageList";
+import { vi } from "vitest";
 
 test("renders chat message list", () => {
   const gl = createGlobalLogicForTest();
   const cmll = createChatMessageListLogic();
-  jest.spyOn(cmll, "fetchLatest").mockImplementation(() => {
+  vi.spyOn(cmll, "fetchLatest").mockImplementation(() => {
     return [
       { playerName: "cat", message: "test1" },
       { playerName: "dog", message: "test2" },

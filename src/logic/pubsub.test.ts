@@ -1,8 +1,9 @@
 import { Pubsub } from "./pubsub";
+import { vi } from "vitest";
 
 function makeFuncs() {
-  const f1 = jest.fn((num: number) => {});
-  const f2 = jest.fn((num: number) => {});
+  const f1 = vi.fn((num: number) => {});
+  const f2 = vi.fn((num: number) => {});
   return [f1, f2];
 }
 

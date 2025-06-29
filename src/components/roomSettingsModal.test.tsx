@@ -3,6 +3,7 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import RoomSettingsModal from "./roomSettingsModal";
 import { createGlobalLogicForTest, createClickEvent } from "../testHelper";
 import { SkipConfig } from "dfg-messages";
+import { vi } from "vitest";
 
 test("renders settings with given parameters", () => {
   const gl = createGlobalLogicForTest();
@@ -13,13 +14,13 @@ test("renders settings with given parameters", () => {
   const skip = SkipConfig.OFF;
   const transfer = false;
   const exile = false;
-  const onYagiriChange = jest.fn((yagiri: boolean) => {});
-  const onJBackChange = jest.fn((jBack: boolean) => {});
-  const onKakumeiChange = jest.fn((kakumei: boolean) => {});
-  const onReverseChange = jest.fn((reverse: boolean) => {});
-  const onSkipChange = jest.fn((skip: SkipConfig) => {});
-  const onTransferChange = jest.fn((transfer: boolean) => {});
-  const onExileChange = jest.fn((exile: boolean) => {});
+  const onYagiriChange = vi.fn((yagiri: boolean) => {});
+  const onJBackChange = vi.fn((jBack: boolean) => {});
+  const onKakumeiChange = vi.fn((kakumei: boolean) => {});
+  const onReverseChange = vi.fn((reverse: boolean) => {});
+  const onSkipChange = vi.fn((skip: SkipConfig) => {});
+  const onTransferChange = vi.fn((transfer: boolean) => {});
+  const onExileChange = vi.fn((exile: boolean) => {});
   render(
     <RoomSettingsModal
       globalLogic={gl}
@@ -68,13 +69,13 @@ test("can change settings", () => {
   const skip = SkipConfig.OFF;
   const transfer = false;
   const exile = false;
-  const onYagiriChange = jest.fn((yagiri: boolean) => {});
-  const onJBackChange = jest.fn((jBack: boolean) => {});
-  const onKakumeiChange = jest.fn((kakumei: boolean) => {});
-  const onReverseChange = jest.fn((reverse: boolean) => {});
-  const onSkipChange = jest.fn((skip: SkipConfig) => {});
-  const onTransferChange = jest.fn((transfer: boolean) => {});
-  const onExileChange = jest.fn((exile: boolean) => {});
+  const onYagiriChange = vi.fn((yagiri: boolean) => {});
+  const onJBackChange = vi.fn((jBack: boolean) => {});
+  const onKakumeiChange = vi.fn((kakumei: boolean) => {});
+  const onReverseChange = vi.fn((reverse: boolean) => {});
+  const onSkipChange = vi.fn((skip: SkipConfig) => {});
+  const onTransferChange = vi.fn((transfer: boolean) => {});
+  const onExileChange = vi.fn((exile: boolean) => {});
   render(
     <RoomSettingsModal
       globalLogic={gl}
