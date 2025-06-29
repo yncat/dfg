@@ -6,7 +6,6 @@
   "dependencies": {
     "@types/howler": "^2.2.3",
     "@types/js-cookie": "^3.0.2",
-    "@types/node": "^12.20.20",
     "@types/react": "^17.0.19",
     "@types/react-dom": "^17.0.9",
     "@types/react-tabs": "^2.3.3",
@@ -23,20 +22,16 @@
     "web-vitals": "^1.1.2"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^5.14.1",
-    "@testing-library/react": "^11.2.7",
-    "@testing-library/user-event": "^12.8.3",
-    "@types/jest": "^26.0.24",
-    "jest-mock-extended": "^2.0.2-beta2",
+    "@types/node": "^20.19.2",
+    "@vitejs/plugin-react": "^4.6.0",
     "prettier": "^2.3.2",
-    "react-scripts": "^5.0.1"
+    "vite": "^7.0.0"
   },
   "scripts": {
-    "start": "node dev/tools/gen_version.js && react-scripts start",
-    "build": "node dev/tools/gen_version.js && react-scripts build",
-    "test": "node dev/tools/gen_version.js && react-scripts test",
+    "start": "node dev/tools/gen_version.js && vite",
+    "build": "node dev/tools/gen_version.js && vite build",
+    "preview": "vite preview",
     "fmt": "prettier --write ./src/**/*.{ts,tsx}",
-    "eject": "react-scripts eject",
     "sounds:build": "node dev/tools/sounds_build.js"
   },
   "eslintConfig": {
