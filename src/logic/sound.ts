@@ -161,7 +161,7 @@ export class SoundLogicImple implements SoundLogic {
   }
 
   private load(soundWithoutExtList: string[]) {
-    const basePath = process.env.PUBLIC_URL + "/sounds/";
+    const basePath = import.meta.env.BASE_URL + "sounds/";
     soundWithoutExtList.forEach((soundWithoutExt) => {
       const webmPath = basePath + soundWithoutExt + ".webm";
       const mp3Path = basePath + soundWithoutExt + ".mp3";
@@ -176,7 +176,7 @@ export class SoundLogicImple implements SoundLogic {
     this.howlMap.set(
       "music",
       new Howl({
-        src: process.env.PUBLIC_URL + "/sounds/music.mp3",
+        src: import.meta.env.BASE_URL + "sounds/music.mp3",
         loop: true,
       })
     );
