@@ -12,7 +12,13 @@ export default defineConfig({
       output: {
         format: 'es'
       }
+    },
+    commonjsOptions: {
+      transformMixedEsModules: true
     }
+  },
+  optimizeDeps: {
+    include: ['colyseus.js', 'howler', 'js-cookie']
   },
   test: {
     globals: true,
