@@ -7,7 +7,13 @@ export default defineConfig({
   plugins: [react()],
   base: '/softs/dfg/game/',
   build: {
-    outDir: 'build'
+    outDir: 'build',
+    target: 'es2015',
+    rollupOptions: {
+      output: {
+        format: 'es'
+      }
+    }
   },
   test: {
     globals: true,
