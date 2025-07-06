@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "homepage": "https://www.nyanchangames.com/softs/dfg/game",
   "private": true,
-  "type": "module",
   "dependencies": {
     "@types/howler": "^2.2.3",
     "@types/js-cookie": "^3.0.2",
