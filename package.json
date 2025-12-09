@@ -4,6 +4,7 @@
   "homepage": "https://www.nyanchangames.com/softs/dfg/game",
   "private": true,
   "dependencies": {
+    "@colyseus/schema": "^2.0.37",
     "@types/howler": "^2.2.3",
     "@types/js-cookie": "^3.0.2",
     "@types/react": "^17.0.19",
