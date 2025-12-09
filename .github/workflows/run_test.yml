@@ -18,15 +18,19 @@ jobs:
       - uses: actions/checkout@v2
         with:
           persist-credentials: false
-      - name: Reconfigure git to use HTTP authentication (npm ci bug workaround)
+      - name: Reconfigure git to use HTTP authentication
         run: git config --global url."https://github.com/".insteadOf ssh://git@github.com/
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
       - name: install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
       - name: run tests
-        run: npm run test run
+        run: pnpm run test run
       - name: build
-        run: npm run build
+        run: pnpm run build
